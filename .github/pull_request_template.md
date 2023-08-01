@@ -1,5 +1,5 @@
-1. Task: 
-2. Screenshot: 
-3. What is done: 
+1. I made changes: 
+2. In order to: 
+3. Screenshot: 
 4. Comment: 
-5. Done 28.05.2020 / deadline 31.05.2020
+5. Done 28.05.2020
