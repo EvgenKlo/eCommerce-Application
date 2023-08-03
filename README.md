@@ -65,14 +65,19 @@ CommerceTools offers a cloud-native, microservices-based commerce platform that 
 ## Technological stack <a name="technological-stack"></a>
 
 <p align="center">
-<img width="30" src="https://user-images.githubusercontent.com/1072928/224541607-4bebbd74-c9a0-4ffc-8b14-e117894a2be0.png">
-<img width="30" src="https://user-images.githubusercontent.com/1072928/224541636-cf5a6322-e229-4bbb-b01a-c9b1a3ffd10c.png">
-<img width="30" src="https://user-images.githubusercontent.com/1072928/224541674-efab49b1-5261-4562-8f57-21d778433a5d.svg">
-<img width="30" src="https://avatars.githubusercontent.com/u/13142323?s=200&v=4">
+<img width="40" src="https://user-images.githubusercontent.com/1072928/224541607-4bebbd74-c9a0-4ffc-8b14-e117894a2be0.png">
+<img width="40" src="https://user-images.githubusercontent.com/1072928/224541636-cf5a6322-e229-4bbb-b01a-c9b1a3ffd10c.png">
+<img width="40" src="https://user-images.githubusercontent.com/11247099/145112184-a9ff6727-661c-439d-9ada-963124a281f7.png">
+<img width="40" src="https://user-images.githubusercontent.com/1072928/224541674-efab49b1-5261-4562-8f57-21d778433a5d.svg">
+<img width="40" src="https://avatars.githubusercontent.com/u/13142323?s=200&v=4">
+<img width="40" src="https://avatars.githubusercontent.com/u/33663932?s=200&v=4">
+<img width="40" src="https://www.svgrepo.com/show/354262/react-router.svg">
+<img width="40" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/eslint/eslint.png?size=48">
+
 </p>
 
 <p align="center">
-    <h3 align="center">TypeScript, Vite, React, Redux </h1>
+    <h4 align="center"> TypeScript, Vite, Vitest, React, Redux, MUI, React Router, ESLint </h1>
   </a>
 </p>
 
@@ -108,49 +113,41 @@ After executing these steps, your project should be set up and running locally.
 
 In this section, you will find the available scripts to manage your project and instructions on how to use them.
 
-1. **dev**
+`npm run dev`
 
-   - Command: `npm run dev`
-   - Description: Starts the development server using Vite, enabling you to work on your project with hot module replacement and other development features.
+- Starts the development server using Vite, enabling you to work on your project with hot module replacement and other development features.
 
-2. **build**
+`npm run build`
 
-   - Command: `npm run build`
-   - Description: Builds your project for production. It first transpiles TypeScript files using `tsc`, and then generates a production build using Vite.
+- Builds your project for production. It first transpiles TypeScript files using `tsc`, and then generates a production build using Vite.
 
-3. **lint**
+`npm run lint`
 
-   - Command: `npm run lint`
-   - Description: Runs ESLint to check the syntax of your TypeScript and TypeScript React files (`*.ts`, `*.tsx`) in the `src` directory. It displays errors and warnings found during the check.
+- Runs ESLint to check the syntax of your TypeScript and TypeScript React files (`*.ts`, `*.tsx`) in the `src` directory. It displays errors and warnings found during the check.
 
-4. **lint:fix**
+`npm run lint:fix`
 
-   - Command: `npm run lint:fix`
-   - Description: Runs ESLint to check the syntax of your TypeScript and TypeScript React files (`*.ts`, `*.tsx`) in the `src` directory and automatically fixes fixable issues.
+- Runs ESLint to check the syntax of your TypeScript and TypeScript React files (`*.ts`, `*.tsx`) in the `src` directory and automatically fixes fixable issues.
 
-5. **preview**
+`npm run preview`
 
-   - Command: `npm run preview`
-   - Description: Starts a development server that allows you to preview your project before building it for production using Vite.
+- Starts a development server that allows you to preview your project before building it for production using Vite.
 
-6. **prepare**
+`npm run prepare`
 
-   - Command: `npm run prepare`
-   - Description: Installs Husky, a tool used for setting up Git hooks, which allows you to run scripts automatically at certain stages of the Git workflow.
+- Installs Husky, a tool used for setting up Git hooks, which allows you to run scripts automatically at certain stages of the Git workflow.
 
-7. **lintstaged**
+`npm run lintstaged`
 
-   - Command: `npm run lintstaged`
-   - Description: Runs lint-staged to run ESLint only on the files that were staged for commit, improving performance for pre-commit hooks.
+- Runs lint-staged to run ESLint only on the files that were staged for commit, improving performance for pre-commit hooks.
 
-8. **style**
+`npm run style`
 
-   - Command: `npm run style`
-   - Description: Uses stylelint to lint your CSS files (`*.css`) in the `src` directory and report any issues found during linting.
+- Uses stylelint to lint your CSS files (`*.css`) in the `src` directory and report any issues found during linting.
 
-9. **test**
-   - Command: `npm run test`
-   - Description: Runs tests using `vitest`.
+`npm run test`
+
+- Runs tests using `vitest`.
 
 Feel free to use these commands to manage and develop your project.
 You can run each of them by executing the respective `npm run` command in your terminal.
