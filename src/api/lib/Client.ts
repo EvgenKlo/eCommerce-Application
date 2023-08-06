@@ -1,8 +1,7 @@
 import {
   ClientBuilder,
-  // Import middlewares
-  type AuthMiddlewareOptions, // Required for auth
-  type HttpMiddlewareOptions, // Required for sending HTTP requests
+  type AuthMiddlewareOptions,
+  type HttpMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 
@@ -14,7 +13,6 @@ const CLIENT_ID = import.meta.env.VITE_CLIENT_ID as string;
 const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET as string;
 const scopes = [import.meta.env.VITE_SCOPES as string];
 
-// Configure authMiddlewareOptions
 const authMiddlewareOptions: AuthMiddlewareOptions = {
   host: AUTH_URL,
   projectKey: projectKey,
@@ -26,13 +24,11 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
   fetch,
 };
 
-// Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: HOST,
   fetch,
 };
 
-// Export the ClientBuilder
 const ctpClient = new ClientBuilder()
   .withProjectKey(projectKey)
   .withClientCredentialsFlow(authMiddlewareOptions)
