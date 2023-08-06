@@ -33,6 +33,8 @@
     "@commercetools/sdk-client-v2": "^2.2.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@fontsource/roboto": "^5.0.7",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.3",
@@ -42,7 +44,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.2",
-    "react-router-dom": "^6.14.1"
+    "react-router-dom": "^6.14.1",
+    "rollup-plugin-node-polyfills": "^0.2.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",
