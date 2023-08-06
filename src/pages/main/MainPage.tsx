@@ -2,22 +2,19 @@ import { ReactElement, useEffect, useState } from 'react';
 import { API } from '@/api/API';
 
 export const MainPage = (): ReactElement => {
-  const [project, setProject] = useState({});
-
-  const getProject = async () => {
-    const data = await API.getProject();
-    setProject(data);
-  };
+  const [customers, setCustomers] = useState({});
 
   useEffect(() => {
-    getProject()
-      .then(() => {})
+    API.getCustomers()
+      .then((data) => {
+        setCustomers(data);
+      })
       .catch((err) => console.error(err));
   }, []);
   return (
     <>
       <h1>eCommerceApp</h1>
-      <h5>{JSON.stringify(project)}</h5>
+      <h5>{JSON.stringify(customers)}</h5>
     </>
   );
 };

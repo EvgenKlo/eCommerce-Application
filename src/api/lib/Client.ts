@@ -12,7 +12,7 @@ const HOST = import.meta.env.VITE_HOST as string;
 const AUTH_URL = import.meta.env.VITE_AUTH_URL as string;
 const CLIENT_ID = import.meta.env.VITE_CLIENT_ID as string;
 const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET as string;
-const scopes = ['manage_project:rs_stage2_01082023_kdy'];
+const scopes = [import.meta.env.VITE_SCOPES as string];
 
 // Configure authMiddlewareOptions
 const authMiddlewareOptions: AuthMiddlewareOptions = {
