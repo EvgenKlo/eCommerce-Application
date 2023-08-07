@@ -1,7 +1,8 @@
-import { Box, Typography, Toolbar, AppBar, Link, IconButton } from '@mui/material';
+import { Box, Typography, Toolbar, AppBar, Link, IconButton, Button } from '@mui/material';
 import { ReactElement } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingBasketOutlined } from '@mui/icons-material';
+import React from 'react';
 
 function Header(): ReactElement {
   return (
@@ -71,6 +72,27 @@ function Header(): ReactElement {
               registration
             </Link>
           </Typography>
+          <Button
+            component={RouterLink}
+            to="/"
+            sx={{ color: '#ec8a59' }}
+          >
+            Main
+          </Button>
+          <Button
+            component={RouterLink}
+            to="/about"
+            sx={{ color: '#ec8a59' }}
+          >
+            About
+          </Button>
+          <Button
+            component={RouterLink}
+            to="/login"
+            sx={{ color: '#ec8a59' }}
+          >
+            Login
+          </Button>
         </Box>
         <IconButton
           color="inherit"
