@@ -1,7 +1,5 @@
-import React from 'react';
+import { ReactElement } from 'react';
 
-function AboutPage() {
+export const AboutPage = (): ReactElement => {
   return <div>AboutPage</div>;
-}
-
-export default AboutPage;
+};

@@ -1,10 +1,17 @@
-import { createRoot } from 'react-dom/client';
-import { ReactElement } from 'react';
+import { AppRouter } from './router/AppRouter';
 import './App.scss';
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
-import { withProviders } from '@/router/providers';
-import { AppRouter } from '@/router/AppRouter';
+const container = document.getElementById('root') as HTMLElement;
 
-export const App = withProviders((): ReactElement => <AppRouter />);
+const root = ReactDOM.createRoot(container);
 
-createRoot(document.getElementById('root') as HTMLElement).render(<App />);
+root.render(
+  <StrictMode>
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
+  </StrictMode>
+);
