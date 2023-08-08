@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { MainPage } from '@/pages';
+import { MainPage } from '../pages/main/MainPage';
 import { AboutPage } from '@/pages/about/AboutPage';
 import LoginPage from '@/pages/login/LoginPage';
 import RegistrationPage from '@/pages/registration/RegistrationPage';
