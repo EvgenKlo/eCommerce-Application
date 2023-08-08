@@ -1,3 +1,4 @@
+import './init';
 import { AppRouter } from './router/AppRouter';
 import './App.scss';
 import { StrictMode } from 'react';

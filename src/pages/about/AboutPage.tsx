@@ -1,5 +1,3 @@
-import { ReactElement } from 'react';
-
-export const AboutPage = (): ReactElement => {
+export const AboutPage = () => {
   return <div>AboutPage</div>;
 };

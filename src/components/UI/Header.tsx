@@ -2,7 +2,6 @@ import { Box, Typography, Toolbar, AppBar, Link, IconButton, Button } from '@mui
 import { ReactElement } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingBasketOutlined } from '@mui/icons-material';
-import React from 'react';
 
 function Header(): ReactElement {
   return (
