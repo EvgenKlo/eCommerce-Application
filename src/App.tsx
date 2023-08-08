@@ -1,3 +1,4 @@
+import './init';
 import { createRoot } from 'react-dom/client';
 import { ReactElement } from 'react';
 import './App.scss';
