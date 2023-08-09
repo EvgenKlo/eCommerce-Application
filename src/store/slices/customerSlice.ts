@@ -6,6 +6,7 @@ import { API } from '@/api/API';
 export interface createCustomer {
   email: string;
   password: string;
+  id?: string;
 }
 const initialState: createCustomer = {
   email: 'johnDoe@example.com',
@@ -16,6 +17,8 @@ export const createNewCustomer = createAsyncThunk(
   'customer/createNew',
   async (data: createCustomer) => {
     const response = await API.createCustomer(data);
+    console.log(response);
+
     return response;
   }
 );
@@ -31,7 +34,8 @@ const customerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
-      console.log(state, action);
+      console.log(action);
+      state.id = action.payload.customer.id;
     });
   },
 });

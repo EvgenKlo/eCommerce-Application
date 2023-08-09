@@ -42,7 +42,9 @@ function RegistrationPage() {
         sx={{ flexGrow: 1 }}
         id="outlined-password-input"
         label="что в базе сейчас"
-        value={`Email: ${customer.email} and Pass: ${customer.password}`}
+        value={`Email: ${customer.email} and Pass: ${customer.password} id: ${
+          customer.id ? customer.id : ''
+        }`}
       />
       <Button
         variant="outlined"
