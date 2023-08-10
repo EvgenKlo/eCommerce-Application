@@ -11,8 +11,8 @@ export const ErrorPage: React.FC = () => {
       >
         <Grid
           item
-          xs={12}
-          sm={6}
+          xs={6}
+          sm={3}
         >
           <Typography
             variant="h4"
@@ -24,8 +24,8 @@ export const ErrorPage: React.FC = () => {
         </Grid>
         <Grid
           item
-          xs={12}
-          sm={6}
+          xs={6}
+          sm={3}
         >
           <Card>
             <CardMedia

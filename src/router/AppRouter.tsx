@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import { MainPage } from '../pages/main/MainPage';
 import { AboutPage } from '@/pages/about/AboutPage';
 import { LoginPage } from '@/pages/login/LoginPage';
-import  RegistrationPage  from '@/pages/registration/RegistrationPage';
+import { RegistrationPage } from '@/pages/registration/RegistrationPage';
 import { ErrorPage } from '@/pages/error/ErrorPage';
 import { CatalogPage } from '../pages/catalog/CatalogPage';
 import { UserPage } from '@/pages/user/UserPage';

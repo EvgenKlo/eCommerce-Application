@@ -1,0 +1,6 @@
+VITE_HOST=https://api.us-central1.gcp.commercetools.com
+VITE_AUTH_URL=https://auth.us-central1.gcp.commercetools.com
+VITE_PROJECT_KEY=rs_stage2_01082023_kdy
+VITE_CLIENT_ID=XBqkmirwAeFvsnQAVuGQ1L1M
+VITE_CLIENT_SECRET=WCQ4dJPCcCY51-lNdbKoqlzjwXNJiG-U
+VITE_CTP_ACCESS_TOKEN=i9nKfmXSvMz0A7mrvIsklIGefBDSlvMw
