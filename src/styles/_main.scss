@@ -1,3 +1,8 @@
+.content {
+  min-height: calc(100vh - 260px);
+  padding: 3.5rem 0;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
