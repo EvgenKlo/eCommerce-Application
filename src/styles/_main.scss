@@ -1,6 +1,13 @@
+.date-picker {
+  border: #213547 solid 1px;
+  width: 310px;
+}
+
 .content {
-  min-height: calc(100vh - 260px);
+  width: 100%;
+  min-height: calc(100vh - 145px);
   padding: 3.5rem 0;
+  box-sizing: border-box;
 }
 
 :root {

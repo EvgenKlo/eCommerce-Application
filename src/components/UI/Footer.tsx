@@ -32,22 +32,20 @@ export const Footer: React.FC = () => {
     textDecoration: 'none',
   };
 
+  const styleContainer = {
+    position: 'static',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    width: '100%',
+  };
+
   return (
     <>
-      <Box
-        style={{
-          position: 'static',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          marginTop: 20,
-          marginBottom: 5,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          width: '100%',
-        }}
-      >
+      <Box sx={styleContainer}>
         <Box
           sx={{
             display: 'grid',
@@ -55,13 +53,17 @@ export const Footer: React.FC = () => {
             rowGap: 1,
             gridTemplateColumns: 'repeat(3, 1fr)',
             backgroundColor: '#660066',
+            '@media (max-width: 500px)': {
+              gridTemplateColumns: '1fr',
+              rowGap: 2,
+            },
           }}
         >
           <Item>
             <PlaceIcon style={{ color: 'white' }} />
             <Typography
               style={linkStyles}
-              variant="body2"
+              variant="body1"
             >
               12 Avenu st., Los Angeles
             </Typography>
@@ -70,7 +72,7 @@ export const Footer: React.FC = () => {
             <Typography variant="body2">
               <Link
                 style={linkStyles}
-                variant="body2"
+                variant="body1"
                 href="tel:+1234567890"
               >
                 +6 (234)-567-8903
@@ -78,7 +80,7 @@ export const Footer: React.FC = () => {
             </Typography>
           </Item>
           <Item>
-            <Typography variant="body2">
+            <Typography variant="body1">
               <Link
                 style={linkStyles}
                 href="mailto:info@example.com"
@@ -96,6 +98,10 @@ export const Footer: React.FC = () => {
             rowGap: 1,
             gridTemplateColumns: 'repeat(3, 1fr)',
             marginTop: 1,
+            '@media (max-width: 500px)': {
+              gridTemplateColumns: '1fr',
+              rowGap: 0,
+            },
           }}
         >
           <Item>

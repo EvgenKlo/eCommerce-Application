@@ -12,9 +12,9 @@ export const MainPage = (): ReactElement => {
       .catch((err) => console.error(err));
   }, []);
   return (
-    <>
-      <h1>eCommerceApp</h1>
-      <h5>{JSON.stringify(customers)}</h5>
-    </>
+    <div className="content">
+      <h3>eCommerceApp</h3>
+      <p>{JSON.stringify(customers)}</p>
+    </div>
   );
 };
