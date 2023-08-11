@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { useAppDispatch } from '@/hooks/reduxHooks';
 import { useState } from 'react';
 import { createNewCustomer } from '@/store/slices/customerSlice';
 import {
@@ -13,9 +13,16 @@ import {
   Box,
   Typography,
   Container,
+  OutlinedInput,
+  FormControl,
+  InputLabel,
+  InputAdornment,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const mediaStyleInput = {
   '@media (max-width: 400px)': {
@@ -24,8 +31,16 @@ const mediaStyleInput = {
 };
 
 export function RegistrationPage() {
-  const customer = useAppSelector((state) => state.customers.customer);
+  // const customer = useAppSelector((state) => state.customers.customer);
   const dispatch = useAppDispatch();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
 
   const [data, setData] = useState({
     firstName: '',
@@ -152,7 +167,7 @@ export function RegistrationPage() {
               item
               xs={12}
             >
-              <TextField
+              {/* <TextField
                 required
                 fullWidth
                 name="password"
@@ -166,7 +181,31 @@ export function RegistrationPage() {
                   customer.id ? customer.id : ''
                 } `}
                 // onChange={(e) => setData({ ...data, password: e.target.value
-              />
+              /> */}
+              <FormControl
+                sx={{ m: 1, width: '34ch' }}
+                variant="outlined"
+                size="small"
+              >
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <OutlinedInput
+                  onChange={(e) => setData({ ...data, password: e.target.value })}
+                  id="outlined-adornment-password"
+                  type={showPassword ? 'text' : 'password'}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
             </Grid>
             <Grid
               item
