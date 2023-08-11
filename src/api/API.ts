@@ -2,8 +2,9 @@ import {
   Project,
   Customer,
   CustomerSignInResult,
+  CustomerDraft,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
-import { ICredentials, createCustomer } from '@/store/slices/customerSlice';
+import { ICredentials } from '@/store/slices/customerSlice';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 export class API {
@@ -34,7 +35,7 @@ export class API {
     return result;
   }
 
-  async createCustomer(customer: createCustomer) {
+  async createCustomer(customer: CustomerDraft) {
     let result: CustomerSignInResult = {} as CustomerSignInResult;
     try {
       const { body } = await this.client.customers().post({ body: customer }).execute();
@@ -51,6 +52,42 @@ export class API {
       const result = await this.client.me().login().post({ body: credentials }).execute();
       console.log('login success:', result);
       return result.body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+  async createCart() {
+    let result = {};
+    try {
+      const { body } = await this.client
+        .me()
+        .carts()
+        .post({
+          body: {
+            currency: 'EUR',
+          },
+        })
+        .execute();
+
+      result = body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+  async setCustomername(ID: string, name: string, version = 1) {
+    let result = {};
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID })
+        .post({
+          body: { version, actions: [{ action: 'setFirstName', firstName: name }] },
+        })
+        .execute();
+
+      result = body;
     } catch (error) {
       console.log(error);
     }
