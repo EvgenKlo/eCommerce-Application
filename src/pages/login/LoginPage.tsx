@@ -12,17 +12,35 @@ import {
   Typography,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { SignIn } from '@/store/slices/customerSlice';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+interface loginProps {
+  handleLogin: (val: boolean) => void;
+}
+export const LoginPage: React.FC<loginProps> = (props) => {
+  const { handleLogin } = props;
+  const customer = useAppSelector((state) => state.customers.customer);
+  // const autorized = useAppSelector((state) => state.customers.authorized);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-export const LoginPage: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Доступ к значениям полей формы при ее отправке
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email') as string;
+    const password = data.get('password') as string;
+    dispatch(SignIn({ email, password }));
   };
+
+  useEffect(() => {
+    if ('id' in customer) {
+      handleLogin(true);
+      navigate('/');
+    }
+  }, [customer]);
 
   return (
     <Container
@@ -82,7 +100,7 @@ export const LoginPage: React.FC = () => {
             label="Remember me"
           />
           <Button
-            type="button"
+            type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 5, mb: 3 }}

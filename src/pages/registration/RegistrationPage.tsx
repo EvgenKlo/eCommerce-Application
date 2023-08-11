@@ -24,7 +24,7 @@ const mediaStyleInput = {
 };
 
 export function RegistrationPage() {
-  const customer = useAppSelector((state) => state.customers);
+  const customer = useAppSelector((state) => state.customers.customer);
   const dispatch = useAppDispatch();
 
   const [data, setData] = useState({

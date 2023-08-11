@@ -1,20 +1,7 @@
-import { ReactElement, useEffect, useState } from 'react';
-import { API } from '@/api/API';
+import { useAppSelector } from '@/hooks/reduxHooks';
 
-export const MainPage = (): ReactElement => {
-  const [customers, setCustomers] = useState({});
+export const MainPage: React.FC = () => {
+  const customer = useAppSelector((state) => state.customers.customer);
 
-  useEffect(() => {
-    API.getCustomers()
-      .then((data) => {
-        setCustomers(data);
-      })
-      .catch((err) => console.error(err));
-  }, []);
-  return (
-    <div className="content">
-      <h3>eCommerceApp</h3>
-      <p>{JSON.stringify(customers)}</p>
-    </div>
-  );
+  return <h3>Hello {customer.firstName} !</h3>;
 };
