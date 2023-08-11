@@ -15,6 +15,13 @@ import {
   Container,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+const mediaStyleInput = {
+  '@media (max-width: 400px)': {
+    width: '90%',
+  },
+};
 
 export function RegistrationPage() {
   const customer = useAppSelector((state) => state.customers);
@@ -62,13 +69,14 @@ export function RegistrationPage() {
           '@media (max-width: 600px)': {
             '& .MuiTextField-root': {
               marginBottom: '0.3rem',
+              marginTop: '0',
               fontSize: '10px',
               height: '40px',
             },
           },
         }}
       >
-        <Avatar sx={{ bgcolor: 'secondary.main', display: { xs: 'block', md: 'block' } }}>
+        <Avatar sx={{ bgcolor: 'secondary.main', display: { xs: 'none', md: 'flex' } }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography
@@ -84,7 +92,7 @@ export function RegistrationPage() {
         >
           <Grid
             container
-            spacing={1}
+            spacing={2}
           >
             <Grid
               item
@@ -94,7 +102,6 @@ export function RegistrationPage() {
               <TextField
                 required
                 fullWidth
-                autoComplete="given-name"
                 name="firstName"
                 id="firstName"
                 label="first name"
@@ -165,16 +172,13 @@ export function RegistrationPage() {
               item
               xs={12}
             >
-              <TextField
-                required
-                fullWidth
-                name="birthDate"
-                type="date"
-                id="birthDate"
-                sx={{ marginBottom: 2 }}
-                size="small"
+              <DatePicker
+                label="birth date"
                 value={data.birthDate}
-                onChange={(e) => setData({ ...data, birthDate: e.target.value })}
+                format="yyyy/MM/dd"
+                onChange={(newDate) => setData({ ...data, birthDate: newDate ?? '' })}
+                className="date-picker"
+                disableFuture
               />
             </Grid>
 
@@ -187,7 +191,16 @@ export function RegistrationPage() {
                 xs={12}
                 sm={6}
               >
-                <Typography variant="subtitle1">Billing Address</Typography>
+                <Typography
+                  variant="subtitle1"
+                  color={'#660066'}
+                  sx={{
+                    marginTop: { xs: '2rem', sm: '1.5rem' },
+                    marginBottom: { xs: '1rem', sm: '1rem' },
+                  }}
+                >
+                  Billing Address
+                </Typography>
                 <TextField
                   variant="filled"
                   required
@@ -195,7 +208,7 @@ export function RegistrationPage() {
                   name="billingStreet"
                   label="Billing Street"
                   id="billingStreet"
-                  sx={{ marginBottom: 0.5 }}
+                  sx={mediaStyleInput}
                   size="small"
                   value={data.billingStreet}
                   onChange={(e) => setData({ ...data, billingStreet: e.target.value })}
@@ -207,7 +220,7 @@ export function RegistrationPage() {
                   name="billingCity"
                   label="Billing City"
                   id="billingCity"
-                  sx={{ marginBottom: 0.5 }}
+                  sx={mediaStyleInput}
                   size="small"
                   value={data.billingCity}
                   onChange={(e) => setData({ ...data, billingCity: e.target.value })}
@@ -219,7 +232,7 @@ export function RegistrationPage() {
                   name="billingPostalCode"
                   label="Billing Postal Code"
                   id="billingPostalCode"
-                  sx={{ marginBottom: 0.5 }}
+                  sx={mediaStyleInput}
                   size="small"
                   value={data.billingPostalCode}
                   onChange={(e) => setData({ ...data, billingPostalCode: e.target.value })}
@@ -231,7 +244,7 @@ export function RegistrationPage() {
                   name="billingCountry"
                   label="Billing Country"
                   id="billingCountry"
-                  sx={{ marginBottom: 0.5 }}
+                  sx={mediaStyleInput}
                   size="small"
                   value={data.billingCountry}
                   onChange={(e) => setData({ ...data, billingCountry: e.target.value })}
@@ -252,7 +265,16 @@ export function RegistrationPage() {
                 xs={12}
                 sm={6}
               >
-                <Typography variant="subtitle1">Shipping Address</Typography>
+                <Typography
+                  variant="subtitle1"
+                  color={'#660066'}
+                  sx={{
+                    marginTop: { xs: '1rem', sm: '1.5rem' },
+                    marginBottom: { xs: '1rem', sm: '1rem' },
+                  }}
+                >
+                  Shipping Address
+                </Typography>
 
                 <TextField
                   variant="filled"
@@ -261,7 +283,7 @@ export function RegistrationPage() {
                   name="shippingStreet"
                   label="Shipping Street"
                   id="shippingStreet"
-                  sx={{ marginBottom: 0.5 }}
+                  sx={mediaStyleInput}
                   size="small"
                   value={data.shippingStreet}
                   onChange={(e) => setData({ ...data, shippingStreet: e.target.value })}
@@ -273,7 +295,7 @@ export function RegistrationPage() {
                   name="shippingCity"
                   label="Shipping City"
                   id="shippingCity"
-                  sx={{ marginBottom: 0.5 }}
+                  sx={mediaStyleInput}
                   size="small"
                   value={data.shippingCity}
                   onChange={(e) => setData({ ...data, shippingCity: e.target.value })}
@@ -285,7 +307,7 @@ export function RegistrationPage() {
                   name="shippingPostalCode"
                   label="Shipping Postal Code"
                   id="shippingPostalCode"
-                  sx={{ marginBottom: 0.5 }}
+                  sx={mediaStyleInput}
                   size="small"
                   value={data.shippingPostalCode}
                   onChange={(e) => setData({ ...data, shippingPostalCode: e.target.value })}
@@ -297,7 +319,7 @@ export function RegistrationPage() {
                   name="shippingCountry"
                   label="Shipping Country"
                   id="shippingCountry"
-                  sx={{ marginBottom: 0.5 }}
+                  sx={mediaStyleInput}
                   size="small"
                   value={data.shippingCountry}
                   onChange={(e) => setData({ ...data, shippingCountry: e.target.value })}
@@ -319,7 +341,11 @@ export function RegistrationPage() {
             type="button"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3,
+              mb: 2,
+              width: { xs: '220px' },
+            }}
             onClick={register}
           >
             Sign Up
