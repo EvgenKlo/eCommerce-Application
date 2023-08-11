@@ -22,7 +22,6 @@ interface loginProps {
 export const LoginPage: React.FC<loginProps> = (props) => {
   const { handleLogin } = props;
   const customer = useAppSelector((state) => state.customers.customer);
-  // const autorized = useAppSelector((state) => state.customers.authorized);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -38,7 +37,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
   useEffect(() => {
     if ('id' in customer) {
       handleLogin(true);
-      navigate('/');
+      navigate(-1);
     }
   }, [customer]);
 

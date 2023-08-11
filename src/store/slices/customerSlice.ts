@@ -5,12 +5,12 @@ import { API } from '@/api/API';
 import { getApiRoot } from '@/api/lib/Client';
 import { type Customer } from '@commercetools/platform-sdk';
 
-export interface ICredentials {
+export interface Credentials {
   email: string;
   password: string;
 }
 
-export interface createCustomer extends ICredentials {
+export interface createCustomer extends Credentials {
   id?: string;
 }
 const initialState = {
@@ -30,7 +30,7 @@ export const createNewCustomer = createAsyncThunk(
     return response;
   }
 );
-export const SignIn = createAsyncThunk('customer/signIn', async (credentials: ICredentials) => {
+export const SignIn = createAsyncThunk('customer/signIn', async (credentials: Credentials) => {
   const { email, password } = credentials;
   const passClient = new API(getApiRoot('password', { email, password }));
   const response = await passClient.signIn(credentials);

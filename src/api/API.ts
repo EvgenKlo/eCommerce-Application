@@ -4,7 +4,7 @@ import {
   CustomerSignInResult,
   CustomerDraft,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
-import { ICredentials } from '@/store/slices/customerSlice';
+import { Credentials } from '@/store/slices/customerSlice';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 export class API {
@@ -45,7 +45,7 @@ export class API {
     }
     return result;
   }
-  async signIn(credentials: ICredentials) {
+  async signIn(credentials: Credentials) {
     const result: CustomerSignInResult = {} as CustomerSignInResult;
     console.log('signin cred', credentials);
     try {

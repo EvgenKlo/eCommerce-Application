@@ -31,7 +31,6 @@ const mediaStyleInput = {
 };
 
 export function RegistrationPage() {
-  // const customer = useAppSelector((state) => state.customers.customer);
   const dispatch = useAppDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -64,7 +63,6 @@ export function RegistrationPage() {
   });
 
   const register = (): void => {
-    // dispatch(createCustomer(data));
     void dispatch(createNewCustomer(data));
   };
 
@@ -167,21 +165,6 @@ export function RegistrationPage() {
               item
               xs={12}
             >
-              {/* <TextField
-                required
-                fullWidth
-                name="password"
-                label="password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                sx={{ marginBottom: 0.3 }}
-                size="small"
-                value={`Email: ${customer.email} and Pass: ${customer.password} id: ${
-                  customer.id ? customer.id : ''
-                } `}
-                // onChange={(e) => setData({ ...data, password: e.target.value
-              /> */}
               <FormControl
                 sx={{ m: 1, width: '34ch' }}
                 variant="outlined"
