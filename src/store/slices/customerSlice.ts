@@ -36,6 +36,11 @@ export const SignIn = createAsyncThunk('customer/signIn', async (credentials: IC
   const response = await passClient.signIn(credentials);
   return response;
 });
+export const SignInByToken = createAsyncThunk('customer/signInByToken', async (token: string) => {
+  const tokenAPI = new API(getApiRoot('token', { token }));
+  const response = await tokenAPI.signInByToken();
+  return response;
+});
 
 const customerSlice = createSlice({
   name: 'customer',
@@ -65,6 +70,9 @@ const customerSlice = createSlice({
     });
     builder.addCase(SignIn.fulfilled, (state, action) => {
       state.customer = action.payload.customer;
+    });
+    builder.addCase(SignInByToken.fulfilled, (state, action) => {
+      state.customer = action.payload;
     });
   },
 });

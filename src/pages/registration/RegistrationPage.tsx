@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { useState } from 'react';
-import { createCustomer, createNewCustomer } from '@/store/slices/customerSlice';
+import { createNewCustomer } from '@/store/slices/customerSlice';
 import {
   Avatar,
   Button,
@@ -48,9 +48,9 @@ export function RegistrationPage() {
     defaultShippingAddress: '',
   });
 
-  const register = () => {
-    dispatch(createCustomer(data));
-    dispatch(createNewCustomer(data));
+  const register = (): void => {
+    // dispatch(createCustomer(data));
+    void dispatch(createNewCustomer(data));
   };
 
   return (

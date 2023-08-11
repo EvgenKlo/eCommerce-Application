@@ -57,6 +57,20 @@ export class API {
     }
     return result;
   }
+
+  async signInByToken() {
+    const result: Customer = {} as Customer;
+    console.log('signIn token');
+    try {
+      const result = await this.client.me().get().execute();
+      console.log('login success:', result);
+      return result.body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+
   async createCart() {
     let result = {};
     try {
