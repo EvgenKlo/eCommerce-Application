@@ -8,8 +8,13 @@ import { RegistrationPage } from '@/pages/registration/RegistrationPage';
 import { ErrorPage } from '@/pages/error/ErrorPage';
 import { CatalogPage } from '../pages/catalog/CatalogPage';
 import { UserPage } from '@/pages/user/UserPage';
+import { useAuth } from '@/hooks/AuthHooks';
 
 export const AppRouter = (): ReactElement => {
+  const [changeAuth] = useAuth();
+
+  const handleLogin = changeAuth as (val: boolean) => void;
+
   return (
     <Routes>
       <Route
@@ -34,7 +39,7 @@ export const AppRouter = (): ReactElement => {
         />
         <Route
           path="login"
-          element={<LoginPage />}
+          element={<LoginPage handleLogin={handleLogin} />}
         />
         <Route
           path="registration"
