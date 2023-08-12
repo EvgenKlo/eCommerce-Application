@@ -2,15 +2,21 @@ import {
   Project,
   Customer,
   CustomerSignInResult,
+  CustomerDraft,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
-import { apiRoot } from './lib/Client';
-import { createCustomer } from '@/store/slices/customerSlice';
+import { Credentials } from '@/store/slices/customerSlice';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 export class API {
-  static async getProject() {
+  private client: ByProjectKeyRequestBuilder;
+
+  constructor(client: ByProjectKeyRequestBuilder) {
+    this.client = client;
+  }
+  async getProject() {
     let result = {} as Project;
     try {
-      const { body } = await apiRoot.get().execute();
+      const { body } = await this.client.get().execute();
       result = body;
     } catch (error) {
       console.log(error);
@@ -18,14 +24,10 @@ export class API {
     return result;
   }
 
-  static async getCustomers() {
+  async getCustomers(ID: string) {
     let result = {} as Customer;
     try {
-      const { body } = await apiRoot
-        .customers()
-        .withId({ ID: '057f1155-2b8a-4295-bd94-1ca97fe10b30' })
-        .get()
-        .execute();
+      const { body } = await this.client.customers().withId({ ID }).get().execute();
       result = body;
     } catch (error) {
       console.log(error);
@@ -33,10 +35,72 @@ export class API {
     return result;
   }
 
-  static async createCustomer(customer: createCustomer) {
-    let result = {} as CustomerSignInResult;
+  async createCustomer(customer: CustomerDraft) {
+    let result: CustomerSignInResult = {} as CustomerSignInResult;
     try {
-      const { body } = await apiRoot.customers().post({ body: customer }).execute();
+      const { body } = await this.client.customers().post({ body: customer }).execute();
+      result = body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+  async signIn(credentials: Credentials) {
+    const result: CustomerSignInResult = {} as CustomerSignInResult;
+    console.log('signin cred', credentials);
+    try {
+      const result = await this.client.me().login().post({ body: credentials }).execute();
+      console.log('login success:', result);
+      return result.body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+
+  async signInByToken() {
+    const result: Customer = {} as Customer;
+    console.log('signIn token');
+    try {
+      const result = await this.client.me().get().execute();
+      console.log('login success:', result);
+      return result.body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+
+  async createCart() {
+    let result = {};
+    try {
+      const { body } = await this.client
+        .me()
+        .carts()
+        .post({
+          body: {
+            currency: 'EUR',
+          },
+        })
+        .execute();
+
+      result = body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+  async setCustomername(ID: string, name: string, version = 1) {
+    let result = {};
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID })
+        .post({
+          body: { version, actions: [{ action: 'setFirstName', firstName: name }] },
+        })
+        .execute();
+
       result = body;
     } catch (error) {
       console.log(error);

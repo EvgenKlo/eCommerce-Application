@@ -19,6 +19,8 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PetsIcon from '@mui/icons-material/Pets';
 import PersonIcon from '@mui/icons-material/Person';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { signOut } from '@/store/slices/customerSlice';
 
 const styleSighLinks = {
   color: '#ffffff',
@@ -45,6 +47,8 @@ const signLinks = [
 export function Header() {
   const location = useLocation();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const authorized = useAppSelector((state) => state.customers.authorized);
+  const dispatch = useAppDispatch();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -53,6 +57,11 @@ export function Header() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const handleExit = () => {
+    dispatch(signOut());
+  };
+  console.log('header authorized', authorized);
 
   return (
     <AppBar
@@ -164,17 +173,21 @@ export function Header() {
           </Box>
 
           <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'flex' }, justifyContent: 'center' }}>
-            {signLinks.map((link) => (
-              <Button
-                key={link.text}
-                onClick={handleCloseNavMenu}
-                sx={styleSighLinks}
-                component={RouterLink}
-                to={link.link}
-              >
-                {link.text}
-              </Button>
-            ))}
+            {signLinks.map((link) => {
+              if (!authorized) {
+                return (
+                  <Button
+                    key={link.text}
+                    onClick={handleCloseNavMenu}
+                    sx={styleSighLinks}
+                    component={RouterLink}
+                    to={link.link}
+                  >
+                    {link.text}
+                  </Button>
+                );
+              }
+            })}
 
             <Tooltip title="Open cart">
               <IconButton
@@ -212,21 +225,26 @@ export function Header() {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Exit">
-              <IconButton color="secondary">
-                <LogoutIcon
-                  sx={{
-                    '&:hover': {
-                      color: 'red',
-                      transition: 'color 0.3s ease-in-out',
-                    },
-                    '@media (max-width: 400px)': {
-                      padding: '0px',
-                    },
-                  }}
-                />
-              </IconButton>
-            </Tooltip>
+            {authorized && (
+              <Tooltip title="Exit">
+                <IconButton
+                  color="secondary"
+                  onClick={handleExit}
+                >
+                  <LogoutIcon
+                    sx={{
+                      '&:hover': {
+                        color: 'red',
+                        transition: 'color 0.3s ease-in-out',
+                      },
+                      '@media (max-width: 400px)': {
+                        padding: '0px',
+                      },
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
+            )}
           </Box>
         </Toolbar>
       </Container>
