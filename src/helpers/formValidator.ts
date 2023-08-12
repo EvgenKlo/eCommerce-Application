@@ -4,7 +4,7 @@ export class FormValidator {
       return false;
     }
 
-    const emailFilter = /^([a-zA-Z0-9_\s.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
+    const emailFilter = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/;
 
     return emailFilter.test(email);
   }
@@ -13,5 +13,18 @@ export class FormValidator {
     const passwordFilter = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
 
     return passwordFilter.test(password);
+  }
+
+  static nameValodator(name: string) {
+    const nameFilter = /[^а-яА-ЯёЁa-zA-Z]+/g;
+
+    return nameFilter.test(name);
+  }
+
+  static ageValodator(age: Date) {
+    const customerAge = (+new Date() - +age) / 1000 / 60 / 60 / 24 / 365;
+    if (customerAge >= 14) {
+      return true;
+    }
   }
 }

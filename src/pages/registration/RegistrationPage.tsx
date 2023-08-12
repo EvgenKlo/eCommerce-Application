@@ -6,8 +6,6 @@ import {
   Button,
   CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
   Grid,
   Box,
@@ -23,6 +21,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Customer } from '@commercetools/platform-sdk';
+
+import { AddressForm } from '@/components/UI/AddressForm';
+import { FormValidator } from '@/helpers/formValidator';
 
 const mediaStyleInput = {
   '@media (max-width: 400px)': {
@@ -42,7 +44,14 @@ export function RegistrationPage() {
   };
 
   const [data, setData] = useState({
-    firstName: '',
+    id: '1',
+    version: 1,
+    createdAt: new Date().toUTCString(),
+    lastModifiedAt: new Date().toUTCString(),
+    isEmailVerified: false,
+    authenticationMode: 'Password',
+
+    /* firstName: '',
     lastName: '',
     email: '',
     password: '',
@@ -59,10 +68,27 @@ export function RegistrationPage() {
     shippingCountry: '',
 
     defaultBillingAddress: '',
-    defaultShippingAddress: '',
-  });
+    defaultShippingAddress: '', */
+  } as Customer);
 
-  const register = (): void => {
+  const [showBillingAddress, setShowBillingAddress] = useState(false);
+
+  const [firstNameError, setFirstNameError] = useState(false);
+
+  const [lastNameError, setLastNameError] = useState(false);
+
+  const [emailError, setEmailError] = useState(false);
+
+  const [passwordError, setPasswordError] = useState(false);
+
+  const [dateError, setDateError] = useState(false);
+
+  const register = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    setData({
+      ...data,
+    });
+    console.log(data);
     void dispatch(createNewCustomer(data));
   };
 
@@ -100,6 +126,7 @@ export function RegistrationPage() {
         </Typography>
         <Box
           component="form"
+          onSubmit={register}
           noValidate
           sx={{ mt: 3 }}
         >
@@ -121,8 +148,17 @@ export function RegistrationPage() {
                 sx={{ marginBottom: 0.3 }}
                 size="small"
                 autoFocus
-                value={data.firstName}
-                onChange={(e) => setData({ ...data, firstName: e.target.value })}
+                //value={data.firstName}
+                onChange={(e) => {
+                  if (FormValidator.nameValodator(e.target.value)) {
+                    setData({ ...data, firstName: '' });
+                    setFirstNameError(true);
+                  } else {
+                    setData({ ...data, firstName: e.target.value });
+                    setFirstNameError(false);
+                  }
+                }}
+                error={firstNameError}
               />
             </Grid>
             <Grid
@@ -139,8 +175,17 @@ export function RegistrationPage() {
                 autoComplete="family-name"
                 sx={{ marginBottom: 0.3 }}
                 size="small"
-                value={data.lastName}
-                onChange={(e) => setData({ ...data, lastName: e.target.value })}
+                //value={data.lastName}
+                onChange={(e) => {
+                  if (FormValidator.nameValodator(e.target.value)) {
+                    setData({ ...data, lastName: '' });
+                    setLastNameError(true);
+                  } else {
+                    setData({ ...data, lastName: e.target.value });
+                    setLastNameError(false);
+                  }
+                }}
+                error={lastNameError}
               />
             </Grid>
 
@@ -157,8 +202,17 @@ export function RegistrationPage() {
                 autoComplete="email"
                 sx={{ marginBottom: 0.3 }}
                 size="small"
-                value={data.email}
-                onChange={(e) => setData({ ...data, email: e.target.value })}
+                //value={data.email}
+                onChange={(e) => {
+                  if (!FormValidator.emailValidator(e.target.value) && e.target.value.length > 0) {
+                    setData({ ...data, email: '' });
+                    setEmailError(true);
+                  } else {
+                    setData({ ...data, email: e.target.value });
+                    setEmailError(false);
+                  }
+                }}
+                error={emailError}
               />
             </Grid>
             <Grid
@@ -166,13 +220,25 @@ export function RegistrationPage() {
               xs={12}
             >
               <FormControl
-                sx={{ m: 1, width: '34ch' }}
                 variant="outlined"
-                size="small"
+                fullWidth
               >
                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                 <OutlinedInput
-                  onChange={(e) => setData({ ...data, password: e.target.value })}
+                  error={passwordError}
+                  label={'Password'}
+                  onChange={(e) => {
+                    if (
+                      !FormValidator.passwordValodator(e.target.value) &&
+                      e.target.value.length > 0
+                    ) {
+                      setData({ ...data, password: '' });
+                      setPasswordError(true);
+                    } else {
+                      setData({ ...data, password: e.target.value });
+                      setPasswordError(false);
+                    }
+                  }}
                   id="outlined-adornment-password"
                   type={showPassword ? 'text' : 'password'}
                   endAdornment={
@@ -196,171 +262,80 @@ export function RegistrationPage() {
             >
               <DatePicker
                 label="birth date"
-                value={data.birthDate}
+                //value={data.birthDate}
                 format="yyyy/MM/dd"
-                onChange={(newDate) => setData({ ...data, birthDate: newDate ?? '' })}
+                onChange={(newDate) => {
+                  if (FormValidator.ageValodator(newDate as Date)) {
+                    setDateError(false);
+                    setData({ ...data, dateOfBirth: JSON.stringify(newDate) });
+                  } else {
+                    setDateError(true);
+                    setData({ ...data, dateOfBirth: '' });
+                  }
+                }}
                 className="date-picker"
                 disableFuture
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    variant: 'outlined',
+                    error: dateError,
+                    //helperText: 'Errorrrr',
+                  },
+                }}
               />
             </Grid>
-
-            <Grid
-              container
-              spacing={2}
-            >
-              <Grid
-                item
-                xs={12}
-                sm={6}
-              >
-                <Typography
-                  variant="subtitle1"
-                  color={'#660066'}
-                  sx={{
-                    marginTop: { xs: '2rem', sm: '1.5rem' },
-                    marginBottom: { xs: '1rem', sm: '1rem' },
-                  }}
-                >
-                  Billing Address
-                </Typography>
-                <TextField
-                  variant="filled"
-                  required
-                  fullWidth
-                  name="billingStreet"
-                  label="Billing Street"
-                  id="billingStreet"
-                  sx={mediaStyleInput}
-                  size="small"
-                  value={data.billingStreet}
-                  onChange={(e) => setData({ ...data, billingStreet: e.target.value })}
-                />
-                <TextField
-                  variant="filled"
-                  required
-                  fullWidth
-                  name="billingCity"
-                  label="Billing City"
-                  id="billingCity"
-                  sx={mediaStyleInput}
-                  size="small"
-                  value={data.billingCity}
-                  onChange={(e) => setData({ ...data, billingCity: e.target.value })}
-                />
-                <TextField
-                  variant="filled"
-                  required
-                  fullWidth
-                  name="billingPostalCode"
-                  label="Billing Postal Code"
-                  id="billingPostalCode"
-                  sx={mediaStyleInput}
-                  size="small"
-                  value={data.billingPostalCode}
-                  onChange={(e) => setData({ ...data, billingPostalCode: e.target.value })}
-                />
-                <TextField
-                  variant="filled"
-                  required
-                  fullWidth
-                  name="billingCountry"
-                  label="Billing Country"
-                  id="billingCountry"
-                  sx={mediaStyleInput}
-                  size="small"
-                  value={data.billingCountry}
-                  onChange={(e) => setData({ ...data, billingCountry: e.target.value })}
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      value="useBillingAsShipping"
-                      color="primary"
-                      name="useBillingAsShipping"
-                    />
-                  }
-                  label="Use by default"
-                />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-              >
-                <Typography
-                  variant="subtitle1"
-                  color={'#660066'}
-                  sx={{
-                    marginTop: { xs: '1rem', sm: '1.5rem' },
-                    marginBottom: { xs: '1rem', sm: '1rem' },
-                  }}
-                >
-                  Shipping Address
-                </Typography>
-
-                <TextField
-                  variant="filled"
-                  required
-                  fullWidth
-                  name="shippingStreet"
-                  label="Shipping Street"
-                  id="shippingStreet"
-                  sx={mediaStyleInput}
-                  size="small"
-                  value={data.shippingStreet}
-                  onChange={(e) => setData({ ...data, shippingStreet: e.target.value })}
-                />
-                <TextField
-                  variant="filled"
-                  required
-                  fullWidth
-                  name="shippingCity"
-                  label="Shipping City"
-                  id="shippingCity"
-                  sx={mediaStyleInput}
-                  size="small"
-                  value={data.shippingCity}
-                  onChange={(e) => setData({ ...data, shippingCity: e.target.value })}
-                />
-                <TextField
-                  variant="filled"
-                  required
-                  fullWidth
-                  name="shippingPostalCode"
-                  label="Shipping Postal Code"
-                  id="shippingPostalCode"
-                  sx={mediaStyleInput}
-                  size="small"
-                  value={data.shippingPostalCode}
-                  onChange={(e) => setData({ ...data, shippingPostalCode: e.target.value })}
-                />
-                <TextField
-                  variant="filled"
-                  required
-                  fullWidth
-                  name="shippingCountry"
-                  label="Shipping Country"
-                  id="shippingCountry"
-                  sx={mediaStyleInput}
-                  size="small"
-                  value={data.shippingCountry}
-                  onChange={(e) => setData({ ...data, shippingCountry: e.target.value })}
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      value="useShippingAsBilling"
-                      color="primary"
-                      name="useShippingAsBilling"
-                    />
-                  }
-                  label="Use by default"
-                />
-              </Grid>
-            </Grid>
           </Grid>
+          <Typography
+            variant="subtitle1"
+            color={'#660066'}
+            sx={{
+              marginTop: { xs: '2rem', sm: '1.5rem' },
+              marginBottom: { xs: '1rem', sm: '1rem' },
+            }}
+          >
+            Shipping Address
+          </Typography>
+          <AddressForm
+            address={'shipping'}
+            data={data}
+            setData={setData}
+          ></AddressForm>
+          {!showBillingAddress ? (
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                width: { xs: '220px' },
+              }}
+              onClick={() => setShowBillingAddress(true)}
+            >
+              Указать адрес для выставления счетов
+            </Button>
+          ) : (
+            <>
+              <Typography
+                variant="subtitle1"
+                color={'#660066'}
+                sx={{
+                  marginTop: { xs: '2rem', sm: '1.5rem' },
+                  marginBottom: { xs: '1rem', sm: '1rem' },
+                }}
+              >
+                Billing Address
+              </Typography>
+              <AddressForm
+                address={'billing'}
+                data={data}
+                setData={setData}
+              ></AddressForm>
+            </>
+          )}
           <Button
-            type="button"
+            type="submit"
             fullWidth
             variant="contained"
             sx={{
@@ -368,7 +343,6 @@ export function RegistrationPage() {
               mb: 2,
               width: { xs: '220px' },
             }}
-            onClick={register}
           >
             Sign Up
           </Button>

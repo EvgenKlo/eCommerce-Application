@@ -59,6 +59,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
   useEffect(() => {
     try {
       if ('id' in customer) {
+        setFormsValue({ email: '', password: '' });
         handleLogin(true);
         navigate('/');
       }
@@ -155,11 +156,12 @@ export const LoginPage: React.FC<loginProps> = (props) => {
             sx={{ mt: 1 }}
             variant="outlined"
             fullWidth
+            required
           >
-            <InputLabel htmlFor="outlined-adornment-password">Password *</InputLabel>
+            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
             <OutlinedInput
               error={passwordError}
-              label={'Password *'}
+              label={'Password'}
               onChange={(e) => {
                 setFormsValue({
                   ...formsValue,
