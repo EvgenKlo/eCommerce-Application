@@ -11,8 +11,11 @@ import {
   Container,
   Typography,
   Snackbar,
-  Alert,
-  IconButton,
+  OutlinedInput,
+  FormControl,
+  InputLabel,
+  InputAdornment,
+  FormHelperText,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import CloseIcon from '@mui/icons-material/Close';
@@ -20,6 +23,10 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { SignIn } from '@/store/slices/customerSlice';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { FormValidator } from '@/helpers/formValidator';
 interface loginProps {
   handleLogin: (val: boolean) => void;
 }
@@ -30,13 +37,23 @@ export const LoginPage: React.FC<loginProps> = (props) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
+  const [formsValue, setFormsValue] = useState({ email: '', password: '' });
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Доступ к значениям полей формы при ее отправке
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email') as string;
-    const password = data.get('password') as string;
-    dispatch(SignIn({ email, password, setOpen }));
+    if (formsValue.email && formsValue.password && !emailError && !passwordError) {
+      dispatch(SignIn({ email: formsValue.email, password: formsValue.password, setOpen }));
+    }
   };
 
   useEffect(() => {
@@ -47,6 +64,21 @@ export const LoginPage: React.FC<loginProps> = (props) => {
       }
     } catch (error) {}
   }, [customer]);
+
+  useEffect(() => {
+    if (formsValue.email) {
+      const isValid = FormValidator.emailValidator(formsValue.email);
+      setEmailError(!isValid);
+    } else {
+      setEmailError(false);
+    }
+    if (formsValue.password) {
+      const isValid = FormValidator.passwordValodator(formsValue.password);
+      setPasswordError(!isValid);
+    } else {
+      setPasswordError(false);
+    }
+  }, [formsValue]);
 
   const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -103,17 +135,63 @@ export const LoginPage: React.FC<loginProps> = (props) => {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={(e) => {
+              setFormsValue({
+                ...formsValue,
+                email: e.target.value,
+              });
+            }}
+            error={emailError}
+            helperText={
+              emailError
+                ? formsValue.email[0] === ' ' || formsValue.email.slice(-1) === ' '
+                  ? 'E-mail must not start or end with a space'
+                  : 'Invalid e-mail'
+                : null
+            }
           />
-          <TextField
-            margin="normal"
-            required
+
+          <FormControl
+            sx={{ mt: 1 }}
+            variant="outlined"
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
+          >
+            <InputLabel htmlFor="outlined-adornment-password">Password *</InputLabel>
+            <OutlinedInput
+              error={passwordError}
+              label={'Password *'}
+              onChange={(e) => {
+                setFormsValue({
+                  ...formsValue,
+                  password: e.target.value,
+                });
+              }}
+              id="outlined-adornment-password"
+              type={showPassword ? 'text' : 'password'}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+            {passwordError && (
+              <FormHelperText
+                error
+                id="outlined-adornment-password"
+              >
+                {formsValue.password[0] === ' ' || formsValue.password.slice(-1) === ' '
+                  ? 'Password must not start or end with a space'
+                  : 'The password must be at least 8 characters long and contain: A-Z, a-z, 0-9 and at least one special character (e.g., !@#$%^&*)'}
+              </FormHelperText>
+            )}
+          </FormControl>
           <FormControlLabel
             control={
               <Checkbox
