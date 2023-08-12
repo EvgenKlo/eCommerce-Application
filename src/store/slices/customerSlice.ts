@@ -8,6 +8,7 @@ import { type Customer } from '@commercetools/platform-sdk';
 export interface Credentials {
   email: string;
   password: string;
+  setOpen: (val: boolean) => void;
 }
 
 export interface createCustomer extends Credentials {
@@ -34,6 +35,7 @@ export const SignIn = createAsyncThunk('customer/signIn', async (credentials: Cr
   const { email, password } = credentials;
   const passClient = new API(getApiRoot('password', { email, password }));
   const response = await passClient.signIn(credentials);
+  if (!response.customer) credentials.setOpen(true);
   return response;
 });
 export const SignInByToken = createAsyncThunk('customer/signInByToken', async (token: string) => {

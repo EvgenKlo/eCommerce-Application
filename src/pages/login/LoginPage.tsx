@@ -10,11 +10,15 @@ import {
   Box,
   Container,
   Typography,
+  Snackbar,
+  Alert,
+  IconButton,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { SignIn } from '@/store/slices/customerSlice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface loginProps {
   handleLogin: (val: boolean) => void;
@@ -24,6 +28,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
   const customer = useAppSelector((state) => state.customers.customer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,16 +36,36 @@ export const LoginPage: React.FC<loginProps> = (props) => {
     const data = new FormData(event.currentTarget);
     const email = data.get('email') as string;
     const password = data.get('password') as string;
-    dispatch(SignIn({ email, password }));
+    dispatch(SignIn({ email, password, setOpen }));
   };
 
   useEffect(() => {
-    if ('id' in customer) {
-      handleLogin(true);
-      navigate(-1);
-    }
+    try {
+      if ('id' in customer) {
+        handleLogin(true);
+        navigate('/');
+      }
+    } catch (error) {}
   }, [customer]);
 
+  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+  const action = (
+    <>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
   return (
     <Container
       component="main"
@@ -122,6 +147,15 @@ export const LoginPage: React.FC<loginProps> = (props) => {
           </Grid>
         </Box>
       </Box>
+      <Snackbar
+        key={`top,center`}
+        open={open}
+        action={action}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        message="Customer account with the given credentials not found"
+      />
     </Container>
   );
 };
