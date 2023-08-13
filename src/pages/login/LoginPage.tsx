@@ -68,8 +68,12 @@ export const LoginPage: React.FC<loginProps> = (props) => {
 
   useEffect(() => {
     if (formsValue.email) {
-      const isValid = FormValidator.emailValidator(formsValue.email);
-      setEmailError(!isValid);
+      if (formsValue.email.slice(-1) === ' ') {
+        setEmailError(true);
+      } else {
+        const isValid = FormValidator.emailValidator(formsValue.email);
+        setEmailError(!isValid);
+      }
     } else {
       setEmailError(false);
     }

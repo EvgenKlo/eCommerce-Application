@@ -25,7 +25,7 @@ const initialState = {
 
 export const createNewCustomer = createAsyncThunk(
   'customer/createNew',
-  async (data: createCustomer, thunkAPI) => {
+  async (data: Customer, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const response = await state.customers.apiInstance.createCustomer(data);
     return response;

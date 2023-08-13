@@ -15,22 +15,19 @@ import {
   FormControl,
   InputLabel,
   InputAdornment,
+  FormControlLabel,
+  Checkbox,
+  FormHelperText,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Customer } from '@commercetools/platform-sdk';
+import { type BaseAddress, type CustomerDraft } from '@commercetools/platform-sdk';
 
 import { AddressForm } from '@/components/UI/AddressForm';
 import { FormValidator } from '@/helpers/formValidator';
-
-const mediaStyleInput = {
-  '@media (max-width: 400px)': {
-    width: '90%',
-  },
-};
 
 export function RegistrationPage() {
   const dispatch = useAppDispatch();
@@ -43,33 +40,7 @@ export function RegistrationPage() {
     event.preventDefault();
   };
 
-  const [data, setData] = useState({
-    id: '1',
-    version: 1,
-    createdAt: new Date().toUTCString(),
-    lastModifiedAt: new Date().toUTCString(),
-    isEmailVerified: false,
-    authenticationMode: 'Password',
-
-    /* firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    birthDate: '',
-
-    billingStreet: '',
-    billingCity: '',
-    billingPostalCode: '',
-    billingCountry: '',
-
-    shippingStreet: '',
-    shippingCity: '',
-    shippingPostalCode: '',
-    shippingCountry: '',
-
-    defaultBillingAddress: '',
-    defaultShippingAddress: '', */
-  } as Customer);
+  const [data, setData] = useState({} as CustomerDraft);
 
   const [showBillingAddress, setShowBillingAddress] = useState(false);
 
@@ -78,18 +49,45 @@ export function RegistrationPage() {
   const [lastNameError, setLastNameError] = useState(false);
 
   const [emailError, setEmailError] = useState(false);
+  const [emailErrorText, setEmailErrorText] = useState('');
 
   const [passwordError, setPasswordError] = useState(false);
+  const [passwordText, setPasswordText] = useState('');
 
   const [dateError, setDateError] = useState(false);
 
   const register = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    setData({
-      ...data,
-    });
     console.log(data);
-    void dispatch(createNewCustomer(data));
+    if (!firstNameError && !lastNameError && !emailError && !passwordError && !dateError) {
+      void dispatch(createNewCustomer(data));
+    }
+  };
+
+  const getAddress = (address: BaseAddress) => {
+    addAddressToCustomer(address);
+  };
+
+  const addAddressToCustomer = (address: BaseAddress) => {
+    if (data.addresses) {
+      const id = address.id;
+      if (data.addresses.find((item) => item.id === id)) {
+        setData({
+          ...data,
+          addresses: [...data.addresses.map((item) => (item.id === id ? { ...address } : item))],
+        });
+      } else {
+        setData({
+          ...data,
+          addresses: [...data.addresses, address],
+        });
+      }
+    } else {
+      setData({
+        ...data,
+        addresses: [{ ...address }],
+      });
+    }
   };
 
   return (
@@ -127,7 +125,7 @@ export function RegistrationPage() {
         <Box
           component="form"
           onSubmit={register}
-          noValidate
+          noValidate={false}
           sx={{ mt: 3 }}
         >
           <Grid
@@ -144,11 +142,10 @@ export function RegistrationPage() {
                 fullWidth
                 name="firstName"
                 id="firstName"
-                label="first name"
+                label={'first name'}
                 sx={{ marginBottom: 0.3 }}
                 size="small"
                 autoFocus
-                //value={data.firstName}
                 onChange={(e) => {
                   if (FormValidator.nameValodator(e.target.value)) {
                     setData({ ...data, firstName: '' });
@@ -159,6 +156,11 @@ export function RegistrationPage() {
                   }
                 }}
                 error={firstNameError}
+                helperText={
+                  firstNameError
+                    ? 'this field must not contain special characters or numbers'
+                    : null
+                }
               />
             </Grid>
             <Grid
@@ -175,7 +177,6 @@ export function RegistrationPage() {
                 autoComplete="family-name"
                 sx={{ marginBottom: 0.3 }}
                 size="small"
-                //value={data.lastName}
                 onChange={(e) => {
                   if (FormValidator.nameValodator(e.target.value)) {
                     setData({ ...data, lastName: '' });
@@ -186,6 +187,9 @@ export function RegistrationPage() {
                   }
                 }}
                 error={lastNameError}
+                helperText={
+                  lastNameError ? 'this field must not contain special characters or numbers' : null
+                }
               />
             </Grid>
 
@@ -202,17 +206,28 @@ export function RegistrationPage() {
                 autoComplete="email"
                 sx={{ marginBottom: 0.3 }}
                 size="small"
-                //value={data.email}
                 onChange={(e) => {
                   if (!FormValidator.emailValidator(e.target.value) && e.target.value.length > 0) {
                     setData({ ...data, email: '' });
                     setEmailError(true);
+                    if (e.target.value[0] === ' ' || e.target.value.slice(-1) === ' ') {
+                      setEmailErrorText('e-mail must not start or end with a space');
+                    } else {
+                      setEmailErrorText('Invalid e-mail');
+                    }
                   } else {
-                    setData({ ...data, email: e.target.value });
-                    setEmailError(false);
+                    if (e.target.value.slice(-1) === ' ') {
+                      setData({ ...data, email: '' });
+                      setEmailError(true);
+                      setEmailErrorText('e-mail must not start or end with a space');
+                    } else {
+                      setData({ ...data, email: e.target.value });
+                      setEmailError(false);
+                    }
                   }
                 }}
                 error={emailError}
+                helperText={emailError ? emailErrorText : null}
               />
             </Grid>
             <Grid
@@ -222,12 +237,14 @@ export function RegistrationPage() {
               <FormControl
                 variant="outlined"
                 fullWidth
+                required
               >
                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                 <OutlinedInput
                   error={passwordError}
                   label={'Password'}
                   onChange={(e) => {
+                    setPasswordText(e.target.value);
                     if (
                       !FormValidator.passwordValodator(e.target.value) &&
                       e.target.value.length > 0
@@ -254,6 +271,16 @@ export function RegistrationPage() {
                     </InputAdornment>
                   }
                 />
+                {passwordError && (
+                  <FormHelperText
+                    error
+                    id="outlined-adornment-password"
+                  >
+                    {passwordText[0] === ' ' || passwordText.slice(-1) === ' '
+                      ? 'password must not start or end with a space'
+                      : 'the password must be at least 8 characters long and contain: A-Z, a-z, 0-9 and at least one special character (e.g., !@#$%^&*)'}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid
@@ -262,7 +289,6 @@ export function RegistrationPage() {
             >
               <DatePicker
                 label="birth date"
-                //value={data.birthDate}
                 format="yyyy/MM/dd"
                 onChange={(newDate) => {
                   if (FormValidator.ageValodator(newDate as Date)) {
@@ -280,7 +306,9 @@ export function RegistrationPage() {
                     fullWidth: true,
                     variant: 'outlined',
                     error: dateError,
-                    //helperText: 'Errorrrr',
+                    required: true,
+
+                    helperText: dateError ? 'you must be over 14 years old' : null,
                   },
                 }}
               />
@@ -297,26 +325,76 @@ export function RegistrationPage() {
             Shipping Address
           </Typography>
           <AddressForm
+            id={data.addresses ? data.addresses.length + 1 : 1}
             address={'shipping'}
-            data={data}
-            setData={setData}
+            getAddress={getAddress}
           ></AddressForm>
           {!showBillingAddress ? (
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                width: { xs: '220px' },
-              }}
-              onClick={() => setShowBillingAddress(true)}
-            >
-              Указать адрес для выставления счетов
-            </Button>
+            <>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    value="useBillingAsShipping"
+                    color="primary"
+                    name="useBillingAsShipping"
+                    required
+                    onChange={(e) => {
+                      if (e.currentTarget.checked) {
+                        setData({ ...data, defaultShippingAddress: 0, defaultBillingAddress: 0 });
+                      } else {
+                        setData({
+                          ...data,
+                          defaultShippingAddress: undefined,
+                          defaultBillingAddress: undefined,
+                        });
+                      }
+                    }}
+                  />
+                }
+                label="Use as default shipping and billing address"
+              />
+              <Button
+                type="button"
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  width: { xs: '220px' },
+                }}
+                onClick={() => {
+                  setShowBillingAddress(true);
+                  setData({
+                    ...data,
+                    defaultBillingAddress: undefined,
+                  });
+                }}
+              >
+                Use a different billing address
+              </Button>
+            </>
           ) : (
             <>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    value="useShipping"
+                    color="primary"
+                    name="useShipping"
+                    onChange={(e) => {
+                      if (e.currentTarget.checked) {
+                        setData({ ...data, defaultShippingAddress: 0 });
+                      } else {
+                        setData({
+                          ...data,
+                          defaultShippingAddress: undefined,
+                        });
+                      }
+                    }}
+                  />
+                }
+                label="Use by default"
+              />
               <Typography
                 variant="subtitle1"
                 color={'#660066'}
@@ -328,12 +406,33 @@ export function RegistrationPage() {
                 Billing Address
               </Typography>
               <AddressForm
+                id={data.addresses ? data.addresses.length + 1 : 1}
                 address={'billing'}
-                data={data}
-                setData={setData}
+                getAddress={getAddress}
               ></AddressForm>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    value="useBilling"
+                    color="primary"
+                    name="useBilling"
+                    onChange={(e) => {
+                      if (e.currentTarget.checked) {
+                        setData({ ...data, defaultBillingAddress: 1 });
+                      } else {
+                        setData({
+                          ...data,
+                          defaultBillingAddress: undefined,
+                        });
+                      }
+                    }}
+                  />
+                }
+                label="Use by default"
+              />
             </>
           )}
+
           <Button
             type="submit"
             fullWidth
