@@ -1,3 +1,5 @@
+import { postalCodeRegexMap } from './postalCode';
+
 export class FormValidator {
   static emailValidator(email: string) {
     if (email[0] === ' ') {
@@ -26,5 +28,11 @@ export class FormValidator {
     if (customerAge >= 14) {
       return true;
     }
+  }
+
+  static postalCodeValodator(postalCode: string, country: string) {
+    const regExp = postalCodeRegexMap[country as keyof typeof postalCodeRegexMap];
+
+    return regExp.test(postalCode);
   }
 }

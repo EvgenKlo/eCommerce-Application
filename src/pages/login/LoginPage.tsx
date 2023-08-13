@@ -52,7 +52,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (formsValue.email && formsValue.password && !emailError && !passwordError) {
-      dispatch(SignIn({ email: formsValue.email, password: formsValue.password, setOpen }));
+      void dispatch(SignIn({ email: formsValue.email, password: formsValue.password, setOpen }));
     }
   };
 

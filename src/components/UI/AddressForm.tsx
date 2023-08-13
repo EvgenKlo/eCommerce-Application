@@ -10,7 +10,7 @@ const mediaStyleInput = {
   },
 };
 
-const countryList = ['Great Britain', 'USA', 'Canada', 'Brazil'];
+const countryList = ['GB', 'US', 'CA', 'BR'];
 
 type Props = {
   address: string;
@@ -32,6 +32,8 @@ export const AddressForm: React.FC<Props> = (props) => {
   useEffect(() => {
     getAddress(addressData);
   }, [addressData]);
+
+  const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' });
 
   return (
     <Grid
@@ -96,7 +98,7 @@ export const AddressForm: React.FC<Props> = (props) => {
                 key={country}
                 value={country}
               >
-                {country}
+                {regionNamesInEnglish.of(country)}
               </MenuItem>
             );
           })}
@@ -107,12 +109,26 @@ export const AddressForm: React.FC<Props> = (props) => {
         required
         fullWidth
         name={`${address}PostalCode`}
-        label={`${address} Postal Code`}
+        label={addressData.country ? `${address} Postal Code` : 'choose a country'}
         id={`${address}PostalCode`}
         sx={mediaStyleInput}
         size="small"
-        onChange={(e) => setAddressData({ ...addressData, postalCode: e.target.value })}
+        onChange={(e) => {
+          if (e.target.value) {
+            if (FormValidator.postalCodeValodator(e.target.value, addressData.country)) {
+              setAddressData({ ...addressData, postalCode: e.target.value });
+              setPostalCodeError(false);
+            } else {
+              setAddressData({ ...addressData, postalCode: '' });
+              setPostalCodeError(true);
+            }
+          } else {
+            setPostalCodeError(false);
+          }
+        }}
         error={postalCodeError}
+        helperText={postalCodeError ? 'invalid postal code for this country' : null}
+        disabled={addressData.country ? false : true}
       />
     </Grid>
   );

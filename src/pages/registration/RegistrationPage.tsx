@@ -291,9 +291,10 @@ export function RegistrationPage() {
                 label="birth date"
                 format="yyyy/MM/dd"
                 onChange={(newDate) => {
-                  if (FormValidator.ageValodator(newDate as Date)) {
+                  const birthDate = newDate as Date;
+                  if (FormValidator.ageValodator(birthDate)) {
                     setDateError(false);
-                    setData({ ...data, dateOfBirth: JSON.stringify(newDate) });
+                    setData({ ...data, dateOfBirth: birthDate.toISOString().substring(0, 10) });
                   } else {
                     setDateError(true);
                     setData({ ...data, dateOfBirth: '' });
