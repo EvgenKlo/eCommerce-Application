@@ -1,5 +1,5 @@
-import { useAppDispatch } from '@/hooks/reduxHooks';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { useState, useEffect } from 'react';
 import { createNewCustomer } from '@/store/slices/customerSlice';
 import {
   Avatar,
@@ -25,12 +25,21 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { type BaseAddress, type CustomerDraft } from '@commercetools/platform-sdk';
+import { Loader } from '@/components/UI/Loader';
+import { useNavigate } from 'react-router-dom';
 
 import { AddressForm } from '@/components/UI/AddressForm';
 import { FormValidator } from '@/helpers/formValidator';
+import Message from '@/components/UI/Message';
 
-export function RegistrationPage() {
+interface loginProps {
+  handleLogin: (val: boolean) => void;
+}
+
+export const RegistrationPage: React.FC<loginProps> = (props) => {
+  const { handleLogin } = props;
   const dispatch = useAppDispatch();
+  const customer = useAppSelector((state) => state.customers.customer);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -56,13 +65,26 @@ export function RegistrationPage() {
 
   const [dateError, setDateError] = useState(false);
 
+  const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [open, setOpen] = useState('');
+
   const register = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    console.log(data);
     if (!firstNameError && !lastNameError && !emailError && !passwordError && !dateError) {
-      void dispatch(createNewCustomer(data));
+      setLoading(true);
+      void dispatch(createNewCustomer({ data, setOpen, setLoading }));
     }
   };
+
+  useEffect(() => {
+    try {
+      if ('id' in customer) {
+        handleLogin(true);
+        navigate('/');
+      }
+    } catch (error) {}
+  }, [customer]);
 
   const getAddress = (address: BaseAddress) => {
     addAddressToCustomer(address);
@@ -461,6 +483,11 @@ export function RegistrationPage() {
           </Grid>
         </Box>
       </Box>
+      <Message
+        open={open}
+        setOpen={setOpen}
+      />
+      <Loader isLoading={isLoading} />
     </Container>
   );
-}
+};

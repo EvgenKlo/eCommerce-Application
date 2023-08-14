@@ -3,14 +3,11 @@ import {
   Button,
   CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
   Grid,
   Box,
   Container,
   Typography,
-  Snackbar,
   OutlinedInput,
   FormControl,
   InputLabel,
@@ -18,7 +15,6 @@ import {
   FormHelperText,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { SignIn } from '@/store/slices/customerSlice';
 import { useEffect, useState } from 'react';
@@ -27,6 +23,8 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { FormValidator } from '@/helpers/formValidator';
+import { Loader } from '@/components/UI/Loader';
+import Message from '@/components/UI/Message';
 interface loginProps {
   handleLogin: (val: boolean) => void;
 }
@@ -35,13 +33,14 @@ export const LoginPage: React.FC<loginProps> = (props) => {
   const customer = useAppSelector((state) => state.customers.customer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState('');
 
   const [formsValue, setFormsValue] = useState({ email: '', password: '' });
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -52,11 +51,15 @@ export const LoginPage: React.FC<loginProps> = (props) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (formsValue.email && formsValue.password && !emailError && !passwordError) {
-      void dispatch(SignIn({ email: formsValue.email, password: formsValue.password, setOpen }));
+      setLoading(true);
+      void dispatch(
+        SignIn({ email: formsValue.email, password: formsValue.password, setOpen, setLoading })
+      );
     }
   };
 
   useEffect(() => {
+    setLoading(false);
     try {
       if ('id' in customer) {
         setFormsValue({ email: '', password: '' });
@@ -85,24 +88,6 @@ export const LoginPage: React.FC<loginProps> = (props) => {
     }
   }, [formsValue]);
 
-  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-  const action = (
-    <>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </>
-  );
   return (
     <Container
       component="main"
@@ -198,15 +183,6 @@ export const LoginPage: React.FC<loginProps> = (props) => {
               </FormHelperText>
             )}
           </FormControl>
-          <FormControlLabel
-            control={
-              <Checkbox
-                value="remember"
-                color="primary"
-              />
-            }
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
@@ -231,15 +207,11 @@ export const LoginPage: React.FC<loginProps> = (props) => {
           </Grid>
         </Box>
       </Box>
-      <Snackbar
-        key={`top,center`}
+      <Message
         open={open}
-        action={action}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        message="Customer account with the given credentials not found"
+        setOpen={setOpen}
       />
+      <Loader isLoading={isLoading} />
     </Container>
   );
 };
