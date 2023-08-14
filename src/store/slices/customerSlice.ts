@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 import { API } from '@/api/API';
 import { getApiRoot } from '@/api/lib/Client';
-import { type Customer } from '@commercetools/platform-sdk';
+import { type CustomerDraft, type Customer } from '@commercetools/platform-sdk';
 
 export interface Credentials {
   email: string;
@@ -25,7 +25,7 @@ const initialState = {
 
 export const createNewCustomer = createAsyncThunk(
   'customer/createNew',
-  async (data: createCustomer, thunkAPI) => {
+  async (data: CustomerDraft, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const response = await state.customers.apiInstance.createCustomer(data);
     return response;
