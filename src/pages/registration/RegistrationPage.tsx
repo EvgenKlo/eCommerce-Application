@@ -83,8 +83,10 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
         handleLogin(true);
         navigate('/');
       }
-    } catch (error) {}
-  }, [customer]);
+    } catch (error) {
+      console.error('An error:', error);
+    }
+  }, [customer, handleLogin, navigate]);
 
   const getAddress = (address: BaseAddress) => {
     addAddressToCustomer(address);
@@ -169,7 +171,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 size="small"
                 autoFocus
                 onChange={(e) => {
-                  if (FormValidator.nameValodator(e.target.value)) {
+                  if (FormValidator.nameValidator(e.target.value)) {
                     setData({ ...data, firstName: '' });
                     setFirstNameError(true);
                   } else {
@@ -200,7 +202,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 sx={{ marginBottom: 0.3 }}
                 size="small"
                 onChange={(e) => {
-                  if (FormValidator.nameValodator(e.target.value)) {
+                  if (FormValidator.nameValidator(e.target.value)) {
                     setData({ ...data, lastName: '' });
                     setLastNameError(true);
                   } else {
@@ -268,7 +270,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                   onChange={(e) => {
                     setPasswordText(e.target.value);
                     if (
-                      !FormValidator.passwordValodator(e.target.value) &&
+                      !FormValidator.passwordValidator(e.target.value) &&
                       e.target.value.length > 0
                     ) {
                       setData({ ...data, password: '' });
@@ -314,7 +316,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 format="yyyy/MM/dd"
                 onChange={(newDate) => {
                   const birthDate = newDate as Date;
-                  if (FormValidator.ageValodator(birthDate)) {
+                  if (FormValidator.ageValidator(birthDate)) {
                     setDateError(false);
                     setData({ ...data, dateOfBirth: birthDate.toISOString().substring(0, 10) });
                   } else {

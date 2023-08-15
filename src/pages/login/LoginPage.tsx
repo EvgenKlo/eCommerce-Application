@@ -66,8 +66,10 @@ export const LoginPage: React.FC<loginProps> = (props) => {
         handleLogin(true);
         navigate('/');
       }
-    } catch (error) {}
-  }, [customer]);
+    } catch (error) {
+      console.error('An error:', error);
+    }
+  }, [customer, handleLogin, navigate]);
 
   useEffect(() => {
     if (formsValue.email) {
@@ -81,7 +83,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
       setEmailError(false);
     }
     if (formsValue.password) {
-      const isValid = FormValidator.passwordValodator(formsValue.password);
+      const isValid = FormValidator.passwordValidator(formsValue.password);
       setPasswordError(!isValid);
     } else {
       setPasswordError(false);

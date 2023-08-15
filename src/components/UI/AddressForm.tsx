@@ -64,7 +64,7 @@ export const AddressForm: React.FC<Props> = (props) => {
         sx={mediaStyleInput}
         size="small"
         onChange={(e) => {
-          if (FormValidator.nameValodator(e.target.value)) {
+          if (FormValidator.nameValidator(e.target.value)) {
             setAddressData({ ...addressData, city: '' });
             setCityError(true);
           } else {
@@ -115,7 +115,7 @@ export const AddressForm: React.FC<Props> = (props) => {
         size="small"
         onChange={(e) => {
           if (e.target.value) {
-            if (FormValidator.postalCodeValodator(e.target.value, addressData.country)) {
+            if (FormValidator.postalCodeValidator(e.target.value, addressData.country)) {
               setAddressData({ ...addressData, postalCode: e.target.value });
               setPostalCodeError(false);
             } else {
