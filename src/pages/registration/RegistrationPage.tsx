@@ -360,7 +360,6 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                     value="useBillingAsShipping"
                     color="primary"
                     name="useBillingAsShipping"
-                    required
                     onChange={(e) => {
                       if (e.currentTarget.checked) {
                         setData({ ...data, defaultShippingAddress: 0, defaultBillingAddress: 0 });

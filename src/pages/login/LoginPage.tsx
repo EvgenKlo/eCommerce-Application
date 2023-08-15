@@ -113,7 +113,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
         <Box
           component="form"
           onSubmit={handleSubmit}
-          noValidate
+          noValidate={false}
           sx={{ mt: 8 }}
         >
           <TextField
