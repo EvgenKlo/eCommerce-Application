@@ -189,6 +189,7 @@ export function Header() {
                     sx={{
                       ...styleLinks,
                       colorHoverLinks: styleLinks.color,
+                      color: location.pathname === link.link ? colorHoverLinks : styleLinks.color,
                     }}
                     component={RouterLink}
                     to={link.link}
