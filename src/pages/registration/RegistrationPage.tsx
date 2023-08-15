@@ -83,10 +83,10 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
         handleLogin(true);
         navigate('/');
       }
-    } catch (error) {
-      console.error('An error:', error);
-    }
-  }, [customer, handleLogin, navigate]);
+    // eslint-disable-next-line no-empty
+    } catch (error) {}
+    // eslint-disable-next-line
+  }, [customer]);
 
   const getAddress = (address: BaseAddress) => {
     addAddressToCustomer(address);
@@ -166,7 +166,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 fullWidth
                 name="firstName"
                 id="firstName"
-                label={'first name'}
+                label={'First name'}
                 sx={{ marginBottom: 0.3 }}
                 size="small"
                 autoFocus
@@ -196,7 +196,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 required
                 fullWidth
                 id="lastName"
-                label="last name"
+                label="Last name"
                 name="lastName"
                 autoComplete="family-name"
                 sx={{ marginBottom: 0.3 }}
@@ -225,7 +225,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 required
                 fullWidth
                 id="email"
-                label="email"
+                label="Email"
                 name="email"
                 autoComplete="email"
                 sx={{ marginBottom: 0.3 }}
@@ -312,7 +312,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               xs={12}
             >
               <DatePicker
-                label="birth date"
+                label="Birth date"
                 format="yyyy/MM/dd"
                 onChange={(newDate) => {
                   const birthDate = newDate as Date;
@@ -381,11 +381,13 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <Button
                 type="button"
                 fullWidth
-                variant="contained"
+                variant="outlined"
                 sx={{
                   mt: 3,
                   mb: 2,
                   width: { xs: '220px' },
+                  color: '#660066',
+                  fontSize: '12px',
                 }}
                 onClick={() => {
                   setShowBillingAddress(true);
@@ -395,7 +397,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                   });
                 }}
               >
-                Use a different billing address
+                Add billing address
               </Button>
             </>
           ) : (
@@ -435,6 +437,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 address={'billing'}
                 getAddress={getAddress}
               ></AddressForm>
+
               <FormControlLabel
                 control={
                   <Checkbox
@@ -457,19 +460,20 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               />
             </>
           )}
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{
-              mt: 3,
-              mb: 2,
-              width: { xs: '220px' },
-            }}
-          >
-            Sign Up
-          </Button>
+          <Box>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                width: { xs: '220px' },
+              }}
+            >
+              Sign Up
+            </Button>
+          </Box>
           <Grid
             container
             justifyContent="flex-end"

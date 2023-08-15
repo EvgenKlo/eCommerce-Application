@@ -66,10 +66,10 @@ export const LoginPage: React.FC<loginProps> = (props) => {
         handleLogin(true);
         navigate('/');
       }
-    } catch (error) {
-      console.error('An error:', error);
-    }
-  }, [customer, handleLogin, navigate]);
+      // eslint-disable-next-line no-empty
+    } catch (error) {}
+    // eslint-disable-next-line
+  }, [customer]);
 
   useEffect(() => {
     if (formsValue.email) {

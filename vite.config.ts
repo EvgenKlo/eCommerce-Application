@@ -8,7 +8,6 @@ import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 
 export const pathResolver = (p: string) => resolve(__dirname, '.', p);
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   css: {

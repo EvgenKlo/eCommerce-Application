@@ -222,19 +222,21 @@ export function Header() {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Profile">
-              <IconButton onMouseDown={handleMouseDown}>
-                <PersonIcon
-                  sx={{
-                    color: 'white',
-                    '&:hover': {
-                      color: '#f5f542',
-                      transition: 'color 0.3s ease-in-out',
-                    },
-                  }}
-                />
-              </IconButton>
-            </Tooltip>
+            {authorized && (
+              <Tooltip title="Profile">
+                <IconButton onMouseDown={handleMouseDown}>
+                  <PersonIcon
+                    sx={{
+                      color: 'white',
+                      '&:hover': {
+                        color: '#f5f542',
+                        transition: 'color 0.3s ease-in-out',
+                      },
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
+            )}
 
             {authorized && (
               <Tooltip title="Exit">
