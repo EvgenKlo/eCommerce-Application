@@ -61,7 +61,6 @@ export function Header() {
   const handleExit = () => {
     dispatch(signOut());
   };
-  console.log('header authorized', authorized);
 
   return (
     <AppBar

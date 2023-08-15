@@ -4,9 +4,8 @@ import {
   CustomerSignInResult,
   CustomerDraft,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
-import { Credentials } from '@/store/slices/customerSlice';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-
+import { type returnType } from '@/types/apiClient';
 export class API {
   private client: ByProjectKeyRequestBuilder;
 
@@ -35,35 +34,33 @@ export class API {
     return result;
   }
 
-  async createCustomer(customer: CustomerDraft) {
-    let result: CustomerSignInResult = {} as CustomerSignInResult;
+  async createCustomer(customer: CustomerDraft): returnType<CustomerSignInResult> {
+    let errorMsg = '';
     try {
-      const { body } = await this.client.customers().post({ body: customer }).execute();
-      result = body;
+      const result = await this.client.customers().post({ body: customer }).execute();
+      return { data: result.body, error: errorMsg };
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
     }
-    return result;
   }
-  async signIn(credentials: Credentials) {
-    const result: CustomerSignInResult = {} as CustomerSignInResult;
-    console.log('signin cred', credentials);
+  async signIn(credentials: { email: string; password: string }): returnType<CustomerSignInResult> {
+    let errorMsg = '';
     try {
       const result = await this.client.me().login().post({ body: credentials }).execute();
-      console.log('login success:', result);
-      return result.body;
+      return { data: result.body, error: errorMsg };
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
     }
-    return result;
   }
 
   async signInByToken() {
     const result: Customer = {} as Customer;
-    console.log('signIn token');
     try {
       const result = await this.client.me().get().execute();
-      console.log('login success:', result);
       return result.body;
     } catch (error) {
       console.log(error);

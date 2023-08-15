@@ -8,7 +8,13 @@ import { type CustomerDraft, type Customer } from '@commercetools/platform-sdk';
 export interface Credentials {
   email: string;
   password: string;
-  setOpen: (val: boolean) => void;
+  setOpen: (val: string) => void;
+  setLoading: (val: boolean) => void;
+}
+interface signUp {
+  data: CustomerDraft;
+  setOpen: (val: string) => void;
+  setLoading: (val: boolean) => void;
 }
 
 export interface createCustomer extends Credentials {
@@ -25,18 +31,27 @@ const initialState = {
 
 export const createNewCustomer = createAsyncThunk(
   'customer/createNew',
-  async (data: CustomerDraft, thunkAPI) => {
+  async (data: signUp, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
-    const response = await state.customers.apiInstance.createCustomer(data);
-    return response;
+    const response = await state.customers.apiInstance.createCustomer(data.data);
+    if (response.error) data.setOpen(response.error);
+    else {
+      const passClient = new API(
+        getApiRoot('password', { email: data.data.email, password: data.data.password as string })
+      );
+      await passClient.signIn({ email: data.data.email, password: data.data.password as string });
+    }
+    data.setLoading(false);
+    return response.data?.customer;
   }
 );
 export const SignIn = createAsyncThunk('customer/signIn', async (credentials: Credentials) => {
   const { email, password } = credentials;
   const passClient = new API(getApiRoot('password', { email, password }));
   const response = await passClient.signIn(credentials);
-  if (!response.customer) credentials.setOpen(true);
-  return response;
+  if (response.error) credentials.setOpen(response.error);
+  credentials.setLoading(false);
+  return response.data?.customer;
 });
 export const SignInByToken = createAsyncThunk('customer/signInByToken', async (token: string) => {
   const tokenAPI = new API(getApiRoot('token', { token }));
@@ -68,10 +83,10 @@ const customerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
-      state.customer = action.payload.customer;
+      state.customer = action.payload as Customer;
     });
     builder.addCase(SignIn.fulfilled, (state, action) => {
-      state.customer = action.payload.customer;
+      state.customer = action.payload as Customer;
     });
     builder.addCase(SignInByToken.fulfilled, (state, action) => {
       state.customer = action.payload;

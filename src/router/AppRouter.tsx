@@ -43,7 +43,7 @@ export const AppRouter = (): ReactElement => {
         />
         <Route
           path="registration"
-          element={<RegistrationPage />}
+          element={<RegistrationPage handleLogin={handleLogin} />}
         />
         <Route
           path="*"
