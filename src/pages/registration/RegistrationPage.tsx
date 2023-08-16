@@ -83,7 +83,9 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
         handleLogin(true);
         navigate('/');
       }
+    // eslint-disable-next-line no-empty
     } catch (error) {}
+    // eslint-disable-next-line
   }, [customer]);
 
   const getAddress = (address: BaseAddress) => {
@@ -164,12 +166,12 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 fullWidth
                 name="firstName"
                 id="firstName"
-                label={'first name'}
+                label={'First name'}
                 sx={{ marginBottom: 0.3 }}
                 size="small"
                 autoFocus
                 onChange={(e) => {
-                  if (FormValidator.nameValodator(e.target.value)) {
+                  if (FormValidator.nameValidator(e.target.value)) {
                     setData({ ...data, firstName: '' });
                     setFirstNameError(true);
                   } else {
@@ -194,13 +196,13 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 required
                 fullWidth
                 id="lastName"
-                label="last name"
+                label="Last name"
                 name="lastName"
                 autoComplete="family-name"
                 sx={{ marginBottom: 0.3 }}
                 size="small"
                 onChange={(e) => {
-                  if (FormValidator.nameValodator(e.target.value)) {
+                  if (FormValidator.nameValidator(e.target.value)) {
                     setData({ ...data, lastName: '' });
                     setLastNameError(true);
                   } else {
@@ -223,7 +225,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 required
                 fullWidth
                 id="email"
-                label="email"
+                label="Email"
                 name="email"
                 autoComplete="email"
                 sx={{ marginBottom: 0.3 }}
@@ -268,7 +270,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                   onChange={(e) => {
                     setPasswordText(e.target.value);
                     if (
-                      !FormValidator.passwordValodator(e.target.value) &&
+                      !FormValidator.passwordValidator(e.target.value) &&
                       e.target.value.length > 0
                     ) {
                       setData({ ...data, password: '' });
@@ -310,11 +312,11 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               xs={12}
             >
               <DatePicker
-                label="birth date"
+                label="Birth date"
                 format="yyyy/MM/dd"
                 onChange={(newDate) => {
                   const birthDate = newDate as Date;
-                  if (FormValidator.ageValodator(birthDate)) {
+                  if (FormValidator.ageValidator(birthDate)) {
                     setDateError(false);
                     setData({ ...data, dateOfBirth: birthDate.toISOString().substring(0, 10) });
                   } else {
@@ -379,11 +381,13 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <Button
                 type="button"
                 fullWidth
-                variant="contained"
+                variant="outlined"
                 sx={{
                   mt: 3,
                   mb: 2,
                   width: { xs: '220px' },
+                  color: '#660066',
+                  fontSize: '12px',
                 }}
                 onClick={() => {
                   setShowBillingAddress(true);
@@ -393,7 +397,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                   });
                 }}
               >
-                Use a different billing address
+                Add billing address
               </Button>
             </>
           ) : (
@@ -433,6 +437,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 address={'billing'}
                 getAddress={getAddress}
               ></AddressForm>
+
               <FormControlLabel
                 control={
                   <Checkbox
@@ -455,19 +460,20 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               />
             </>
           )}
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{
-              mt: 3,
-              mb: 2,
-              width: { xs: '220px' },
-            }}
-          >
-            Sign Up
-          </Button>
+          <Box>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                width: { xs: '220px' },
+              }}
+            >
+              Sign Up
+            </Button>
+          </Box>
           <Grid
             container
             justifyContent="flex-end"

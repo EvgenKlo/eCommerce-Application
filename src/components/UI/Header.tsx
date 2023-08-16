@@ -22,12 +22,15 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { signOut } from '@/store/slices/customerSlice';
 
-const styleSighLinks = {
+const colorHoverLinks = '#FF8C00';
+
+const styleLinks = {
   color: '#ffffff',
   fontSize: '0.9rem',
   marginX: 1,
   '&:hover': {
-    color: '#FF8C00',
+    color: colorHoverLinks,
+    transition: 'color 0.3s ease-in-out',
   },
   '@media (max-width: 400px)': {
     padding: 0,
@@ -45,6 +48,10 @@ const signLinks = [
 ];
 
 export function Header() {
+  const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
   const location = useLocation();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const authorized = useAppSelector((state) => state.customers.authorized);
@@ -81,7 +88,7 @@ export function Header() {
             to="/"
             style={{
               textDecoration: 'none',
-              color: location.pathname === '/' ? '#FF8C00' : 'white',
+              color: location.pathname === '/' ? colorHoverLinks : '#ffffff',
             }}
           >
             <Typography
@@ -92,9 +99,9 @@ export function Header() {
                 fontWeight: 700,
                 color: 'inherit',
                 display: { xs: 'none', md: 'block' },
-                '&:hover, &:active': {
-                  color: '#e6a8d5',
-                  transition: 'color 0.1s ease-in-out',
+                '&:hover': {
+                  color: colorHoverLinks,
+                  transition: 'color 0.3s ease-in-out',
                 },
               }}
             >
@@ -108,10 +115,11 @@ export function Header() {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
+              onMouseDown={handleMouseDown}
+              onClick={handleOpenNavMenu}
               size="large"
               aria-controls="mobile-menu"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
               color="inherit"
             >
               <MenuIcon />
@@ -156,15 +164,15 @@ export function Header() {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={styleSighLinks}
-                component={RouterLink}
-                to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
-                style={{
+                sx={{
+                  ...styleLinks,
                   color:
                     location.pathname === (page === 'Home' ? '/' : `/${page.toLowerCase()}`)
-                      ? '#FF8C00'
-                      : 'white',
+                      ? colorHoverLinks
+                      : styleLinks.color,
                 }}
+                component={RouterLink}
+                to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
               >
                 {page}
               </Button>
@@ -178,7 +186,11 @@ export function Header() {
                   <Button
                     key={link.text}
                     onClick={handleCloseNavMenu}
-                    sx={styleSighLinks}
+                    sx={{
+                      ...styleLinks,
+                      colorHoverLinks: styleLinks.color,
+                      color: location.pathname === link.link ? colorHoverLinks : styleLinks.color,
+                    }}
                     component={RouterLink}
                     to={link.link}
                   >
@@ -190,6 +202,7 @@ export function Header() {
 
             <Tooltip title="Open cart">
               <IconButton
+                onMouseDown={handleMouseDown}
                 color="inherit"
                 sx={{ p: 0 }}
               >
@@ -210,23 +223,26 @@ export function Header() {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Profile">
-              <IconButton>
-                <PersonIcon
-                  sx={{
-                    color: 'white',
-                    '&:hover': {
-                      color: '#f5f542',
-                      transition: 'color 0.3s ease-in-out',
-                    },
-                  }}
-                />
-              </IconButton>
-            </Tooltip>
+            {authorized && (
+              <Tooltip title="Profile">
+                <IconButton onMouseDown={handleMouseDown}>
+                  <PersonIcon
+                    sx={{
+                      color: 'white',
+                      '&:hover': {
+                        color: '#f5f542',
+                        transition: 'color 0.3s ease-in-out',
+                      },
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
+            )}
 
             {authorized && (
               <Tooltip title="Exit">
                 <IconButton
+                  onMouseDown={handleMouseDown}
                   color="secondary"
                   onClick={handleExit}
                 >

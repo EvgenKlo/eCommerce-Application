@@ -66,7 +66,9 @@ export const LoginPage: React.FC<loginProps> = (props) => {
         handleLogin(true);
         navigate('/');
       }
+      // eslint-disable-next-line no-empty
     } catch (error) {}
+    // eslint-disable-next-line
   }, [customer]);
 
   useEffect(() => {
@@ -81,7 +83,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
       setEmailError(false);
     }
     if (formsValue.password) {
-      const isValid = FormValidator.passwordValodator(formsValue.password);
+      const isValid = FormValidator.passwordValidator(formsValue.password);
       setPasswordError(!isValid);
     } else {
       setPasswordError(false);

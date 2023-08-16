@@ -1,4 +1,5 @@
 import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { postalCodeRegexMap } from '@/helpers/postalCode';
 
 import { type BaseAddress } from '@commercetools/platform-sdk';
 import { useEffect, useState } from 'react';
@@ -10,7 +11,7 @@ const mediaStyleInput = {
   },
 };
 
-const countryList = ['GB', 'US', 'CA', 'BR'];
+const countryList = Object.keys(postalCodeRegexMap);
 
 type Props = {
   address: string;
@@ -31,6 +32,7 @@ export const AddressForm: React.FC<Props> = (props) => {
 
   useEffect(() => {
     getAddress(addressData);
+    // eslint-disable-next-line
   }, [addressData]);
 
   const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' });
@@ -64,7 +66,7 @@ export const AddressForm: React.FC<Props> = (props) => {
         sx={mediaStyleInput}
         size="small"
         onChange={(e) => {
-          if (FormValidator.nameValodator(e.target.value)) {
+          if (FormValidator.nameValidator(e.target.value)) {
             setAddressData({ ...addressData, city: '' });
             setCityError(true);
           } else {
@@ -115,7 +117,7 @@ export const AddressForm: React.FC<Props> = (props) => {
         size="small"
         onChange={(e) => {
           if (e.target.value) {
-            if (FormValidator.postalCodeValodator(e.target.value, addressData.country)) {
+            if (FormValidator.postalCodeValidator(e.target.value, addressData.country)) {
               setAddressData({ ...addressData, postalCode: e.target.value });
               setPostalCodeError(false);
             } else {
