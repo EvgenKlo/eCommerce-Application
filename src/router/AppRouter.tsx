@@ -19,7 +19,7 @@ export const AppRouter = (): ReactElement => {
     <Routes>
       <Route
         path="/"
-        element={<Layout />}
+        element={<Layout logout={handleLogin} />}
       >
         <Route
           index

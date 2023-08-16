@@ -1,18 +1,19 @@
 import { Outlet } from 'react-router-dom';
-import { ReactElement } from 'react';
 import { Header } from './UI/Header';
 import { Footer } from './UI/Footer';
+import { logoutProps } from '@/types/components';
 
-function Layout(): ReactElement {
+const Layout: React.FC<logoutProps> = (props) => {
+  const { logout } = props;
   return (
     <>
-      <Header />
+      <Header logout={logout} />
       <div className="content">
         <Outlet />
       </div>
       <Footer />
     </>
   );
-}
+};
 
 export default Layout;
