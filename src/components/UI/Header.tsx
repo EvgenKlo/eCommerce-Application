@@ -43,7 +43,7 @@ const styleLinks = {
 const pages = ['Home', 'Catalog', 'About'];
 
 const signLinks = [
-  { text: 'Sign in', link: '/login' },
+  { text: 'Log in', link: '/login' },
   { text: 'Sign up', link: '/registration' },
 ];
 
@@ -211,7 +211,7 @@ export function Header() {
                     sx={{
                       margin: '0 10px',
                       '&:hover': {
-                        color: '#04B431',
+                        color: 'info.main',
                         transition: 'color 0.3s ease-in-out',
                       },
                       '@media (max-width: 400px)': {

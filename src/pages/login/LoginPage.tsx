@@ -103,14 +103,14 @@ export const LoginPage: React.FC<loginProps> = (props) => {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography
           component="h1"
           variant="h5"
         >
-          Sign in
+          Login in
         </Typography>
         <Box
           component="form"
@@ -189,7 +189,14 @@ export const LoginPage: React.FC<loginProps> = (props) => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 5, mb: 3 }}
+            sx={{
+              mt: 5,
+              mb: 3,
+              bgcolor: 'secondary.main',
+              '&:hover': {
+                bgcolor: 'secondary.dark',
+              },
+            }}
           >
             Sign In
           </Button>
