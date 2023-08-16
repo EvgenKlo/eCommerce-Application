@@ -21,6 +21,7 @@ import PetsIcon from '@mui/icons-material/Pets';
 import PersonIcon from '@mui/icons-material/Person';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { signOut } from '@/store/slices/customerSlice';
+import { logoutProps } from '@/types/components';
 
 const colorHoverLinks = '#FF8C00';
 
@@ -47,7 +48,8 @@ const signLinks = [
   { text: 'Sign up', link: '/registration' },
 ];
 
-export function Header() {
+export const Header: React.FC<logoutProps> = (props) => {
+  const { logout } = props;
   const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
@@ -67,6 +69,7 @@ export function Header() {
 
   const handleExit = () => {
     dispatch(signOut());
+    logout(false);
   };
 
   return (
@@ -265,4 +268,4 @@ export function Header() {
       </Container>
     </AppBar>
   );
-}
+};
