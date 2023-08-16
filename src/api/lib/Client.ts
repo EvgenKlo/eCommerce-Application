@@ -12,7 +12,6 @@ import { type clientType } from '@/types/apiClient';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 const PROJECT_KEY = import.meta.env.VITE_PROJECT_KEY as string;
-const projectKey = PROJECT_KEY;
 const HOST = import.meta.env.VITE_HOST as string;
 const AUTH_URL = import.meta.env.VITE_AUTH_URL as string;
 const CLIENT_ID = import.meta.env.VITE_CLIENT_ID as string;
@@ -21,7 +20,7 @@ const scopes = [import.meta.env.VITE_SCOPES as string];
 
 const authMiddlewareOptions: AuthMiddlewareOptions = {
   host: AUTH_URL,
-  projectKey: projectKey,
+  projectKey: PROJECT_KEY,
   credentials: {
     clientId: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
@@ -36,7 +35,7 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
 };
 
 const ctpClient = new ClientBuilder()
-  .withProjectKey(projectKey)
+  .withProjectKey(PROJECT_KEY)
   .withClientCredentialsFlow(authMiddlewareOptions)
   .withHttpMiddleware(httpMiddlewareOptions)
   .build();
@@ -49,7 +48,7 @@ export const getApiRoot = (
     case 'anonimous': {
       const options: AnonymousAuthMiddlewareOptions = {
         host: AUTH_URL,
-        projectKey: projectKey,
+        projectKey: PROJECT_KEY,
         credentials: {
           clientId: CLIENT_ID,
           clientSecret: CLIENT_SECRET,
@@ -58,7 +57,7 @@ export const getApiRoot = (
         fetch,
       };
       const ctpClient = new ClientBuilder()
-        .withProjectKey(projectKey)
+        .withProjectKey(PROJECT_KEY)
         .withAnonymousSessionFlow(options)
         .withHttpMiddleware(httpMiddlewareOptions)
         .build();
@@ -69,7 +68,7 @@ export const getApiRoot = (
     case 'password': {
       const options: PasswordAuthMiddlewareOptions = {
         host: AUTH_URL,
-        projectKey: projectKey,
+        projectKey: PROJECT_KEY,
         credentials: {
           clientId: CLIENT_ID,
           clientSecret: CLIENT_SECRET,
@@ -90,7 +89,7 @@ export const getApiRoot = (
         fetch,
       };
       const ctpClient = new ClientBuilder()
-        .withProjectKey(projectKey)
+        .withProjectKey(PROJECT_KEY)
         .withPasswordFlow(options)
         .withHttpMiddleware(httpMiddlewareOptions)
         .build();
@@ -101,7 +100,7 @@ export const getApiRoot = (
     case 'token': {
       const options: RefreshAuthMiddlewareOptions = {
         host: AUTH_URL,
-        projectKey: projectKey,
+        projectKey: PROJECT_KEY,
         credentials: {
           clientId: CLIENT_ID,
           clientSecret: CLIENT_SECRET,
@@ -118,7 +117,7 @@ export const getApiRoot = (
         fetch,
       };
       const ctpClient = new ClientBuilder()
-        .withProjectKey(projectKey)
+        .withProjectKey(PROJECT_KEY)
         .withRefreshTokenFlow(options)
         .withHttpMiddleware(httpMiddlewareOptions)
         .build();
