@@ -200,6 +200,7 @@ export const Header: React.FC<logoutProps> = (props) => {
                       ...styleLinks,
                       colorHoverLinks: COLORS.light,
                       color: location.pathname === link.link ? COLORS.ligthOrange : COLORS.light,
+                      border: link.text === 'Sign up' ? 1 : null,
                     }}
                     component={RouterLink}
                     to={link.link}
