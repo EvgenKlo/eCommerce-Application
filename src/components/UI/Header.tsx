@@ -121,7 +121,7 @@ export const Header: React.FC<logoutProps> = (props) => {
               size="large"
               aria-controls="mobile-menu"
               aria-haspopup="true"
-              color="inherit"
+              color={anchorElNav ? 'secondary' : 'inherit'}
             >
               <MenuIcon />
             </IconButton>
