@@ -77,7 +77,7 @@ export const Header: React.FC<logoutProps> = (props) => {
       position="absolute"
       sx={{ width: '100%' }}
     >
-      <Container maxWidth="xl">
+      <Container>
         <Toolbar
           disableGutters
           sx={{
