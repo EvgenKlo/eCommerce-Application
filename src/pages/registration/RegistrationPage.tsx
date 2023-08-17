@@ -392,9 +392,9 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                   width: { xs: '220px' },
                   color: COLORS.light,
                   fontSize: '12px',
-                  bgcolor: COLORS.violet,
+                  bgcolor: COLORS.lightViolet,
                   '&:hover': {
-                    bgcolor: 'primary.main',
+                    bgcolor: COLORS.violet,
                   },
                 }}
                 onClick={() => {

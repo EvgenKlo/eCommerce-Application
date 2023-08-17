@@ -5,7 +5,7 @@ export const COLORS = {
 
   violet: '#5c417c',
   lightViolet: '#bb9ebb',
-  darkViolet: '#660066',
+  darkViolet: '#412e57',
 
   orange: '#db731d',
   ligthOrange: '#d68b4e',

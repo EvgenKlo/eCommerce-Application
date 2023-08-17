@@ -23,14 +23,22 @@ export const Footer: React.FC = () => {
     </Box>
   );
 
-  const linkStyles: React.CSSProperties = {
+  const linkStyles = {
     color: 'white',
     textDecoration: 'none',
+    '&:hover': {
+      transition: 'color 0.3s ease-in-out',
+      color: COLORS.orange,
+    },
   };
 
-  const gitLinkStyles: React.CSSProperties = {
+  const gitLinkStyles = {
     color: 'black',
     textDecoration: 'none',
+    '&:hover': {
+      transition: 'color 0.3s ease-in-out',
+      color: COLORS.orange,
+    },
   };
 
   const styleContainer = {
@@ -68,13 +76,20 @@ export const Footer: React.FC = () => {
                   style={linkStyles}
                   variant="body1"
                 >
-                  12 Avenu st., Los Angeles
+                  <Link
+                    sx={linkStyles}
+                    variant="body1"
+                    target="_blank"
+                    href="https://www.google.com/maps/@34.035897,-118.3307848,3a,75y,3.58h,85.44t/data=!3m6!1e1!3m4!1s_Ran1t5GhSHiydc8I5iShw!2e0!7i16384!8i8192?entry=ttu"
+                  >
+                    12 Avenu st., Los Angeles
+                  </Link>
                 </Typography>
               </Item>
               <Item>
                 <Typography variant="body2">
                   <Link
-                    style={linkStyles}
+                    sx={linkStyles}
                     variant="body1"
                     href="tel:+1234567890"
                   >
@@ -85,7 +100,7 @@ export const Footer: React.FC = () => {
               <Item>
                 <Typography variant="body1">
                   <Link
-                    style={linkStyles}
+                    sx={linkStyles}
                     href="mailto:info@example.com"
                   >
                     petjoy-info@google.com
@@ -114,7 +129,7 @@ export const Footer: React.FC = () => {
               {' '}
               <GitHubIcon style={{ margin: '0 8', color: 'black' }} />
               <Link
-                style={gitLinkStyles}
+                sx={gitLinkStyles}
                 href="https://github.com/EvgenKlo"
                 target="_blank"
                 rel="noopener"
@@ -125,7 +140,7 @@ export const Footer: React.FC = () => {
             <Item>
               <GitHubIcon style={{ margin: '0 8', color: 'black' }} />
               <Link
-                style={gitLinkStyles}
+                sx={gitLinkStyles}
                 href="https://github.com/lidasharova"
                 target="_blank"
                 rel="noopener"
@@ -137,7 +152,7 @@ export const Footer: React.FC = () => {
               <GitHubIcon style={{ margin: '0 8', color: 'black' }} />
 
               <Link
-                style={gitLinkStyles}
+                sx={gitLinkStyles}
                 href="https://github.com/fasty86"
                 target="_blank"
                 rel="noopener"
