@@ -22,6 +22,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { signOut } from '@/store/slices/customerSlice';
 import { logoutProps } from '@/types/components';
+import { Link } from 'react-router-dom';
 
 const colorHoverLinks = '#FF8C00';
 
@@ -150,12 +151,19 @@ export const Header: React.FC<logoutProps> = (props) => {
                   key={page}
                   onClick={handleCloseNavMenu}
                 >
-                  <Button
-                    component={RouterLink}
+                  <Link
                     to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
+                    style={{
+                      width: '100px',
+                      ...styleLinks,
+                      color:
+                        location.pathname === (page === 'Home' ? '/' : `/${page.toLowerCase()}`)
+                          ? colorHoverLinks
+                          : '#000',
+                    }}
                   >
                     <Typography textAlign="center">{page}</Typography>
-                  </Button>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -226,41 +234,40 @@ export const Header: React.FC<logoutProps> = (props) => {
             </Tooltip>
 
             {authorized && (
-              <Tooltip title="Profile">
-                <IconButton onMouseDown={handleMouseDown}>
-                  <PersonIcon
-                    sx={{
-                      color: 'white',
-                      '&:hover': {
-                        color: '#f5f542',
-                        transition: 'color 0.3s ease-in-out',
-                      },
-                    }}
-                  />
-                </IconButton>
-              </Tooltip>
-            )}
-
-            {authorized && (
-              <Tooltip title="Exit">
-                <IconButton
-                  onMouseDown={handleMouseDown}
-                  color="secondary"
-                  onClick={handleExit}
-                >
-                  <LogoutIcon
-                    sx={{
-                      '&:hover': {
-                        color: 'red',
-                        transition: 'color 0.3s ease-in-out',
-                      },
-                      '@media (max-width: 400px)': {
-                        padding: '0px',
-                      },
-                    }}
-                  />
-                </IconButton>
-              </Tooltip>
+              <>
+                <Tooltip title="Profile">
+                  <IconButton onMouseDown={handleMouseDown}>
+                    <PersonIcon
+                      sx={{
+                        color: 'white',
+                        '&:hover': {
+                          color: '#f5f542',
+                          transition: 'color 0.3s ease-in-out',
+                        },
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Exit">
+                  <IconButton
+                    onMouseDown={handleMouseDown}
+                    color="secondary"
+                    onClick={handleExit}
+                  >
+                    <LogoutIcon
+                      sx={{
+                        '&:hover': {
+                          color: 'red',
+                          transition: 'color 0.3s ease-in-out',
+                        },
+                        '@media (max-width: 400px)': {
+                          padding: '0px',
+                        },
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              </>
             )}
           </Box>
         </Toolbar>
