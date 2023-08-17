@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import NotFoundImage from '../../assets/not-found/not-found-cat.svg';
-import { Typography, Card, CardMedia, Grid, Box } from '@mui/material';
+import { Typography, Card, CardMedia, Grid, Box, Button } from '@mui/material';
+import { COLORS } from '@/GlobalVariables';
 
 export const ErrorPage: React.FC = () => {
   return (
@@ -36,6 +38,14 @@ export const ErrorPage: React.FC = () => {
           </Card>
         </Grid>
       </Grid>
+      <Button
+        component={Link}
+        to={'/'}
+        variant="contained"
+        sx={{ margin: '2rem', '&:hover': { color: COLORS.orange } }}
+      >
+        Go back to main page
+      </Button>
     </Box>
   );
 };
