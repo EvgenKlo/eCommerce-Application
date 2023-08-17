@@ -45,7 +45,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
@@ -287,7 +287,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                       <IconButton
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
+                        onMouseDown={handleMouseDown}
                         edge="end"
                       >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -384,6 +384,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 type="button"
                 fullWidth
                 variant="contained"
+                onMouseDown={handleMouseDown}
                 sx={{
                   mt: 3,
                   mb: 2,
@@ -471,6 +472,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               type="submit"
               fullWidth
               variant="contained"
+              onMouseDown={handleMouseDown}
               sx={{
                 mt: 3,
                 mb: 2,
