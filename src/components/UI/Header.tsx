@@ -101,7 +101,6 @@ export const Header: React.FC<logoutProps> = (props) => {
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 color: 'inherit',
-                display: { xs: 'none', md: 'block' },
                 '&:hover': {
                   color: colorHoverLinks,
                   transition: 'color 0.3s ease-in-out',
@@ -116,7 +115,7 @@ export const Header: React.FC<logoutProps> = (props) => {
             </Typography>
           </RouterLink>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' } }}>
             <IconButton
               onMouseDown={handleMouseDown}
               onClick={handleOpenNavMenu}
@@ -162,7 +161,7 @@ export const Header: React.FC<logoutProps> = (props) => {
             </Menu>
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' }, justifyContent: 'center' }}>
             {pages.map((page) => (
               <Button
                 key={page}
