@@ -32,7 +32,7 @@ const styleLinks = {
     color: COLORS.ligthOrange,
     transition: 'color 0.3s ease-in-out',
   },
-  '@media (max-width: 400px)': {
+  '@media (max-width: 415px)': {
     padding: 0,
     marginRight: '10px',
     fontSize: '0.75rem',
@@ -151,7 +151,7 @@ export const Header: React.FC<logoutProps> = (props) => {
                 >
                   <RouterLink to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}>
                     <Typography
-                      style={{
+                      sx={{
                         textAlign: 'center',
                         width: '100px',
                         ...styleLinks,
