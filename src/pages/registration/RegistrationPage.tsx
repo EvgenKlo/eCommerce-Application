@@ -83,7 +83,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
         handleLogin(true);
         navigate('/');
       }
-    // eslint-disable-next-line no-empty
+      // eslint-disable-next-line no-empty
     } catch (error) {}
     // eslint-disable-next-line
   }, [customer]);
@@ -343,7 +343,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
             variant="subtitle1"
             color={'#660066'}
             sx={{
-              marginTop: { xs: '2rem', sm: '1.5rem' },
+              marginTop: { xs: '2rem', sm: '1.5rem', xl: '1,5rem' },
               marginBottom: { xs: '1rem', sm: '1rem' },
             }}
           >
@@ -357,6 +357,9 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
           {!showBillingAddress ? (
             <>
               <FormControlLabel
+                sx={{
+                  marginTop: { xs: '1rem', sm: '1.5rem', xl: '1,5rem' },
+                }}
                 control={
                   <Checkbox
                     value="useBillingAsShipping"
@@ -380,13 +383,17 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <Button
                 type="button"
                 fullWidth
-                variant="outlined"
+                variant="contained"
                 sx={{
                   mt: 3,
                   mb: 2,
                   width: { xs: '220px' },
-                  color: '#660066',
+                  color: 'white',
                   fontSize: '12px',
+                  bgcolor: '#5c417cd4',
+                  '&:hover': {
+                    bgcolor: 'primary.main',
+                  },
                 }}
                 onClick={() => {
                   setShowBillingAddress(true);
@@ -468,6 +475,10 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 mt: 3,
                 mb: 2,
                 width: { xs: '220px' },
+                bgcolor: 'secondary.main',
+                '&:hover': {
+                  bgcolor: 'secondary.dark',
+                },
               }}
             >
               Sign Up

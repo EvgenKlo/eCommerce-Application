@@ -52,7 +52,7 @@ export const Footer: React.FC = () => {
             columnGap: 3,
             rowGap: 1,
             gridTemplateColumns: 'repeat(3, 1fr)',
-            backgroundColor: '#660066',
+            backgroundColor: '#5c417c',
             '@media (max-width: 500px)': {
               gridTemplateColumns: '1fr',
               rowGap: 2,

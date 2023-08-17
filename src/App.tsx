@@ -15,14 +15,31 @@ const theme = createTheme(
   {
     palette: {
       primary: {
-        main: '#660066',
+        main: '#5c417c',
       },
       secondary: {
-        main: '#FF8C00',
+        main: '#d68b4e',
+        dark: '#db731d',
+        light: '#bb9ebb',
       },
       background: {
-        default: '#ffffff',
+        default: '#e4e8ee',
+        paper: '#f0f0f0',
       },
+      error: {
+        main: '#ff0000',
+      },
+      success: {
+        main: '#00ff00',
+      },
+      text: {
+        primary: '#333333',
+        secondary: '#666666',
+      },
+      info: {
+        main: '#8cd4ac',
+      },
+      divider: '#e0e0e0',
     },
   },
   enUS
