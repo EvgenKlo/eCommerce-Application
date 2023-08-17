@@ -22,16 +22,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { signOut } from '@/store/slices/customerSlice';
 import { logoutProps } from '@/types/components';
-import { Link } from 'react-router-dom';
-
-const colorHoverLinks = '#FF8C00';
+import { COLORS } from '@/GlobalVariables';
 
 const styleLinks = {
-  color: '#ffffff',
+  color: COLORS.light,
   fontSize: '0.9rem',
   marginX: 1,
   '&:hover': {
-    color: colorHoverLinks,
+    color: COLORS.ligthOrange,
     transition: 'color 0.3s ease-in-out',
   },
   '@media (max-width: 400px)': {
@@ -92,7 +90,7 @@ export const Header: React.FC<logoutProps> = (props) => {
             to="/"
             style={{
               textDecoration: 'none',
-              color: location.pathname === '/' ? colorHoverLinks : '#ffffff',
+              color: location.pathname === '/' ? COLORS.ligthOrange : COLORS.light,
             }}
           >
             <Typography
@@ -103,7 +101,7 @@ export const Header: React.FC<logoutProps> = (props) => {
                 fontWeight: 700,
                 color: 'inherit',
                 '&:hover': {
-                  color: colorHoverLinks,
+                  color: COLORS.ligthOrange,
                   transition: 'color 0.3s ease-in-out',
                 },
               }}
@@ -151,19 +149,21 @@ export const Header: React.FC<logoutProps> = (props) => {
                   key={page}
                   onClick={handleCloseNavMenu}
                 >
-                  <Link
-                    to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
-                    style={{
-                      width: '100px',
-                      ...styleLinks,
-                      color:
-                        location.pathname === (page === 'Home' ? '/' : `/${page.toLowerCase()}`)
-                          ? colorHoverLinks
-                          : '#000',
-                    }}
-                  >
-                    <Typography textAlign="center">{page}</Typography>
-                  </Link>
+                  <RouterLink to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}>
+                    <Typography
+                      style={{
+                        textAlign: 'center',
+                        width: '100px',
+                        ...styleLinks,
+                        color:
+                          location.pathname === (page === 'Home' ? '/' : `/${page.toLowerCase()}`)
+                            ? COLORS.ligthOrange
+                            : COLORS.violet,
+                      }}
+                    >
+                      {page.toUpperCase()}
+                    </Typography>
+                  </RouterLink>
                 </MenuItem>
               ))}
             </Menu>
@@ -178,8 +178,8 @@ export const Header: React.FC<logoutProps> = (props) => {
                   ...styleLinks,
                   color:
                     location.pathname === (page === 'Home' ? '/' : `/${page.toLowerCase()}`)
-                      ? colorHoverLinks
-                      : styleLinks.color,
+                      ? COLORS.ligthOrange
+                      : COLORS.light,
                 }}
                 component={RouterLink}
                 to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
@@ -198,8 +198,8 @@ export const Header: React.FC<logoutProps> = (props) => {
                     onClick={handleCloseNavMenu}
                     sx={{
                       ...styleLinks,
-                      colorHoverLinks: styleLinks.color,
-                      color: location.pathname === link.link ? colorHoverLinks : styleLinks.color,
+                      colorHoverLinks: COLORS.light,
+                      color: location.pathname === link.link ? COLORS.ligthOrange : COLORS.light,
                     }}
                     component={RouterLink}
                     to={link.link}
@@ -241,7 +241,7 @@ export const Header: React.FC<logoutProps> = (props) => {
                       sx={{
                         color: 'white',
                         '&:hover': {
-                          color: '#f5f542',
+                          color: COLORS.green,
                           transition: 'color 0.3s ease-in-out',
                         },
                       }}

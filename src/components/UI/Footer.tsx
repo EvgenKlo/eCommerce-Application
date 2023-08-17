@@ -2,6 +2,7 @@ import React from 'react';
 import { Typography, Link, Box, Container, AppBar } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import PlaceIcon from '@mui/icons-material/Place';
+import { COLORS } from '@/GlobalVariables';
 
 export const Footer: React.FC = () => {
   interface ItemProps {
@@ -54,7 +55,7 @@ export const Footer: React.FC = () => {
                 columnGap: 3,
                 rowGap: 1,
                 gridTemplateColumns: 'repeat(3, 1fr)',
-                backgroundColor: '#5c417c',
+                backgroundColor: COLORS.violet,
                 '@media (max-width: 500px)': {
                   gridTemplateColumns: '1fr',
                   rowGap: 2,
