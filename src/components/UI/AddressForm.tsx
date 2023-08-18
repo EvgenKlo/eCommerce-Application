@@ -47,6 +47,7 @@ export const AddressForm: React.FC<Props> = (props) => {
         variant="filled"
         required
         fullWidth
+        data-testid={`${address}Street`}
         name={`${address}Street`}
         label={`${address} Street`}
         id={`${address}Street`}
@@ -60,6 +61,7 @@ export const AddressForm: React.FC<Props> = (props) => {
         variant="filled"
         required
         fullWidth
+        data-testid={`${address}City`}
         name={`${address}City`}
         label={`${address} City`}
         id={`${address}City`}
@@ -84,7 +86,12 @@ export const AddressForm: React.FC<Props> = (props) => {
         required
         sx={mediaStyleInput}
       >
-        <InputLabel id="demo-simple-select-filled-label">Country</InputLabel>
+        <InputLabel
+          data-testid={`${address}Country`}
+          id={`${address}Country`}
+        >
+          {`${address} Country`}
+        </InputLabel>
         <Select
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
@@ -110,6 +117,7 @@ export const AddressForm: React.FC<Props> = (props) => {
         variant="filled"
         required
         fullWidth
+        data-testid={`${address}PostalCode`}
         name={`${address}PostalCode`}
         label={addressData.country ? `${address} Postal Code` : 'choose a country'}
         id={`${address}PostalCode`}

@@ -265,6 +265,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               >
                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                 <OutlinedInput
+                  data-testid="password-input"
                   error={passwordError}
                   label={'Password'}
                   onChange={(e) => {
@@ -488,6 +489,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
           >
             <Grid item>
               <Link
+                data-testid="sign-in-link"
                 href="/login"
                 variant="body2"
               >
