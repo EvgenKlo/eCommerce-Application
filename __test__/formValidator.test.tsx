@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { FormValidator } from '@/helpers/formValidator';
+import { FormValidator } from '../src/helpers/formValidator';
 
 test('email validator', () => {
   expect(FormValidator.emailValidator('email@mail.com')).toBe(true);

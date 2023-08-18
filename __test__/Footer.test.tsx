@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect } from 'vitest';
-import { Footer } from '@/components/UI/Footer';
+import { Footer } from '../src/components/UI/Footer';
+import React from 'react';
 
 describe('<Footer />', () => {
   test('Footer mounts properly', () => {
