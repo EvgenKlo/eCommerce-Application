@@ -45,7 +45,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
@@ -287,7 +287,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                       <IconButton
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
+                        onMouseDown={handleMouseDown}
                         edge="end"
                       >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -341,7 +341,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
           </Grid>
           <Typography
             variant="subtitle1"
-            color={'#660066'}
+            color="primary.dark"
             sx={{
               marginTop: { xs: '2rem', sm: '1.5rem', xl: '1,5rem' },
               marginBottom: { xs: '1rem', sm: '1rem' },
@@ -384,16 +384,13 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 type="button"
                 fullWidth
                 variant="contained"
+                onMouseDown={handleMouseDown}
                 sx={{
                   mt: 3,
                   mb: 2,
                   width: { xs: '220px' },
-                  color: 'white',
                   fontSize: '12px',
-                  bgcolor: '#5c417cd4',
-                  '&:hover': {
-                    bgcolor: 'primary.main',
-                  },
+                  bgcolor: 'primary.light',
                 }}
                 onClick={() => {
                   setShowBillingAddress(true);
@@ -430,7 +427,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               />
               <Typography
                 variant="subtitle1"
-                color={'#660066'}
+                color="primary.dark"
                 sx={{
                   marginTop: { xs: '2rem', sm: '1.5rem' },
                   marginBottom: { xs: '1rem', sm: '1rem' },
@@ -471,6 +468,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               type="submit"
               fullWidth
               variant="contained"
+              onMouseDown={handleMouseDown}
               sx={{
                 mt: 3,
                 mb: 2,

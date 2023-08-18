@@ -16,14 +16,15 @@ const theme = createTheme(
     palette: {
       primary: {
         main: '#5c417c',
+        dark: '#412e57',
+        light: '#bb9ebb',
       },
       secondary: {
         main: '#d68b4e',
         dark: '#db731d',
-        light: '#bb9ebb',
       },
       background: {
-        default: '#e4e8ee',
+        default: '#ffffff',
         paper: '#f0f0f0',
       },
       error: {

@@ -23,17 +23,15 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { signOut } from '@/store/slices/customerSlice';
 import { logoutProps } from '@/types/components';
 
-const colorHoverLinks = '#FF8C00';
-
 const styleLinks = {
-  color: '#ffffff',
+  color: 'background.default',
   fontSize: '0.9rem',
   marginX: 1,
   '&:hover': {
-    color: colorHoverLinks,
+    color: 'secondary.main',
     transition: 'color 0.3s ease-in-out',
   },
-  '@media (max-width: 400px)': {
+  '@media (max-width: 415px)': {
     padding: 0,
     marginRight: '10px',
     fontSize: '0.75rem',
@@ -77,7 +75,7 @@ export const Header: React.FC<logoutProps> = (props) => {
       position="absolute"
       sx={{ width: '100%' }}
     >
-      <Container maxWidth="xl">
+      <Container>
         <Toolbar
           disableGutters
           sx={{
@@ -87,23 +85,16 @@ export const Header: React.FC<logoutProps> = (props) => {
             width: '100%',
           }}
         >
-          <RouterLink
-            to="/"
-            style={{
-              textDecoration: 'none',
-              color: location.pathname === '/' ? colorHoverLinks : '#ffffff',
-            }}
-          >
+          <RouterLink to="/">
             <Typography
               variant="h6"
               noWrap
               sx={{
                 fontFamily: 'monospace',
                 fontWeight: 700,
-                color: 'inherit',
-                display: { xs: 'none', md: 'block' },
+                color: location.pathname === '/' ? 'secondary.main' : 'background.default',
                 '&:hover': {
-                  color: colorHoverLinks,
+                  color: 'secondary.main',
                   transition: 'color 0.3s ease-in-out',
                 },
               }}
@@ -116,14 +107,14 @@ export const Header: React.FC<logoutProps> = (props) => {
             </Typography>
           </RouterLink>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' } }}>
             <IconButton
               onMouseDown={handleMouseDown}
               onClick={handleOpenNavMenu}
               size="large"
               aria-controls="mobile-menu"
               aria-haspopup="true"
-              color="inherit"
+              color={anchorElNav ? 'secondary' : 'inherit'}
             >
               <MenuIcon />
             </IconButton>
@@ -151,18 +142,27 @@ export const Header: React.FC<logoutProps> = (props) => {
                   key={page}
                   onClick={handleCloseNavMenu}
                 >
-                  <Button
-                    component={RouterLink}
-                    to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
-                  >
-                    <Typography textAlign="center">{page}</Typography>
-                  </Button>
+                  <RouterLink to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}>
+                    <Typography
+                      sx={{
+                        textAlign: 'center',
+                        width: '100px',
+                        ...styleLinks,
+                        color:
+                          location.pathname === (page === 'Home' ? '/' : `/${page.toLowerCase()}`)
+                            ? 'secondary.main'
+                            : 'primary.main',
+                      }}
+                    >
+                      {page.toUpperCase()}
+                    </Typography>
+                  </RouterLink>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' }, justifyContent: 'center' }}>
             {pages.map((page) => (
               <Button
                 key={page}
@@ -171,8 +171,8 @@ export const Header: React.FC<logoutProps> = (props) => {
                   ...styleLinks,
                   color:
                     location.pathname === (page === 'Home' ? '/' : `/${page.toLowerCase()}`)
-                      ? colorHoverLinks
-                      : styleLinks.color,
+                      ? 'secondary.main'
+                      : 'background.default',
                 }}
                 component={RouterLink}
                 to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
@@ -191,8 +191,10 @@ export const Header: React.FC<logoutProps> = (props) => {
                     onClick={handleCloseNavMenu}
                     sx={{
                       ...styleLinks,
-                      colorHoverLinks: styleLinks.color,
-                      color: location.pathname === link.link ? colorHoverLinks : styleLinks.color,
+                      colorHoverLinks: 'background.default',
+                      color:
+                        location.pathname === link.link ? 'secondary.main' : 'background.default',
+                      border: link.text === 'Sign up' ? 1 : null,
                     }}
                     component={RouterLink}
                     to={link.link}
@@ -227,41 +229,40 @@ export const Header: React.FC<logoutProps> = (props) => {
             </Tooltip>
 
             {authorized && (
-              <Tooltip title="Profile">
-                <IconButton onMouseDown={handleMouseDown}>
-                  <PersonIcon
-                    sx={{
-                      color: 'white',
-                      '&:hover': {
-                        color: '#f5f542',
-                        transition: 'color 0.3s ease-in-out',
-                      },
-                    }}
-                  />
-                </IconButton>
-              </Tooltip>
-            )}
-
-            {authorized && (
-              <Tooltip title="Exit">
-                <IconButton
-                  onMouseDown={handleMouseDown}
-                  color="secondary"
-                  onClick={handleExit}
-                >
-                  <LogoutIcon
-                    sx={{
-                      '&:hover': {
-                        color: 'red',
-                        transition: 'color 0.3s ease-in-out',
-                      },
-                      '@media (max-width: 400px)': {
-                        padding: '0px',
-                      },
-                    }}
-                  />
-                </IconButton>
-              </Tooltip>
+              <>
+                <Tooltip title="Profile">
+                  <IconButton onMouseDown={handleMouseDown}>
+                    <PersonIcon
+                      sx={{
+                        color: 'white',
+                        '&:hover': {
+                          color: 'info.main',
+                          transition: 'color 0.3s ease-in-out',
+                        },
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Exit">
+                  <IconButton
+                    onMouseDown={handleMouseDown}
+                    color="secondary"
+                    onClick={handleExit}
+                  >
+                    <LogoutIcon
+                      sx={{
+                        '&:hover': {
+                          color: 'red',
+                          transition: 'color 0.3s ease-in-out',
+                        },
+                        '@media (max-width: 400px)': {
+                          padding: '0px',
+                        },
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              </>
             )}
           </Box>
         </Toolbar>
