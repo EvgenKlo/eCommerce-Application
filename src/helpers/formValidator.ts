@@ -7,7 +7,13 @@ export class FormValidator {
       return false;
     }
 
-    return Isemail.validate(email);
+    if (Isemail.validate(email)) {
+      const emailFilter = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/;
+
+      return emailFilter.test(email);
+    } else {
+      return false;
+    }
   }
 
   static passwordValidator(password: string) {

@@ -10,6 +10,7 @@ test('email validator', () => {
   expect(FormValidator.emailValidator('email@@mail.com')).toBe(false);
   expect(FormValidator.emailValidator('email@mail.mail.com')).toBe(true);
   expect(FormValidator.emailValidator('email@mail.mail.com.ru')).toBe(true);
+  expect(FormValidator.emailValidator('email@mail')).toBe(false);
 });
 
 test('password validator', () => {
