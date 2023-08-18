@@ -10,37 +10,37 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { enUS } from '@mui/x-date-pickers/locales';
-import { COLORS } from './GlobalVariables';
 
 const theme = createTheme(
   {
     palette: {
       primary: {
-        main: COLORS.violet,
+        main: '#5c417c',
+        dark: '#412e57',
+        light: '#bb9ebb',
       },
       secondary: {
-        main: COLORS.ligthOrange,
-        dark: COLORS.orange,
-        light: COLORS.lightViolet,
+        main: '#d68b4e',
+        dark: '#db731d',
       },
       background: {
-        default: COLORS.light,
-        paper: COLORS.gray,
+        default: '#ffffff',
+        paper: '#f0f0f0',
       },
       error: {
-        main: COLORS.error.main,
+        main: '#ff0000',
       },
       success: {
-        main: COLORS.success.main,
+        main: '#00ff00',
       },
       text: {
-        primary: COLORS.text.primary,
-        secondary: COLORS.text.secondary,
+        primary: '#333333',
+        secondary: '#666666',
       },
       info: {
-        main: COLORS.info.main,
+        main: '#8cd4ac',
       },
-      divider: COLORS.divider,
+      divider: '#e0e0e0',
     },
   },
   enUS

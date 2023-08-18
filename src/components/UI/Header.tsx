@@ -22,14 +22,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { signOut } from '@/store/slices/customerSlice';
 import { logoutProps } from '@/types/components';
-import { COLORS } from '@/GlobalVariables';
 
 const styleLinks = {
-  color: COLORS.light,
+  color: 'background.default',
   fontSize: '0.9rem',
   marginX: 1,
   '&:hover': {
-    color: COLORS.ligthOrange,
+    color: 'secondary.main',
     transition: 'color 0.3s ease-in-out',
   },
   '@media (max-width: 415px)': {
@@ -86,22 +85,16 @@ export const Header: React.FC<logoutProps> = (props) => {
             width: '100%',
           }}
         >
-          <RouterLink
-            to="/"
-            style={{
-              textDecoration: 'none',
-              color: location.pathname === '/' ? COLORS.ligthOrange : COLORS.light,
-            }}
-          >
+          <RouterLink to="/">
             <Typography
               variant="h6"
               noWrap
               sx={{
                 fontFamily: 'monospace',
                 fontWeight: 700,
-                color: 'inherit',
+                color: location.pathname === '/' ? 'secondary.main' : 'background.default',
                 '&:hover': {
-                  color: COLORS.ligthOrange,
+                  color: 'secondary.main',
                   transition: 'color 0.3s ease-in-out',
                 },
               }}
@@ -157,8 +150,8 @@ export const Header: React.FC<logoutProps> = (props) => {
                         ...styleLinks,
                         color:
                           location.pathname === (page === 'Home' ? '/' : `/${page.toLowerCase()}`)
-                            ? COLORS.ligthOrange
-                            : COLORS.violet,
+                            ? 'secondary.main'
+                            : 'primary.main',
                       }}
                     >
                       {page.toUpperCase()}
@@ -178,8 +171,8 @@ export const Header: React.FC<logoutProps> = (props) => {
                   ...styleLinks,
                   color:
                     location.pathname === (page === 'Home' ? '/' : `/${page.toLowerCase()}`)
-                      ? COLORS.ligthOrange
-                      : COLORS.light,
+                      ? 'secondary.main'
+                      : 'background.default',
                 }}
                 component={RouterLink}
                 to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
@@ -198,8 +191,9 @@ export const Header: React.FC<logoutProps> = (props) => {
                     onClick={handleCloseNavMenu}
                     sx={{
                       ...styleLinks,
-                      colorHoverLinks: COLORS.light,
-                      color: location.pathname === link.link ? COLORS.ligthOrange : COLORS.light,
+                      colorHoverLinks: 'background.default',
+                      color:
+                        location.pathname === link.link ? 'secondary.main' : 'background.default',
                       border: link.text === 'Sign up' ? 1 : null,
                     }}
                     component={RouterLink}
@@ -242,7 +236,7 @@ export const Header: React.FC<logoutProps> = (props) => {
                       sx={{
                         color: 'white',
                         '&:hover': {
-                          color: COLORS.green,
+                          color: 'info.main',
                           transition: 'color 0.3s ease-in-out',
                         },
                       }}

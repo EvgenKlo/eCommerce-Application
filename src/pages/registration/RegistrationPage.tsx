@@ -31,7 +31,6 @@ import { useNavigate } from 'react-router-dom';
 import { AddressForm } from '@/components/UI/AddressForm';
 import { FormValidator } from '@/helpers/formValidator';
 import Message from '@/components/UI/Message';
-import { COLORS } from '@/GlobalVariables';
 
 interface loginProps {
   handleLogin: (val: boolean) => void;
@@ -342,7 +341,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
           </Grid>
           <Typography
             variant="subtitle1"
-            color={COLORS.darkViolet}
+            color="primary.dark"
             sx={{
               marginTop: { xs: '2rem', sm: '1.5rem', xl: '1,5rem' },
               marginBottom: { xs: '1rem', sm: '1rem' },
@@ -390,12 +389,8 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                   mt: 3,
                   mb: 2,
                   width: { xs: '220px' },
-                  color: COLORS.light,
                   fontSize: '12px',
-                  bgcolor: COLORS.lightViolet,
-                  '&:hover': {
-                    bgcolor: COLORS.violet,
-                  },
+                  bgcolor: 'primary.light',
                 }}
                 onClick={() => {
                   setShowBillingAddress(true);
@@ -432,7 +427,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               />
               <Typography
                 variant="subtitle1"
-                color={COLORS.darkViolet}
+                color="primary.dark"
                 sx={{
                   marginTop: { xs: '2rem', sm: '1.5rem' },
                   marginBottom: { xs: '1rem', sm: '1rem' },
