@@ -1,4 +1,5 @@
 import { postalCodeRegexMap } from './postalCode';
+import Isemail from 'isemail';
 
 export class FormValidator {
   static emailValidator(email: string) {
@@ -6,9 +7,7 @@ export class FormValidator {
       return false;
     }
 
-    const emailFilter = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/;
-
-    return emailFilter.test(email);
+    return Isemail.validate(email);
   }
 
   static passwordValidator(password: string) {
@@ -28,6 +27,7 @@ export class FormValidator {
     if (customerAge >= 14) {
       return true;
     }
+    return false;
   }
 
   static postalCodeValidator(postalCode: string, country: string) {
