@@ -110,7 +110,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
           component="h1"
           variant="h5"
         >
-          Login in
+          Log in
         </Typography>
         <Box
           component="form"
@@ -186,6 +186,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
             )}
           </FormControl>
           <Button
+            data-testid="Log in"
             type="submit"
             fullWidth
             variant="contained"
@@ -199,7 +200,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
               },
             }}
           >
-            Sign In
+            Log in
           </Button>
           <Grid container>
             <Grid

@@ -62,7 +62,7 @@ describe('<LoginPage />', () => {
 
     const user = userEvent.setup();
     const spySignInBtn = vi.spyOn(user, 'click');
-    const btn = screen.getByText(/Sign in/i) as HTMLButtonElement;
+    const btn = screen.getByTestId('Log in') as HTMLButtonElement;
     user.click(btn);
     expect(spySignInBtn).toHaveBeenCalledOnce();
   });

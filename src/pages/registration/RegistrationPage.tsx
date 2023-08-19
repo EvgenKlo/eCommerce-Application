@@ -493,7 +493,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 href="/login"
                 variant="body2"
               >
-                Already have an account? Sign in
+                Already have an account? Log in
               </Link>
             </Grid>
           </Grid>
