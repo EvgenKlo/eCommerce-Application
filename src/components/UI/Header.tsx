@@ -206,26 +206,25 @@ export const Header: React.FC<logoutProps> = (props) => {
             })}
 
             <Tooltip title="Open cart">
-              <IconButton
-                onMouseDown={handleMouseDown}
-                color="inherit"
-                sx={{ p: 0 }}
-              >
-                <Badge color="secondary">
-                  <ShoppingBasketIcon
-                    sx={{
-                      margin: '0 10px',
-                      '&:hover': {
-                        color: 'info.main',
-                        transition: 'color 0.3s ease-in-out',
-                      },
-                      '@media (max-width: 400px)': {
-                        margin: 0,
-                      },
-                    }}
-                  />
-                </Badge>
-              </IconButton>
+              <RouterLink to={'/basket'}>
+                <IconButton
+                  onMouseDown={handleMouseDown}
+                  sx={{
+                    color: 'background.default',
+                    '&:hover': {
+                      color: 'info.main',
+                      transition: 'color 0.3s ease-in-out',
+                    },
+                    '@media (max-width: 400px)': {
+                      margin: 0,
+                    },
+                  }}
+                >
+                  <Badge>
+                    <ShoppingBasketIcon />
+                  </Badge>
+                </IconButton>
+              </RouterLink>
             </Tooltip>
 
             {authorized && (

@@ -9,6 +9,7 @@ import { ErrorPage } from '@/pages/error/ErrorPage';
 import { CatalogPage } from '../pages/catalog/CatalogPage';
 import { UserPage } from '@/pages/user/UserPage';
 import { useAuth } from '@/hooks/AuthHooks';
+import BasketPage from '@/pages/basket/BasketPage';
 
 export const AppRouter = (): ReactElement => {
   const [changeAuth] = useAuth();
@@ -36,6 +37,10 @@ export const AppRouter = (): ReactElement => {
         <Route
           path="profile"
           element={<UserPage />}
+        />
+        <Route
+          path="basket"
+          element={<BasketPage />}
         />
         <Route
           path="login"
