@@ -17,7 +17,11 @@ export class FormValidator {
   }
 
   static passwordValidator(password: string) {
-    const passwordFilter = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (password[0] === ' ' || password.slice(-1) === ' ') {
+      return false;
+    }
+    const passwordFilter =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d\s!@#$%^&*]{8,}$/;
 
     return passwordFilter.test(password);
   }
