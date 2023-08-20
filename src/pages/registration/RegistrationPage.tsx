@@ -81,7 +81,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
     try {
       if ('id' in customer) {
         handleLogin(true);
-        navigate('/');
+        setTimeout(() => navigate('/'), 1000);
       }
       // eslint-disable-next-line no-empty
     } catch (error) {}

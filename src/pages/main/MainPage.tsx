@@ -9,7 +9,7 @@ export const MainPage: React.FC = () => {
 
   return (
     <>
-      <h3>Hello {customer.firstName} !</h3>
+      {customer ? <h3>Hello {customer.firstName} !</h3> : <h3>Hello !</h3>}
       {pages.map((page) => (
         <Button
           key={page}
