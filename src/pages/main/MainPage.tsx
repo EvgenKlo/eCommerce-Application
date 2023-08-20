@@ -7,7 +7,7 @@ export const MainPage: React.FC = () => {
 
   return (
     <>
-      <h3>Hello {customer.firstName} !</h3>
+      {customer ? <h3>Hello {customer.firstName} !</h3> : <h3>Hello !</h3>}
       <Button
         variant="contained"
         sx={{ margin: '2rem', '&:hover': { color: 'secondary.main' } }}

@@ -1,9 +1,14 @@
-import React from 'react';
-import { Link, Box, Container, AppBar } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Link, Box, Container, AppBar, Button } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import PlaceIcon from '@mui/icons-material/Place';
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton, Snackbar, Alert } from '@mui/material';
+import { useAppSelector } from '@/hooks/reduxHooks';
 
 export const Footer: React.FC = () => {
+  const authorized = useAppSelector((state) => state.customers.authorized);
+  const [open, setOpen] = useState(false);
   const developers = ['EvgenKlo', 'lidasharova', 'fasty86'];
 
   const boxStyle = {
@@ -13,13 +18,26 @@ export const Footer: React.FC = () => {
     alignContent: 'center',
     justifyContent: 'center',
   };
-
+  useEffect(() => {
+    if (authorized) setOpen(true);
+  }, [authorized]);
   const linkStyles = {
     textDecoration: 'none',
     '&:hover': {
       transition: 'color 0.3s ease-in-out',
       color: 'secondary.main',
     },
+  };
+  const handleClick = () => {
+    setOpen(false);
+  };
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
   return (
@@ -111,6 +129,25 @@ export const Footer: React.FC = () => {
               </Box>
             ))}
           </Box>
+          <Button
+            variant="outlined"
+            onClick={handleClick}
+          >
+            Open success snackbar
+          </Button>
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              sx={{ width: '100%' }}
+            >
+              Success!
+            </Alert>
+          </Snackbar>
         </Container>
       </Box>
     </>

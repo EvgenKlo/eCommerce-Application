@@ -36,6 +36,7 @@ export const createNewCustomer = createAsyncThunk(
     const response = await state.customers.apiInstance.createCustomer(data.data);
     if (response.error) data.setOpen(response.error);
     else {
+      data.setOpen('success');
       const passClient = new API(
         getApiRoot('password', { email: data.data.email, password: data.data.password as string })
       );
