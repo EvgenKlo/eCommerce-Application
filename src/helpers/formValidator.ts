@@ -8,7 +8,7 @@ export class FormValidator {
     }
 
     if (Isemail.validate(email)) {
-      const emailFilter = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/;
+      const emailFilter = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]{2,})/;
 
       return emailFilter.test(email);
     } else {

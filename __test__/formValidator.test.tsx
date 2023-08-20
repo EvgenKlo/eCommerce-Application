@@ -11,6 +11,9 @@ test('email validator', () => {
   expect(FormValidator.emailValidator('email@mail.mail.com')).toBe(true);
   expect(FormValidator.emailValidator('email@mail.mail.com.ru')).toBe(true);
   expect(FormValidator.emailValidator('email@mail')).toBe(false);
+  expect(FormValidator.emailValidator('email@mail.d')).toBe(false);
+  expect(FormValidator.emailValidator('email@mail.d.com')).toBe(true);
+  expect(FormValidator.emailValidator('email@mail.d.c')).toBe(false);
 });
 
 test('password validator', () => {
