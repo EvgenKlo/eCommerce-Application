@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/hooks/reduxHooks';
-import { Button, List, ListItem, Container } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 export const MainPage: React.FC = () => {
@@ -10,21 +10,17 @@ export const MainPage: React.FC = () => {
   return (
     <Container>
       {customer ? <h3>Hello {customer.firstName} !</h3> : <h3>Hello !</h3>}
-      <List>
-        {pages.map((page) => (
-          <ListItem key={page}>
-            <Button
-              key={page}
-              variant="contained"
-              sx={{ margin: '1rem', '&:hover': { color: 'secondary.main' } }}
-              component={Link}
-              to={`/${page}`}
-            >
-              {`Go to ${page} Page`}
-            </Button>
-          </ListItem>
-        ))}
-      </List>
+      {pages.map((page) => (
+        <Button
+          key={page}
+          variant="contained"
+          sx={{ margin: '1rem', '&:hover': { color: 'secondary.main' } }}
+          component={Link}
+          to={`/${page}`}
+        >
+          {`Go to ${page} Page`}
+        </Button>
+      ))}
     </Container>
   );
 };
