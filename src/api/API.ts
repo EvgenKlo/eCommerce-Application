@@ -22,6 +22,19 @@ export class API {
     }
     return result;
   }
+  async getCategories() {
+    let errorMsg = '';
+    try {
+      const { body } = await this.client.categories().get().execute();
+      const result = body.results;
+      console.log(result);
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
 
   async getCustomers(ID: string) {
     let result = {} as Customer;
