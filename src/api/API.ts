@@ -117,4 +117,14 @@ export class API {
     }
     return result;
   }
+
+  async getProducts() {
+    try {
+      const { body } = await this.client.products().get().execute();
+      console.log(body.results);
+      return body.results;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

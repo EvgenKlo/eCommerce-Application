@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { getCategories } from '@/store/slices/productSlice';
+import { getCategories, getProducts } from '@/store/slices/productSlice';
 import {
   Button,
   Box,
@@ -10,6 +10,7 @@ import {
   ListItemButton,
   Container,
 } from '@mui/material';
+import ProductList from './products/ProductList';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
@@ -17,7 +18,7 @@ export const CatalogPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const getCategoryList = (): void => {
-    dispatch(getCategories());
+    void dispatch(getProducts());
   };
 
   // useEffect(() => {
@@ -63,6 +64,7 @@ export const CatalogPage: React.FC = () => {
           </ListItem> */}
           </List>
         </Box>
+        <ProductList />
       </Container>
     </>
   );

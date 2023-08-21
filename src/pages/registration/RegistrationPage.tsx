@@ -30,6 +30,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { AddressForm } from '@/components/UI/AddressForm';
 import { FormValidator } from '@/helpers/formValidator';
+import { handleMouseDown } from '@/helpers/handleMouseDown';
 
 interface loginProps {
   handleLogin: (val: boolean) => void;
@@ -43,10 +44,6 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
 
   const [data, setData] = useState({} as CustomerDraft);
 
