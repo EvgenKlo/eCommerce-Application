@@ -1,18 +1,25 @@
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { useAppSelector } from '@/hooks/reduxHooks';
 import { Alert, Snackbar } from '@mui/material';
-import { cleanSnackbarInfo } from '@/store/slices/customerSlice';
+import { useEffect, useState } from 'react';
 
-const SuccessfulRegLog = () => {
+const MessageRegLog = () => {
   const snackbarInfo = useAppSelector((state) => state.customers.snackbarInfo);
-  const dispatch = useAppDispatch();
+
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!!snackbarInfo.name || !!snackbarInfo.errorMassage) {
+      setOpen(true);
+    }
+  }, [snackbarInfo]);
 
   const handleClose = () => {
-    dispatch(cleanSnackbarInfo());
+    setOpen(false);
   };
 
   return (
     <Snackbar
-      open={!!snackbarInfo.name || !!snackbarInfo.errorMassage}
+      open={open}
       autoHideDuration={5000}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       onClose={handleClose}
@@ -30,4 +37,4 @@ const SuccessfulRegLog = () => {
   );
 };
 
-export default SuccessfulRegLog;
+export default MessageRegLog;

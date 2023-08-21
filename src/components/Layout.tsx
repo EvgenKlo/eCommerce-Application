@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Header } from './UI/Header';
 import { Footer } from './UI/Footer';
 import { logoutProps } from '@/types/components';
-import SuccessfulRegLog from './UI/SuccessfulRegLog';
+import MessageRegLog from './UI/MessageRegLog';
 
 const Layout: React.FC<logoutProps> = (props) => {
   const { logout } = props;
@@ -13,7 +13,7 @@ const Layout: React.FC<logoutProps> = (props) => {
         <Outlet />
       </div>
       <Footer />
-      <SuccessfulRegLog />
+      <MessageRegLog />
     </>
   );
 };

@@ -78,13 +78,6 @@ const customerSlice = createSlice({
       localStorage.removeItem('tokendata');
       state.authorized = false;
       state.customer = {} as Customer;
-      cleanSnackbarInfo.call(state);
-    },
-    cleanSnackbarInfo: (state) => {
-      state.snackbarInfo = {
-        errorMassage: '',
-        name: '',
-      };
     },
   },
   extraReducers: (builder) => {
@@ -110,7 +103,6 @@ const customerSlice = createSlice({
 
 export const selectCustomer = (state: RootState) => state.customers;
 
-export const { createCustomer, setAuthorization, setApi, signOut, cleanSnackbarInfo } =
-  customerSlice.actions;
+export const { createCustomer, setAuthorization, setApi, signOut } = customerSlice.actions;
 
 export default customerSlice.reducer;
