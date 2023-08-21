@@ -154,6 +154,10 @@ In this section, you will find the available scripts to manage your project and 
 
 - Runs tests using `vitest`.
 
+`npm run coverage`
+
+- Runs a codebase test coverage check.
+
 Feel free to use these commands to manage and develop your project.
 You can run each of them by executing the respective `npm run` command in your terminal.
 

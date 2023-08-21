@@ -24,7 +24,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { FormValidator } from '@/helpers/formValidator';
 import { Loader } from '@/components/UI/Loader';
-import Message from '@/components/UI/Message';
 interface loginProps {
   handleLogin: (val: boolean) => void;
 }
@@ -33,7 +32,6 @@ export const LoginPage: React.FC<loginProps> = (props) => {
   const customer = useAppSelector((state) => state.customers.customer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [open, setOpen] = useState('');
 
   const [formsValue, setFormsValue] = useState({ email: '', password: '' });
   const [emailError, setEmailError] = useState(false);
@@ -52,9 +50,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
     event.preventDefault();
     if (formsValue.email && formsValue.password && !emailError && !passwordError) {
       setLoading(true);
-      void dispatch(
-        SignIn({ email: formsValue.email, password: formsValue.password, setOpen, setLoading })
-      );
+      void dispatch(SignIn({ email: formsValue.email, password: formsValue.password, setLoading }));
     }
   };
 
@@ -110,7 +106,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
           component="h1"
           variant="h5"
         >
-          Login in
+          Log in
         </Typography>
         <Box
           component="form"
@@ -186,6 +182,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
             )}
           </FormControl>
           <Button
+            data-testid="Log in"
             type="submit"
             fullWidth
             variant="contained"
@@ -199,7 +196,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
               },
             }}
           >
-            Sign In
+            Log in
           </Button>
           <Grid container>
             <Grid
@@ -217,10 +214,6 @@ export const LoginPage: React.FC<loginProps> = (props) => {
           </Grid>
         </Box>
       </Box>
-      <Message
-        open={open}
-        setOpen={setOpen}
-      />
       <Loader isLoading={isLoading} />
     </Container>
   );

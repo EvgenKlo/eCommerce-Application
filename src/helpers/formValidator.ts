@@ -1,4 +1,5 @@
 import { postalCodeRegexMap } from './postalCode';
+import Isemail from 'isemail';
 
 export class FormValidator {
   static emailValidator(email: string) {
@@ -6,13 +7,21 @@ export class FormValidator {
       return false;
     }
 
-    const emailFilter = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/;
+    if (Isemail.validate(email)) {
+      const emailFilter = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]{2,})/;
 
-    return emailFilter.test(email);
+      return emailFilter.test(email);
+    } else {
+      return false;
+    }
   }
 
   static passwordValidator(password: string) {
-    const passwordFilter = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (password[0] === ' ' || password.slice(-1) === ' ') {
+      return false;
+    }
+    const passwordFilter =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d\s!@#$%^&*]{8,}$/;
 
     return passwordFilter.test(password);
   }
@@ -28,6 +37,7 @@ export class FormValidator {
     if (customerAge >= 14) {
       return true;
     }
+    return false;
   }
 
   static postalCodeValidator(postalCode: string, country: string) {

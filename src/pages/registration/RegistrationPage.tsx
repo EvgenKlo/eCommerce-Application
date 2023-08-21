@@ -30,7 +30,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { AddressForm } from '@/components/UI/AddressForm';
 import { FormValidator } from '@/helpers/formValidator';
-import Message from '@/components/UI/Message';
 
 interface loginProps {
   handleLogin: (val: boolean) => void;
@@ -67,13 +66,12 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
 
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [open, setOpen] = useState('');
 
   const register = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     if (!firstNameError && !lastNameError && !emailError && !passwordError && !dateError) {
       setLoading(true);
-      void dispatch(createNewCustomer({ data, setOpen, setLoading }));
+      void dispatch(createNewCustomer({ data, setLoading }));
     }
   };
 
@@ -265,6 +263,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               >
                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                 <OutlinedInput
+                  data-testid="password-input"
                   error={passwordError}
                   label={'Password'}
                   onChange={(e) => {
@@ -488,19 +487,16 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
           >
             <Grid item>
               <Link
+                data-testid="sign-in-link"
                 href="/login"
                 variant="body2"
               >
-                Already have an account? Sign in
+                Already have an account? Log in
               </Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
-      <Message
-        open={open}
-        setOpen={setOpen}
-      />
       <Loader isLoading={isLoading} />
     </Container>
   );

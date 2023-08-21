@@ -52,7 +52,7 @@ export default defineConfig({
     },
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/__test__/setup.ts',
+    setupFiles: './__test__/setup.ts',
     css: false,
   },
 });
