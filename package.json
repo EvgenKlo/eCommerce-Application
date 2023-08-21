@@ -18,7 +18,8 @@
     "prepare": "husky install",
     "lintstaged": "lint-staged --relative",
     "style": "npx stylelint 'src/**/*.css'",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "npx vitest --coverage"
   },
   "lint-staged": {
     "*.ts": [
@@ -38,8 +39,13 @@
     "@fontsource/roboto": "^5.0.7",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.3",
+    "@mui/x-date-pickers": "^6.11.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "@types/react-redux": "^7.1.25",
     "compose-function": "^3.0.3",
+    "date-fns": "^2.30.0",
+    "isemail": "^3.2.0",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.2",
@@ -60,6 +66,7 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
+    "@vitest/coverage-c8": "^0.33.0",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
@@ -72,6 +79,7 @@
     "husky": "^8.0.3",
     "jsdom": "^22.1.0",
     "lint-staged": "^13.2.3",
+    "netlify-cli": "^16.0.3",
     "prettier": "^3.0.0",
     "sass": "^1.63.6",
     "stylelint": "^15.10.2",

@@ -1,20 +1,26 @@
-import { ReactElement, useEffect, useState } from 'react';
-import { API } from '@/api/API';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import { Button, Container } from '@mui/material';
+import { Link } from 'react-router-dom';
 
-export const MainPage = (): ReactElement => {
-  const [customers, setCustomers] = useState({});
+export const MainPage: React.FC = () => {
+  const customer = useAppSelector((state) => state.customers.customer);
 
-  useEffect(() => {
-    API.getCustomers()
-      .then((data) => {
-        setCustomers(data);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  const pages = ['catalog', 'about', 'login', 'registration', 'basket'];
+
   return (
-    <>
-      <h1>eCommerceApp</h1>
-      <h5>{JSON.stringify(customers)}</h5>
-    </>
+    <Container>
+      {customer ? <h3>Hello {customer.firstName} !</h3> : <h3>Hello !</h3>}
+      {pages.map((page) => (
+        <Button
+          key={page}
+          variant="contained"
+          sx={{ margin: '1rem', '&:hover': { color: 'secondary.main' } }}
+          component={Link}
+          to={`/${page}`}
+        >
+          {`Go to ${page} Page`}
+        </Button>
+      ))}
+    </Container>
   );
 };
