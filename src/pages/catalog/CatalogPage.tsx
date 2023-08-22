@@ -1,69 +1,54 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { getCategories } from '@/store/slices/productSlice';
-import {
-  Button,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemButton,
-  Container,
-} from '@mui/material';
+import { getCategories, getProducts } from '@/store/slices/productSlice';
+
+import { Button, Box, Container, Drawer, Divider, IconButton, Typography } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
+import { CategoriesTree } from '@/components/UI/CatalogTree';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
+  const products = useAppSelector((state) => state.products.products);
 
   const dispatch = useAppDispatch();
 
   const getCategoryList = (): void => {
     dispatch(getCategories());
+    dispatch(getProducts());
   };
 
-  // useEffect(() => {
-  //   dispatch(getCategories());
-  // }, []);
-
   return (
-    <>
-      <Container>
-        <Button
-          variant="outlined"
-          onClick={getCategoryList}
+    <Container>
+      <Button
+        variant="outlined"
+        onClick={getCategoryList}
+      >
+        Load Categories list
+      </Button>
+      <Container sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+        <Box
+          sx={{
+            backgroundColor: '#f6f3f7',
+            flexBasis: '20%',
+            maxWidth: '250px',
+            borderRadius: '1%',
+            pt: 1,
+          }}
         >
-          Load Categories list
-        </Button>
-        {/* <div>{JSON.stringify(categories)}</div> */}
-        <Box>
-          <List>
-            {categories.map(({ id, description, key, name }) => {
-              return (
-                <ListItem
-                  key={id}
-                  disablePadding
-                >
-                  <ListItemButton>
-                    <ListItemText primary={JSON.stringify(name)} />
-                  </ListItemButton>
-                </ListItem>
-              );
-            })}
-            {/* <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="Trash" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              component="a"
-              href="#simple-list"
-            >
-              <ListItemText primary="Spam" />
-            </ListItemButton>
-          </ListItem> */}
-          </List>
+          {categories.length !== 0 && <CategoriesTree categories={categories} />}
+        </Box>
+        <Box
+          sx={{
+            // backgroundColor: '#f6f3f7',
+            flexBasis: '80%',
+            // maxWidth: '250px',
+            borderRadius: '1%',
+            pt: 1,
+          }}
+        >
+          {JSON.stringify(products)}
         </Box>
       </Container>
-    </>
+    </Container>
   );
 };
