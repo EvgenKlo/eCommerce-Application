@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { getCategories, getProducts } from '@/store/slices/productSlice';
+import { getCategories } from '@/store/slices/productSlice';
 import {
   Button,
   Box,
@@ -18,7 +18,7 @@ export const CatalogPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const getCategoryList = (): void => {
-    void dispatch(getProducts());
+    void dispatch(getCategories());
   };
 
   // useEffect(() => {
