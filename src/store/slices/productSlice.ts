@@ -19,6 +19,7 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
   const state: RootState = thunkAPI.getState() as RootState;
   const passClient = state.customers.apiInstance;
   const response = await passClient.getProducts();
+  await passClient.getProductsByCat();
   return response.data;
 });
 

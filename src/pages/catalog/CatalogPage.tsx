@@ -16,6 +16,7 @@ export const CatalogPage: React.FC = () => {
     dispatch(getCategories());
     dispatch(getProducts());
   };
+  console.log(categories);
 
   return (
     <Container>
@@ -39,9 +40,7 @@ export const CatalogPage: React.FC = () => {
         </Box>
         <Box
           sx={{
-            // backgroundColor: '#f6f3f7',
             flexBasis: '80%',
-            // maxWidth: '250px',
             borderRadius: '1%',
             pt: 1,
           }}

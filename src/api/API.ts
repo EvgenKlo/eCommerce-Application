@@ -35,6 +35,33 @@ export class API {
     }
   }
 
+  async getProductsByCat() {
+    // let errorMsg = '';
+    try {
+      const response = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            facet: 'categories.id',
+          },
+        })
+        .execute();
+      // const response = await this.client
+      //   .productProjections()
+      //   .search()
+      //   .get({
+      //     queryArgs: {
+      //       'filter.query': 'categories.id:subtree("ffb8e5bc-dbad-4ae9-b530-e569f3022ac1")',
+      //     },
+      //   })
+      //   .execute();
+      console.log('success', response);
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+
   async getProducts() {
     let errorMsg = '';
     try {
