@@ -4,6 +4,7 @@ import { getCategories, getProducts, getProductsByCat } from '@/store/slices/pro
 import { Button, Box, Container, Typography, Divider } from '@mui/material';
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
+import RangeSlider from '@/components/UI/Slider';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
@@ -45,6 +46,9 @@ export const CatalogPage: React.FC = () => {
               handleClick={handleCatClick}
             />
           )}
+          <Divider sx={{ mb: 2, mt: 2 }} />
+          <Typography variant="h6">Price:</Typography>
+          <RangeSlider />
         </Box>
         <ProductList />
       </Container>

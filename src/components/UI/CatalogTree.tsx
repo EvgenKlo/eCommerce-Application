@@ -27,7 +27,7 @@ export const CategoriesTree: React.FC<{
       defaultExpanded={['root']}
       defaultExpandIcon={<LabelOutlinedIcon />}
       sx={{
-        height: 510,
+        Maxheight: 400,
         maxWidth: 200,
         textAlign: 'start',
         m: 1,
