@@ -5,6 +5,7 @@ import { type Product, type Category } from '@commercetools/platform-sdk';
 const initialState = {
   categories: [] as Category[],
   products: [] as Product[],
+  product: {} as Product,
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
@@ -42,6 +43,9 @@ const productSlice = createSlice({
     });
     builder.addCase(getProducts.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as Product[]);
+    });
+    builder.addCase(getProduct.fulfilled, (state, action) => {
+      state.product = action.payload ? action.payload : ({} as Product);
     });
   },
 });
