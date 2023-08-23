@@ -32,7 +32,7 @@ export const AppRouter = (): ReactElement => {
           element={<CatalogPage />}
         />
         <Route
-          path="catalog/:key"
+          path="catalog/:id"
           element={<Product />}
         />
         <Route

@@ -157,9 +157,8 @@ export class API {
     return result;
   }
 
-  async getProduct(key: string) {
-    const { body } = await this.client.products().withKey({ key }).get().execute();
-    console.log(body);
+  async getProduct(ID: string) {
+    const { body } = await this.client.products().withId({ ID }).get().execute();
 
     return body;
   }

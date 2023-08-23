@@ -1,9 +1,8 @@
 import { Button, Grid } from '@mui/material';
 import ProductItem from './ProductItem';
 //import { type Product } from '@commercetools/platform-sdk';
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { useAppSelector, useAppDispatch } from '@/hooks/reduxHooks';
 import { getProducts } from '@/store/slices/productSlice';
-//import { useEffect } from 'react';
 
 const ProductList = () => {
   const products = useAppSelector((state) => state.products.products);
@@ -14,9 +13,7 @@ const ProductList = () => {
   //   void dispatch(getProducts());
   // };
 
-  /* useEffect(() => {
-    void dispatch(getCategories());
-  }, [products]); */
+  console.log(products);
 
   return (
     <>
