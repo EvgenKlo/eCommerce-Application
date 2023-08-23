@@ -3,17 +3,16 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { getCategories, getProducts } from '@/store/slices/productSlice';
 
 import { Button, Box, Container, Drawer, Divider, IconButton, Typography } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
-  const products = useAppSelector((state) => state.products.products);
 
   const dispatch = useAppDispatch();
 
   const getCategoryList = (): void => {
-    dispatch(getCategories());
+    void dispatch(getCategories());
     dispatch(getProducts());
   };
   console.log(categories);
@@ -23,6 +22,7 @@ export const CatalogPage: React.FC = () => {
       <Button
         variant="outlined"
         onClick={getCategoryList}
+        sx={{ mb: 2 }}
       >
         Load Categories list
       </Button>
@@ -38,15 +38,7 @@ export const CatalogPage: React.FC = () => {
         >
           {categories.length !== 0 && <CategoriesTree categories={categories} />}
         </Box>
-        <Box
-          sx={{
-            flexBasis: '80%',
-            borderRadius: '1%',
-            pt: 1,
-          }}
-        >
-          {JSON.stringify(products)}
-        </Box>
+        <ProductList />
       </Container>
     </Container>
   );

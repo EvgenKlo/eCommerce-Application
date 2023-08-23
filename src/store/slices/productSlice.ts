@@ -23,6 +23,12 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
   return response.data;
 });
 
+export const getProduct = createAsyncThunk('products/getProduct', async (key: string, thunkAPI) => {
+  const state: RootState = thunkAPI.getState() as RootState;
+  const passClient = state.customers.apiInstance;
+  const response = await passClient.getProduct(key);
+  return response;
+});
 const productSlice = createSlice({
   name: 'products',
   initialState,

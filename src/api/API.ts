@@ -156,4 +156,11 @@ export class API {
     }
     return result;
   }
+
+  async getProduct(key: string) {
+    const { body } = await this.client.products().withKey({ key }).get().execute();
+    console.log(body);
+
+    return body;
+  }
 }

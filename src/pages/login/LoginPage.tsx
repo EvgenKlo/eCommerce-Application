@@ -24,6 +24,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { FormValidator } from '@/helpers/formValidator';
 import { Loader } from '@/components/UI/Loader';
+import { handleMouseDown } from '@/helpers/handleMouseDown';
 interface loginProps {
   handleLogin: (val: boolean) => void;
 }
@@ -41,10 +42,6 @@ export const LoginPage: React.FC<loginProps> = (props) => {
   const [isLoading, setLoading] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
