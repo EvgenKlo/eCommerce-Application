@@ -35,37 +35,54 @@ export class API {
     }
   }
 
-  async getProductsByCat() {
-    // let errorMsg = '';
+  async getProductsByCat(catId: string) {
+    console.log('catID', catId);
+
+    let errorMsg = '';
     try {
-      const response = await this.client
+      // const response = await this.client
+      // .productProjections()
+      // .search()
+      // .get({
+      //   queryArgs: {
+      //     facet: 'categories.id',
+      //   },
+      // })
+      // .execute();
+      const respsone = await this.client
         .productProjections()
         .search()
         .get({
           queryArgs: {
-            facet: 'categories.id',
+            'filter.query': [
+              `categories.id:subtree("${catId}")`,
+              'variants.price.centAmount:range ("5" to "9")',
+            ],
           },
         })
+        // const { body } = await this.client
+        //   .products()
+        //   .get({
+        //     queryArgs: {
+        //       'filter.query': `categories.id:subtree("${catId}")`,
+        //     },
+        //   })
         .execute();
-      // const response = await this.client
-      //   .productProjections()
-      //   .search()
-      //   .get({
-      //     queryArgs: {
-      //       'filter.query': 'categories.id:subtree("ffb8e5bc-dbad-4ae9-b530-e569f3022ac1")',
-      //     },
-      //   })
-      //   .execute();
-      console.log('success', response);
+      console.log('success', respsone);
+      const result = respsone;
+      return { data: result.body.results, error: errorMsg };
     } catch (error) {
       console.log('error', error);
+      console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
     }
   }
 
   async getProducts() {
     let errorMsg = '';
     try {
-      const { body } = await this.client.products().get().execute();
+      const { body } = await this.client.productProjections().get().execute();
       const result = body.results;
       return { data: result, error: errorMsg };
     } catch (error) {
@@ -158,7 +175,7 @@ export class API {
   }
 
   async getProduct(ID: string) {
-    const { body } = await this.client.products().withId({ ID }).get().execute();
+    const { body } = await this.client.productProjections().withId({ ID }).get().execute();
 
     return body;
   }
