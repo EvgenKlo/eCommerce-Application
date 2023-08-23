@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 import { type Category, type ProductProjection } from '@commercetools/platform-sdk';
-import { CategoryInternal } from '@/types/products';
+import { CategoryInternal, FilterProducts } from '@/types/products';
 
 const initialState = {
   categories: [] as CategoryInternal[],
   products: [] as ProductProjection[],
   product: {} as ProductProjection,
+  filters: { price: { operand: '=', lower: 0 } } as FilterProducts,
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
@@ -30,7 +31,7 @@ export const getProductsByCat = createAsyncThunk(
     const state: RootState = thunkAPI.getState() as RootState;
     const passClient = state.customers.apiInstance;
     const response = await passClient.getProductsByCat(catId);
-    // console.log(response);
+    console.log(buildQueryFilter(state.products.filters));
 
     return response.data;
   }
@@ -84,6 +85,31 @@ function buildTree(data: Category[]) {
     }
   });
   return rootNodes;
+}
+
+function buildQueryFilter(filter: FilterProducts): string[] {
+  const keys = Object.keys(filter);
+  const queryFilter = keys.reduce((query, key) => {
+    let option = '';
+    switch (key) {
+      case 'category':
+        option = `categories.id:subtree("${filter[key]}")`;
+        break;
+      case 'price':
+        if (filter[key].upper && filter[key].operand == 'range') {
+          option = `variants.price.centAmount:range ("${filter[key].lower}" to "${filter[key].upper}")`;
+        } else if (filter[key].operand == '=') {
+          option = `variants.price.centAmount:"${filter[key].lower}"`;
+        }
+        break;
+      case 'color': {
+        option = `variants.attributes.color:"${filter[key]}"`;
+      }
+    }
+    query.push(option);
+    return query;
+  }, [] as string[]);
+  return queryFilter;
 }
 
 export default productSlice.reducer;
