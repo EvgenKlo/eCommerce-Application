@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { getProduct } from '@/store/slices/productSlice';
+import { clearProduct, getProduct } from '@/store/slices/productSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import { type Product } from '@commercetools/platform-sdk';
-import { Button } from '@mui/material';
+import { useEffect } from 'react';
 
 const Product = () => {
   const { id } = useParams();
@@ -11,23 +11,20 @@ const Product = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  //!product.id && navigate('error');
+
   console.log(product);
 
   const getProductToRender = (): void => {
     id && void dispatch(getProduct(id));
   };
 
-  return (
-    <>
-      <Button
-        variant="outlined"
-        onClick={getProductToRender}
-      >
-        Load Product
-      </Button>
-      {product.id && <h1>{product.masterData.current.name.en}</h1>}
-    </>
-  );
+  useEffect(() => {
+    getProductToRender();
+    dispatch(clearProduct());
+  }, []);
+
+  return <>{product.id && <h1>{product.name.en}</h1>}</>;
 };
 
 export default Product;

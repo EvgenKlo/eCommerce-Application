@@ -46,7 +46,11 @@ export const getProduct = createAsyncThunk('products/getProduct', async (key: st
 const productSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {},
+  reducers: {
+    clearProduct: (state) => {
+      state.product = {} as ProductProjection;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getCategories.fulfilled, (state, action) => {
       let categories = [] as CategoryInternal[];
@@ -68,6 +72,8 @@ const productSlice = createSlice({
 });
 
 export const selectProduct = (state: RootState) => state.products;
+
+export const { clearProduct } = productSlice.actions;
 
 //convert categories array into hierarchical format
 function buildTree(data: Category[]) {

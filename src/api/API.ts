@@ -56,7 +56,7 @@ export class API {
           queryArgs: {
             'filter.query': [
               `categories.id:subtree("${catId}")`,
-              'variants.price.centAmount:range ("5" to "9")',
+              //'variants.price.centAmount:range ("5" to "9")',
             ],
           },
         })

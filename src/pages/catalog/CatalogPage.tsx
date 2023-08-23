@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { getCategories, getProducts, getProductsByCat } from '@/store/slices/productSlice';
 
-import { Button, Box, Container } from '@mui/material';
+import { Button, Box, Container, Typography, Divider } from '@mui/material';
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
 

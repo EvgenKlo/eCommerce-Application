@@ -1,5 +1,5 @@
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import { type Product, type ProductProjection } from '@commercetools/platform-sdk';
+import { type ProductProjection } from '@commercetools/platform-sdk';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
               component="img"
               image={
                 product.masterVariant.images?.length
-                  ? `${product.masterVariant.images[imageNumber].url.split(' ').join('')}.png`
+                  ? `${product.masterVariant.images[imageNumber].url}`
                   : 'https://media.istockphoto.com/id/1216251206/vector/no-image-available-icon.jpg?s=612x612&w=0&k=20&c=6C0wzKp_NZgexxoECc8HD4jRpXATfcu__peSYecAwt0='
               }
               alt={product.name[language]}
