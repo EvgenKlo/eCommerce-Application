@@ -1,9 +1,9 @@
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import { type Product } from '@commercetools/platform-sdk';
+import { type Product, type ProductProjection } from '@commercetools/platform-sdk';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import { Link as RouterLink } from 'react-router-dom';
 
-const ProductItem: React.FC<{ product: Product }> = ({ product }) => {
+const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
   const imageNumber = 0;
   const language = 'en';
 
@@ -20,13 +20,11 @@ const ProductItem: React.FC<{ product: Product }> = ({ product }) => {
             <CardMedia
               component="img"
               image={
-                product.masterData.current.masterVariant.images?.length
-                  ? `${product.masterData.current.masterVariant.images[imageNumber].url
-                      .split(' ')
-                      .join('')}.png`
+                product.masterVariant.images?.length
+                  ? `${product.masterVariant.images[imageNumber].url.split(' ').join('')}.png`
                   : 'https://media.istockphoto.com/id/1216251206/vector/no-image-available-icon.jpg?s=612x612&w=0&k=20&c=6C0wzKp_NZgexxoECc8HD4jRpXATfcu__peSYecAwt0='
               }
-              alt={product.masterData.current.name[language]}
+              alt={product.name[language]}
             />
             <CardContent>
               <Typography
@@ -34,24 +32,22 @@ const ProductItem: React.FC<{ product: Product }> = ({ product }) => {
                 variant="h5"
                 component="div"
               >
-                {product.masterData.current.name[language]}
+                {product.name[language]}
               </Typography>
               <Typography
                 variant="body2"
                 color="text.secondary"
               >
-                {product.masterData.current.description
-                  ? product.masterData.current.description[language]
-                  : 'No description'}
+                {product.description ? product.description[language] : 'No description'}
               </Typography>
               <Typography
                 variant="body2"
                 color="text.secondary"
               >
-                {product.masterData.current.masterVariant.prices
-                  ? product.masterData.current.masterVariant.prices[imageNumber].value.centAmount +
+                {product.masterVariant.prices
+                  ? product.masterVariant.prices[imageNumber].value.centAmount +
                     ' ' +
-                    product.masterData.current.masterVariant.prices[imageNumber].value.currencyCode
+                    product.masterVariant.prices[imageNumber].value.currencyCode
                   : 'No price'}
               </Typography>
             </CardContent>

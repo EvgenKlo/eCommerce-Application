@@ -3,14 +3,17 @@ import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
 import { TreeView, TreeItem } from '@mui/lab';
 import { CategoryInternal } from '@/types/products';
 
-export const CategoriesTree: React.FC<{ categories: CategoryInternal[] }> = ({ categories }) => {
+export const CategoriesTree: React.FC<{
+  categories: CategoryInternal[];
+  handleClick: (id: string) => void;
+}> = ({ categories, handleClick }) => {
   const renderTree = (cats: CategoryInternal[]) =>
     cats.map((nodes) => (
       <TreeItem
         key={nodes.id}
         nodeId={nodes.id}
         label={nodes.name.en}
-        onClick={() => console.log(nodes.id)}
+        onClick={() => handleClick(nodes.id)}
         sx={{ borderRadius: '5%' }}
       >
         {Array.isArray(nodes.children) ? renderTree(nodes.children) : null}
@@ -27,6 +30,7 @@ export const CategoriesTree: React.FC<{ categories: CategoryInternal[] }> = ({ c
         height: 510,
         maxWidth: 200,
         textAlign: 'start',
+        m: 1,
       }}
     >
       {renderTree(categories)}

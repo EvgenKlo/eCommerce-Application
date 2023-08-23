@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { getCategories, getProducts } from '@/store/slices/productSlice';
+import { getCategories, getProducts, getProductsByCat } from '@/store/slices/productSlice';
 
 import { Button, Box, Container } from '@mui/material';
 import ProductList from './products/ProductList';
@@ -14,7 +14,9 @@ export const CatalogPage: React.FC = () => {
     void dispatch(getCategories());
     void dispatch(getProducts());
   };
-  console.log(categories);
+  // console.log(categories);
+
+  const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
 
   return (
     <Container>
@@ -29,13 +31,20 @@ export const CatalogPage: React.FC = () => {
         <Box
           sx={{
             backgroundColor: '#f6f3f7',
-            flexBasis: '20%',
-            maxWidth: '250px',
+            flexBasis: '25%',
+            maxWidth: '300px',
             borderRadius: '1%',
             pt: 1,
           }}
         >
-          {categories.length !== 0 && <CategoriesTree categories={categories} />}
+          <Typography variant="h5">Categories</Typography>
+          <Divider sx={{ mb: 2, mt: 2 }} />
+          {categories.length !== 0 && (
+            <CategoriesTree
+              categories={categories}
+              handleClick={handleCatClick}
+            />
+          )}
         </Box>
         <ProductList />
       </Container>
