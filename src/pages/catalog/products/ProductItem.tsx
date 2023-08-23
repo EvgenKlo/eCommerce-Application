@@ -6,7 +6,6 @@ import { Link as RouterLink } from 'react-router-dom';
 const ProductItem: React.FC<{ product: Product }> = ({ product }) => {
   const imageNumber = 0;
   const language = 'en';
-  //console.log(product);
 
   return (
     <Grid

@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { getCategories, getProducts } from '@/store/slices/productSlice';
 
-import { Button, Box, Container, Drawer, Divider, IconButton, Typography } from '@mui/material';
+import { Button, Box, Container } from '@mui/material';
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
 
@@ -13,7 +12,7 @@ export const CatalogPage: React.FC = () => {
 
   const getCategoryList = (): void => {
     void dispatch(getCategories());
-    dispatch(getProducts());
+    void dispatch(getProducts());
   };
   console.log(categories);
 
