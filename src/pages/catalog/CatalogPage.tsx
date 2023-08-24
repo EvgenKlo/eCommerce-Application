@@ -6,17 +6,25 @@ import { Button, Box, Container, Drawer, Divider, IconButton, Typography } from 
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
 import RangeSlider from '@/components/UI/Slider';
+import PriceChangeIcon from '@mui/icons-material/PriceChange';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
 
   const dispatch = useAppDispatch();
 
-  const getCategoryList = (): void => {
+  const loadData = (): void => {
     void dispatch(getCategories());
-    dispatch(getProducts());
+    void dispatch(getProducts());
   };
-  // console.log(categories);
+
+  const getCategoryList = (): void => {
+    void loadData();
+  };
+
+  useEffect(() => {
+    void loadData();
+  }, []);
 
   const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
 
@@ -39,7 +47,12 @@ export const CatalogPage: React.FC = () => {
             pt: 1,
           }}
         >
-          <Typography variant="h5">Categories</Typography>
+          <Typography
+            variant="h5"
+            color="#87a2ab"
+          >
+            Categories
+          </Typography>
           <Divider sx={{ mb: 2, mt: 2 }} />
           {categories.length !== 0 && (
             <CategoriesTree
@@ -47,9 +60,32 @@ export const CatalogPage: React.FC = () => {
               handleClick={handleCatClick}
             />
           )}
+          <Divider
+            component="li"
+            sx={{ mb: 2, mt: 2 }}
+            textAlign="left"
+          >
+            <Typography
+              variant="h6"
+              color="#60677b"
+            >
+              Filter options
+            </Typography>
+          </Divider>
+          <Box>
+            <PriceChangeIcon sx={{ display: 'block', marginInline: 'auto', color: '#87a2ab' }} />
+            <RangeSlider />
+          </Box>
           <Divider sx={{ mb: 2, mt: 2 }} />
-          <Typography variant="h6">Price:</Typography>
-          <RangeSlider />
+          <Box>
+            <Typography
+              sx={{ pt: 0, mt: 0 }}
+              variant="h6"
+              color="#87a2ab"
+            >
+              Color
+            </Typography>
+          </Box>
         </Box>
         <ProductList />
       </Container>

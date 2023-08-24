@@ -1,27 +1,25 @@
-import Slider from '@mui/material/Slider';
-import { useState } from 'react';
+import { Slider } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { setPrice } from '@/store/slices/productSlice';
 
 export default function RangeSlider() {
-  const [value, setValue] = useState<number[]>([0, 100]);
+  const price = useAppSelector((state) => state.products.filters.price);
+  const value = [price.lower, price.upper];
+  const dispatch = useAppDispatch();
 
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[]);
+  const handleChange = (_: Event, newValue: number | number[]) => {
+    dispatch(setPrice({ range: newValue as number[], operand: '=' }));
   };
-  function valuetext(value: number) {
-    return `${value}s`;
-  }
+
   return (
-    // <Box sx={{ maxWidth: '150px' }}>
     <Slider
-      sx={{ maxWidth: '150px' }}
-      getAriaLabel={() => 'Price range'}
+      sx={{ maxWidth: '150px', pb: 0.5 }}
       value={value}
       onChange={handleChange}
       valueLabelDisplay="on"
-      getAriaValueText={valuetext}
       size="small"
       marks
+      track="inverted"
     />
-    // </Box>
   );
 }
