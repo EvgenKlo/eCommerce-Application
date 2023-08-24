@@ -35,13 +35,10 @@ export class FormValidator {
 
   static ageValidator(birthDate: Date | null | undefined) {
     if (!birthDate) {
-      console.log(birthDate);
       return false;
     }
-    console.log(birthDate);
     const today = new Date();
     const age = differenceInYears(today, birthDate);
-    console.log(`Пользователю - ${age}`);
     return age >= 13;
   }
 
