@@ -69,7 +69,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
 
   const register = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    if (!firstNameError && !lastNameError && !emailError && !passwordError && !dateError) {
+    if (!firstNameError && !lastNameError && !emailError && !passwordError && !dateError && data.dateOfBirth) {
       setLoading(true);
       void dispatch(createNewCustomer({ data, setLoading }));
     }
@@ -332,7 +332,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                     error: dateError,
                     required: true,
 
-                    helperText: dateError ? 'you must be over 14 years old' : null,
+                    helperText: dateError ? 'you must be over 13 years old' : null,
                   },
                 }}
               />
