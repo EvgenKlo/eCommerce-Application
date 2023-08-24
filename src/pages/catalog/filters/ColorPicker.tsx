@@ -42,7 +42,7 @@ export const ColorPicker: React.FC = () => {
             // ></Button>
             <IconButton
               key={color}
-              sx={{ border: selected.includes(color) ? '1px solid black' : 'none' }}
+              sx={{ border: selected.includes(color) ? `1px solid ${color}` : 'none' }}
               onClick={() => handleClick(color)}
             >
               <Fingerprint sx={{ color: `${color}` }} />
