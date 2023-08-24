@@ -7,6 +7,7 @@ import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
 import RangeSlider from '@/components/UI/Slider';
 import PriceChangeIcon from '@mui/icons-material/PriceChange';
+import { ColorPicker } from '@/pages/catalog/filters/ColorPicker';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
@@ -78,13 +79,14 @@ export const CatalogPage: React.FC = () => {
           </Box>
           <Divider sx={{ mb: 2, mt: 2 }} />
           <Box>
-            <Typography
+            {/* <Typography
               sx={{ pt: 0, mt: 0 }}
               variant="h6"
               color="#87a2ab"
             >
               Color
-            </Typography>
+            </Typography> */}
+            <ColorPicker />
           </Box>
         </Box>
         <ProductList />
