@@ -25,7 +25,14 @@ export class API {
   async getCategories() {
     let errorMsg = '';
     try {
-      const { body } = await this.client.categories().get().execute();
+      const { body } = await this.client
+        .categories()
+        .get({
+          queryArgs: {
+            sort: 'orderHint asc',
+          },
+        })
+        .execute();
       const result = body.results;
       return { data: result, error: errorMsg };
     } catch (error) {
@@ -56,7 +63,7 @@ export class API {
           queryArgs: {
             'filter.query': [
               `categories.id:subtree("${catId}")`,
-              'variants.price.centAmount:range ("5" to "9")',
+              // 'variants.price.centAmount:range ("5" to "9")',
             ],
           },
         })
