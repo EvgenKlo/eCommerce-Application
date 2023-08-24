@@ -1,13 +1,14 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
-import { type Category, type ProductProjection } from '@commercetools/platform-sdk';
+import { type Category, type ProductProjection, type Attribute } from '@commercetools/platform-sdk';
 import { CategoryInternal, FilterProducts } from '@/types/products';
 
 const initialState = {
   categories: [] as CategoryInternal[],
   products: [] as ProductProjection[],
   product: {} as ProductProjection,
-  filters: { price: { operand: '=', lower: 0 } } as FilterProducts,
+  filters: { price: { operand: '=', lower: 0, upper: 100 } } as FilterProducts,
+  colors: [] as string[],
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
@@ -46,7 +47,28 @@ export const getProduct = createAsyncThunk('products/getProduct', async (key: st
 const productSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {},
+  reducers: {
+    setAvailColors: (state) => {
+      const colors: string[] = [];
+      (state.products as ProductProjection[]).forEach((product: ProductProjection): void => {
+        const attr: Attribute[] | undefined = product?.masterVariant?.attributes;
+        if (attr) {
+          attr.forEach(({ name, value }: { name: string; value: string }) => {
+            if (name == 'color' && !!value) colors.push(value);
+          });
+        }
+      });
+      const unicColorList = new Set(colors.map((elem) => Object.values(elem)[0]));
+      console.log(unicColorList);
+
+      state.colors = [...unicColorList.values()];
+    },
+    setPrice: (state, action: PayloadAction<{ range: number[]; operand: string }>) => {
+      const [lower, upper] = action.payload.range;
+      const { operand } = action.payload;
+      state.filters.price = { lower, upper, operand };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getCategories.fulfilled, (state, action) => {
       let categories = [] as CategoryInternal[];
@@ -56,6 +78,7 @@ const productSlice = createSlice({
 
     builder.addCase(getProducts.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
+      productSlice.caseReducers.setAvailColors(state, action);
     });
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.product = action.payload ? action.payload : ({} as ProductProjection);
@@ -63,6 +86,7 @@ const productSlice = createSlice({
 
     builder.addCase(getProductsByCat.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
+      productSlice.caseReducers.setAvailColors(state, action);
     });
   },
 });
@@ -111,5 +135,7 @@ function buildQueryFilter(filter: FilterProducts): string[] {
   }, [] as string[]);
   return queryFilter;
 }
+
+export const { setPrice, setAvailColors } = productSlice.actions;
 
 export default productSlice.reducer;

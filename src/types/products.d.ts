@@ -8,7 +8,7 @@ export type FilterProducts = {
   category?: string;
   price: {
     operand: string;
-    upper?: number;
+    upper: number;
     lower: number;
   };
   color?: string;
