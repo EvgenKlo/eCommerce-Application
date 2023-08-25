@@ -69,7 +69,6 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
 
   const register = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    console.log(data.dateOfBirth);
     if (
       !firstNameError &&
       !lastNameError &&
@@ -340,8 +339,6 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                     fullWidth: true,
                     variant: 'outlined',
                     error: dateError,
-                    required: true,
-
                     helperText: dateError
                       ? 'this field must be filled and you must be over 13 years old'
                       : null,
