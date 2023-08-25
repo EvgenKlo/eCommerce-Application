@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { getCategories, getProducts, getProductsByCat } from '@/store/slices/productSlice';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
-import { Button, Box, Container, Drawer, Divider, IconButton, Typography } from '@mui/material';
+import { Button, Box, Container, Divider, Typography } from '@mui/material';
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
-import RangeSlider from '@/components/UI/Slider';
+import RangeSlider from '@/pages/catalog/filters/Slider';
 import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import { ColorPicker } from '@/pages/catalog/filters/ColorPicker';
+import { ManufacturerPicker } from './filters/ManufacturerPicker';
+import { SizePicker } from './filters/SizePicker';
+import { GenderPicker } from './filters/GenderPicker';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
-
+  const [selected, setSelected] = useState('');
   const dispatch = useAppDispatch();
 
   const loadData = (): void => {
@@ -27,6 +31,10 @@ export const CatalogPage: React.FC = () => {
     void loadData();
   }, []);
 
+  const handleAllCategories = () => {
+    loadData();
+    setSelected('');
+  };
   const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
 
   return (
@@ -55,10 +63,22 @@ export const CatalogPage: React.FC = () => {
             Categories
           </Typography>
           <Divider sx={{ mb: 2, mt: 2 }} />
+
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<CategoryOutlinedIcon />}
+            sx={{ '&:focus': { outline: 'none' } }}
+            onClick={() => handleAllCategories()}
+          >
+            All
+          </Button>
           {categories.length !== 0 && (
             <CategoriesTree
               categories={categories}
               handleClick={handleCatClick}
+              selected={selected}
+              setSelected={setSelected}
             />
           )}
           <Divider
@@ -77,17 +97,16 @@ export const CatalogPage: React.FC = () => {
             <PriceChangeIcon sx={{ display: 'block', marginInline: 'auto', color: '#87a2ab' }} />
             <RangeSlider />
           </Box>
-          <Divider sx={{ mb: 2, mt: 2 }} />
+          <Divider
+            sx={{ mb: 2, mt: 2 }}
+            variant="middle"
+          />
           <Box>
-            {/* <Typography
-              sx={{ pt: 0, mt: 0 }}
-              variant="h6"
-              color="#87a2ab"
-            >
-              Color
-            </Typography> */}
             <ColorPicker />
           </Box>
+          <ManufacturerPicker />
+          <SizePicker />
+          <GenderPicker />
         </Box>
         <ProductList />
       </Container>
