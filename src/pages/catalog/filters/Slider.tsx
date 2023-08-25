@@ -4,6 +4,7 @@ import { setPrice } from '@/store/slices/productSlice';
 
 export default function RangeSlider() {
   const price = useAppSelector((state) => state.products.filters.price);
+  const maxPrice = useAppSelector((state) => state.products.maxPrice);
   const value = [price.lower, price.upper];
   const dispatch = useAppDispatch();
 
@@ -20,6 +21,7 @@ export default function RangeSlider() {
       size="small"
       marks
       track="inverted"
+      max={maxPrice}
     />
   );
 }
