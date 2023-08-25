@@ -11,5 +11,8 @@ export type FilterProducts = {
     upper: number;
     lower: number;
   };
-  color?: string;
+  colors?: string[];
+  size?: string[];
+  manufacturer?: string[];
+  gender?: string[];
 };
