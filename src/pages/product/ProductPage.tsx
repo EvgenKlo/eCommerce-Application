@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Loader } from '@/components/UI/Loader';
 import { Grid, Typography } from '@mui/material';
 import { Container } from '@mui/system';
+import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -31,22 +32,82 @@ const ProductPage = () => {
     return <Loader isLoading={true}></Loader>;
   }
 
+  const noImage =
+    'https://cdn.discordapp.com/attachments/1128421935286599820/1144219455061250108/icon-image-not-found-free-vector.png';
+
+  const images: ReactImageGalleryItem[] = product.masterVariant.images?.length
+    ? product.masterVariant.images?.map((image) => {
+        return {
+          original: image.url,
+          thumbnail: image.url,
+          originalHeight: 400,
+          originalAlt: product.name.en,
+          thumbnailAlt: product.name.en,
+        };
+      })
+    : [
+        {
+          original: noImage,
+          thumbnail: noImage,
+        },
+      ];
+
+  console.log(product);
+
   return (
     <Container>
-      <Typography
-        variant="h2"
-        sx={{ fontSize: { xs: '1.5rem', sm: '2rem' } }}
-      >
-        {product.name.en}
-      </Typography>
       <Grid container>
-        <Grid item>
-          <img
-            src={product.masterVariant.images && product.masterVariant.images[0].url}
-            alt={product.name.en}
+        <Grid
+          item
+          sx={{ width: { xs: '100%', sm: '50%' }, marginBottom: { xs: '1rem', sm: '0' } }}
+        >
+          <ImageGallery
+            items={images}
+            showFullscreenButton={false}
+            showPlayButton={false}
+            showBullets={
+              product.masterVariant.images?.length && product.masterVariant.images?.length > 1
+                ? true
+                : false
+            }
           />
         </Grid>
-        <Grid item></Grid>
+        <Grid
+          item
+          sx={{ width: { xs: '100%', sm: '50%' } }}
+        >
+          <Typography
+            variant="h2"
+            sx={{ fontSize: { xs: '1.5rem', sm: '2rem' }, marginBottom: '1rem' }}
+          >
+            {product.name.en}
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{ marginBottom: '1rem' }}
+          >
+            {product.description?.en}
+          </Typography>
+          {product.masterVariant.attributes?.map((attribute) => (
+            <Typography
+              variant="body1"
+              key={attribute.name}
+            >
+              {attribute && attribute.name + ' - ' + (attribute.value.en || attribute.value)}
+            </Typography>
+          ))}
+          <Typography
+            variant="body1"
+            sx={{ marginTop: '1rem' }}
+          >
+            {product.masterVariant.prices?.length &&
+              'Price ' +
+                new Intl.NumberFormat('en-EN', {
+                  style: 'currency',
+                  currency: product.masterVariant.prices[0].value.currencyCode,
+                }).format(product.masterVariant.prices[0].value.centAmount)}
+          </Typography>
+        </Grid>
       </Grid>
     </Container>
   );
