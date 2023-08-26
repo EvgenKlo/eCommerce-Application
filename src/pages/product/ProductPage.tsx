@@ -7,6 +7,7 @@ import { Grid, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
+import { ProductModalWindow } from './ProductModalWindow';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -16,6 +17,10 @@ const ProductPage = () => {
   const navigate = useNavigate();
 
   const [product, setProduct] = useState({} as ProductProjection);
+
+  const [openModalWindow, setOpenModalWindow] = useState(false);
+
+  const handleOpen = () => setOpenModalWindow(true);
 
   useEffect(() => {
     id &&
@@ -44,6 +49,7 @@ const ProductPage = () => {
           originalHeight: 400,
           originalAlt: product.name.en,
           thumbnailAlt: product.name.en,
+          originalClass: 'slider-img',
         };
       })
     : [
@@ -52,8 +58,6 @@ const ProductPage = () => {
           thumbnail: noImage,
         },
       ];
-
-  console.log(product);
 
   return (
     <Container>
@@ -71,6 +75,7 @@ const ProductPage = () => {
                 ? true
                 : false
             }
+            onClick={handleOpen}
           />
         </Grid>
         <Grid
@@ -111,6 +116,11 @@ const ProductPage = () => {
           </Typography>
         </Grid>
       </Grid>
+      <ProductModalWindow
+        openModalWindow={openModalWindow}
+        setOpenModalWindow={setOpenModalWindow}
+        product={product}
+      />
     </Container>
   );
 };
