@@ -38,7 +38,7 @@ test('age validator', () => {
   expect(FormValidator.ageValidator(new Date(2000, 1, 1))).toBe(true);
   expect(FormValidator.ageValidator(new Date(2015, 23, 10))).toBe(false);
   expect(FormValidator.ageValidator(new Date(2009, 7, 18))).toBe(true);
-  expect(FormValidator.ageValidator(new Date(2010, 7, 15))).toBe(false);
+  expect(FormValidator.ageValidator(new Date(2010, 7, 15))).toBe(true);
 });
 
 test('postal code validator', () => {

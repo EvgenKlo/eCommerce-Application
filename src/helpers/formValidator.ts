@@ -1,5 +1,6 @@
 import { postalCodeRegexMap } from './postalCode';
 import Isemail from 'isemail';
+import differenceInYears from 'date-fns/differenceInYears';
 
 export class FormValidator {
   static emailValidator(email: string) {
@@ -32,12 +33,13 @@ export class FormValidator {
     return nameFilter.test(name);
   }
 
-  static ageValidator(age: Date) {
-    const customerAge = (+new Date() - +age) / 1000 / 60 / 60 / 24 / 365;
-    if (customerAge >= 14) {
-      return true;
+  static ageValidator(birthDate: Date | null | undefined) {
+    if (!birthDate) {
+      return false;
     }
-    return false;
+    const today = new Date();
+    const age = differenceInYears(today, birthDate);
+    return age >= 13;
   }
 
   static postalCodeValidator(postalCode: string, country: string) {

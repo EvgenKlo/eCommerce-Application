@@ -23,10 +23,14 @@
   },
   "lint-staged": {
     "*.ts": [
-      "eslint --fix"
+      "eslint --fix",
+      "prettier --write"
     ],
     "*.css": [
       "prettier --write -config .prettierrc"
+    ],
+    "**/*.scss": [
+      "stylelint --fix"
     ]
   },
   "dependencies": {
@@ -42,7 +46,6 @@
     "@mui/material": "^5.14.3",
     "@mui/x-date-pickers": "^6.11.0",
     "@reduxjs/toolkit": "^1.9.5",
-    "@types/react-redux": "^7.1.25",
     "compose-function": "^3.0.3",
     "date-fns": "^2.30.0",
     "isemail": "^3.2.0",
@@ -63,6 +66,7 @@
     "@types/node": "^20.4.2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/react-redux": "^7.1.25",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
@@ -85,6 +89,7 @@
     "sass": "^1.63.6",
     "stylelint": "^15.10.2",
     "stylelint-config-standard": "^34.0.0",
+    "stylelint-scss": "^5.1.0",
     "typescript": "^5.1.6",
     "vite": "^4.4.4",
     "vite-plugin-node-polyfills": "^0.11.0",
