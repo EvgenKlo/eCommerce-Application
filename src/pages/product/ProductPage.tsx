@@ -6,6 +6,7 @@ import { Loader } from '@/components/UI/Loader';
 import { Grid, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
+import 'react-image-gallery/styles/css/image-gallery.css';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -93,7 +94,8 @@ const ProductPage = () => {
               variant="body1"
               key={attribute.name}
             >
-              {attribute && attribute.name + ' - ' + (attribute.value.en || attribute.value)}
+              {/* eslint-disable-next-line */}
+              {`${attribute.name} - ${attribute.value ? attribute.value.en : attribute.value}`}
             </Typography>
           ))}
           <Typography
