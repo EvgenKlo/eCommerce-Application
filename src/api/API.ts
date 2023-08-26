@@ -175,8 +175,14 @@ export class API {
   }
 
   async getProduct(ID: string) {
-    const { body } = await this.client.productProjections().withId({ ID }).get().execute();
-
-    return body;
+    let errorMsg = '';
+    try {
+      const { body } = await this.client.productProjections().withId({ ID }).get().execute();
+      const result = body;
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
   }
 }
