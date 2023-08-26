@@ -10,4 +10,3 @@ fi
 
 
 npm run lintstaged
-# npx stylelint 'src/**/*.css'
