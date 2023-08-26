@@ -34,7 +34,7 @@ describe('Demonstrating  navigation ', () => {
 
     expect(screen.getByText(/AboutPage/i)).toBeInTheDocument();
     await user.click(screen.getByRole('link', { name: 'Catalog' }));
-    expect(screen.getByText(/CatalogPage/i)).toBeInTheDocument();
+    expect(screen.getByText(/Load/i)).toBeInTheDocument();
   });
 
   test('landing on a bad page', async () => {

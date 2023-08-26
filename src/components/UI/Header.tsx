@@ -22,6 +22,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { signOut } from '@/store/slices/customerSlice';
 import { logoutProps } from '@/types/components';
+import { handleMouseDown } from '@/helpers/handleMouseDown';
 
 const styleLinks = {
   color: 'background.default',
@@ -48,9 +49,6 @@ const signLinks = [
 
 export const Header: React.FC<logoutProps> = (props) => {
   const { logout } = props;
-  const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
 
   const location = useLocation();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
