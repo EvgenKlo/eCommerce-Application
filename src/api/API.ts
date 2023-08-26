@@ -22,75 +22,6 @@ export class API {
     }
     return result;
   }
-  async getCategories() {
-    let errorMsg = '';
-    try {
-      const { body } = await this.client.categories().get().execute();
-      const result = body.results;
-      return { data: result, error: errorMsg };
-    } catch (error) {
-      console.log(error);
-      if (error instanceof Error) errorMsg = error.message;
-      return { data: undefined, error: errorMsg };
-    }
-  }
-
-  async getProductsByCat(catId: string) {
-    console.log('catID', catId);
-
-    let errorMsg = '';
-    try {
-      // const response = await this.client
-      // .productProjections()
-      // .search()
-      // .get({
-      //   queryArgs: {
-      //     facet: 'categories.id',
-      //   },
-      // })
-      // .execute();
-      const respsone = await this.client
-        .productProjections()
-        .search()
-        .get({
-          queryArgs: {
-            'filter.query': [
-              `categories.id:subtree("${catId}")`,
-              //'variants.price.centAmount:range ("5" to "9")',
-            ],
-          },
-        })
-        // const { body } = await this.client
-        //   .products()
-        //   .get({
-        //     queryArgs: {
-        //       'filter.query': `categories.id:subtree("${catId}")`,
-        //     },
-        //   })
-        .execute();
-      console.log('success', respsone);
-      const result = respsone;
-      return { data: result.body.results, error: errorMsg };
-    } catch (error) {
-      console.log('error', error);
-      console.log(error);
-      if (error instanceof Error) errorMsg = error.message;
-      return { data: undefined, error: errorMsg };
-    }
-  }
-
-  async getProducts() {
-    let errorMsg = '';
-    try {
-      const { body } = await this.client.productProjections().get().execute();
-      const result = body.results;
-      return { data: result, error: errorMsg };
-    } catch (error) {
-      console.log(error);
-      if (error instanceof Error) errorMsg = error.message;
-      return { data: undefined, error: errorMsg };
-    }
-  }
 
   async getCustomers(ID: string) {
     let result = {} as Customer;
@@ -172,11 +103,5 @@ export class API {
       console.log(error);
     }
     return result;
-  }
-
-  async getProduct(ID: string) {
-    const { body } = await this.client.productProjections().withId({ ID }).get().execute();
-
-    return body;
   }
 }

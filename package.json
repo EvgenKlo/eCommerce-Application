@@ -38,7 +38,6 @@
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@fontsource/roboto": "^5.0.7",
     "@mui/icons-material": "^5.14.3",
-    "@mui/lab": "^5.0.0-alpha.140",
     "@mui/material": "^5.14.3",
     "@mui/x-date-pickers": "^6.11.0",
     "@reduxjs/toolkit": "^1.9.5",
