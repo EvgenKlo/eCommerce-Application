@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { getCategories, getProducts, getProductsByCat } from '@/store/slices/productSlice';
+import {
+  getCategories,
+  getProducts,
+  getProductsByCat,
+  getProductsWithFilter,
+  resetFilter,
+} from '@/store/slices/productSlice';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
-import { Button, Box, Container, Divider, Typography } from '@mui/material';
+import { Button, Box, Container, Divider, Typography, Stack } from '@mui/material';
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
 import RangeSlider from '@/pages/catalog/filters/Slider';
@@ -12,6 +18,9 @@ import { ColorPicker } from '@/pages/catalog/filters/ColorPicker';
 import { ManufacturerPicker } from './filters/ManufacturerPicker';
 import { SizePicker } from './filters/SizePicker';
 import { GenderPicker } from './filters/GenderPicker';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
+import ActiveFilters from './filters/ActiveFilters';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
@@ -32,20 +41,20 @@ export const CatalogPage: React.FC = () => {
   }, []);
 
   const handleAllCategories = () => {
-    loadData();
+    dispatch(resetFilter());
+    // loadData();
     setSelected('');
   };
-  const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
+  const handleCatClick = (catId: string) => dispatch(getProductsWithFilter());
+  const handleFilterClick = () => dispatch(getProductsWithFilter());
+  const handleFilterReset = () => {
+    dispatch(resetFilter());
+    loadData();
+  };
 
   return (
     <Container>
-      <Button
-        variant="outlined"
-        onClick={getCategoryList}
-        sx={{ mb: 2 }}
-      >
-        Load Categories list
-      </Button>
+      <ActiveFilters />
       <Container sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
         <Box
           sx={{
@@ -107,6 +116,34 @@ export const CatalogPage: React.FC = () => {
           <ManufacturerPicker />
           <SizePicker />
           <GenderPicker />
+          {/* <Stack
+            justifyContent="center"
+            direction="row"
+            spacing={1}
+            divider={
+              <Divider
+                orientation="vertical"
+                flexItem
+              />
+            }
+          >
+            <Button
+              size="small"
+              onClick={handleFilterClick}
+              variant="contained"
+              endIcon={<FilterAltIcon />}
+            >
+              Apply
+            </Button>
+            <Button
+              size="small"
+              onClick={handleFilterReset}
+              variant="contained"
+              endIcon={<SettingsBackupRestoreIcon />}
+            >
+              Reset
+            </Button>
+          </Stack> */}
         </Box>
         <ProductList />
       </Container>
