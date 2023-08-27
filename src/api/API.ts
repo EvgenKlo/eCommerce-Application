@@ -47,35 +47,45 @@ export class API {
 
     let errorMsg = '';
     try {
-      // const response = await this.client
-      // .productProjections()
-      // .search()
-      // .get({
-      //   queryArgs: {
-      //     facet: 'categories.id',
-      //   },
-      // })
-      // .execute();
       const respsone = await this.client
         .productProjections()
         .search()
         .get({
           queryArgs: {
-            'filter.query': [
+            facet: ['variants.attributes.color.en', 'variants.price.centAmount'],
+            filter: [
               `categories.id:subtree("${catId}")`,
+              // 'variants.attributes.color.en:"brown","yellow","white"',
               // 'variants.price.centAmount:range ("5" to "9")',
             ],
           },
         })
-        // const { body } = await this.client
-        //   .products()
-        //   .get({
-        //     queryArgs: {
-        //       'filter.query': `categories.id:subtree("${catId}")`,
-        //     },
-        //   })
         .execute();
-      console.log('success', respsone);
+      console.log('CAT', respsone.body);
+      const result = respsone;
+      return { data: result.body.results, error: errorMsg };
+    } catch (error) {
+      console.log('error', error);
+      console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  async getProductsWithFilter(filter: string[]) {
+    console.log('filter', filter);
+
+    let errorMsg = '';
+    try {
+      const respsone = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            'filter.query': filter,
+          },
+        })
+        .execute();
+      console.log('success', respsone.body);
       const result = respsone;
       return { data: result.body.results, error: errorMsg };
     } catch (error) {
@@ -89,9 +99,25 @@ export class API {
   async getProducts() {
     let errorMsg = '';
     try {
-      const { body } = await this.client.productProjections().get().execute();
-      const result = body.results;
-      return { data: result, error: errorMsg };
+      const { body } = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            facet: [
+              'variants.attributes.color.en',
+              'variants.attributes.size.en',
+              'variants.attributes.gender.en',
+              'variants.attributes.designer.en',
+              'variants.price.centAmount',
+            ],
+          },
+        })
+        .execute();
+      // const result = body.results;
+      console.log('MAIN', body);
+
+      return { data: body, error: errorMsg };
     } catch (error) {
       console.log(error);
       if (error instanceof Error) errorMsg = error.message;

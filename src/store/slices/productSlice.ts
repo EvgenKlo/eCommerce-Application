@@ -1,18 +1,23 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
-import { type Category, type ProductProjection, type Attribute } from '@commercetools/platform-sdk';
+import {
+  type Category,
+  type ProductProjection,
+  type FacetResults,
+  type TermFacetResult,
+} from '@commercetools/platform-sdk';
 import { CategoryInternal, FilterProducts } from '@/types/products';
 
 const initialState = {
   categories: [] as CategoryInternal[],
   products: [] as ProductProjection[],
   product: {} as ProductProjection,
-  filters: { price: { operand: '=', lower: 0, upper: 100 } } as FilterProducts,
+  filters: { price: { operand: 'range', lower: 0, upper: 100 } } as FilterProducts,
   colors: [] as string[],
   size: [] as string[],
   gender: [] as string[],
   manufacturer: [] as string[],
-  maxPrice: 0,
+  maxPrice: 100,
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
@@ -35,8 +40,19 @@ export const getProductsByCat = createAsyncThunk(
     const state: RootState = thunkAPI.getState() as RootState;
     const passClient = state.customers.apiInstance;
     const response = await passClient.getProductsByCat(catId);
-    console.log(buildQueryFilter(state.products.filters));
+    // console.log('Query Filter', buildQueryFilter(state.products.filters));
 
+    return response.data;
+  }
+);
+export const getProductsWithFilter = createAsyncThunk(
+  'products/getProductsWithFilter',
+  async (_, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const passClient = state.customers.apiInstance;
+    const filter = buildQueryFilter(state.products.filters);
+    const response = await passClient.getProductsWithFilter(filter);
+    // console.log('Query Filter', buildQueryFilter(state.products.filters));
     return response.data;
   }
 );
@@ -51,45 +67,43 @@ const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    deriveAttributes: (state) => {
+    deriveAttributes: (state, action: PayloadAction<{ facets: FacetResults }>) => {
       const colors: string[] = [];
       const size: string[] = [];
       const gender: string[] = [];
       const manufacturer: string[] = [];
       const prices: number[] = [];
-      (state.products as ProductProjection[]).forEach((product: ProductProjection): void => {
-        const attr: Attribute[] | undefined = product?.masterVariant?.attributes;
-        if (attr) {
-          attr.forEach(({ name, value }: { name: string; value: string }) => {
-            switch (name) {
-              case 'color':
-                !!value && colors.push(value);
+      Object.keys(action.payload.facets).forEach((facet: string): void => {
+        const facetData = action.payload.facets[facet] as TermFacetResult;
+        if (facetData.terms.length) {
+          facetData.terms.forEach(({ term }: { term: string; count: number }) => {
+            switch (facet) {
+              case 'variants.attributes.color.en':
+                !!term && colors.push(term);
                 break;
-              case 'size':
-                !!value && size.push(value);
+              case 'variants.attributes.size.en':
+                !!term && size.push(term);
                 break;
-              case 'gender':
-                !!value && gender.push(value);
+              case 'variants.attributes.gender.en':
+                !!term && gender.push(term);
                 break;
-              case 'designer':
-                !!value && manufacturer.push(value);
+              case 'variants.attributes.designer.en':
+                !!term && manufacturer.push(term);
+                break;
+              case 'variants.price.centAmount':
+                {
+                  !!term && prices.push(Number(term));
+                }
                 break;
             }
           });
         }
-        if (product?.masterVariant.prices)
-          prices.push(product?.masterVariant.prices[0]!.value.centAmount);
       });
 
-      const unicColorList = new Set(colors.map((elem) => Object.values(elem)[0]));
-      const unicSizes = new Set(size.map((elem) => Object.values(elem)[0]));
-      const unicGender = new Set(gender.map((elem) => Object.values(elem)[0]));
-      const unicManufacturer = new Set(manufacturer.map((elem) => Object.values(elem)[0]));
-
-      state.colors = [...unicColorList.values()];
-      state.size = [...unicSizes.values()];
-      state.gender = [...unicGender.values()];
-      state.manufacturer = [...unicManufacturer.values()];
+      state.colors = colors;
+      state.size = size;
+      state.gender = gender;
+      state.manufacturer = manufacturer;
 
       const maxPrice = Math.max(...prices);
       state.maxPrice = maxPrice;
@@ -111,7 +125,13 @@ const productSlice = createSlice({
       state.filters.size = action.payload.sizes;
     },
     setFilterGender: (state, action: PayloadAction<{ genders: string[] }>) => {
-      state.filters.size = action.payload.genders;
+      state.filters.gender = action.payload.genders;
+    },
+    setCategory: (state, action: PayloadAction<{ categoryId: string }>) => {
+      state.filters.catId = action.payload.categoryId;
+    },
+    resetFilter: (state) => {
+      state.filters = initialState.filters;
     },
   },
   extraReducers: (builder) => {
@@ -122,8 +142,15 @@ const productSlice = createSlice({
     });
 
     builder.addCase(getProducts.fulfilled, (state, action) => {
-      state.products = action.payload ? action.payload : ([] as ProductProjection[]);
-      productSlice.caseReducers.deriveAttributes(state);
+      state.products = action.payload?.results
+        ? action.payload.results
+        : ([] as ProductProjection[]);
+      productSlice.caseReducers.deriveAttributes(state, {
+        payload: {
+          facets: action.payload?.facets as FacetResults,
+        },
+        type: 'products/filters',
+      });
     });
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.product = action.payload ? action.payload : ({} as ProductProjection);
@@ -131,7 +158,11 @@ const productSlice = createSlice({
 
     builder.addCase(getProductsByCat.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
-      productSlice.caseReducers.deriveAttributes(state);
+      // productSlice.caseReducers.deriveAttributes(state);
+    });
+    builder.addCase(getProductsWithFilter.fulfilled, (state, action) => {
+      state.products = action.payload ? action.payload : ([] as ProductProjection[]);
+      // productSlice.caseReducers.deriveAttributes(state);
     });
   },
 });
@@ -161,18 +192,33 @@ function buildQueryFilter(filter: FilterProducts): string[] {
   const queryFilter = keys.reduce((query, key) => {
     let option = '';
     switch (key) {
-      case 'category':
-        option = `categories.id:subtree("${filter[key]}")`;
-        break;
       case 'price':
-        if (filter[key].upper && filter[key].operand == 'range') {
+        if (filter[key].upper && filter[key].upper) {
           option = `variants.price.centAmount:range ("${filter[key].lower}" to "${filter[key].upper}")`;
-        } else if (filter[key].operand == '=') {
-          option = `variants.price.centAmount:"${filter[key].lower}"`;
         }
         break;
       case 'colors': {
-        // option = `variants.attributes.color:"${filter[key]}"`;
+        if (filter[key]?.length)
+          option = `variants.attributes.color.en:"${filter[key]?.join('","')}"`;
+        break;
+      }
+      case 'size': {
+        if (filter[key]?.length)
+          option = `variants.attributes.size.en:"${filter[key]?.join('","')}"`;
+        break;
+      }
+      case 'gender': {
+        if (filter[key]?.length)
+          option = `variants.attributes.gender.en:"${filter[key]?.join('","')}"`;
+        break;
+      }
+      case 'manufacturer': {
+        if (filter[key]?.length)
+          option = `variants.attributes.designer.en:"${filter[key]?.join('","')}"`;
+        break;
+      }
+      case 'catId': {
+        option = `categories.id:subtree("${filter[key]}")`;
         break;
       }
     }
@@ -189,6 +235,8 @@ export const {
   setFilterManufacturer,
   setFilterSize,
   setFilterGender,
+  resetFilter,
+  setCategory,
 } = productSlice.actions;
 
 export default productSlice.reducer;

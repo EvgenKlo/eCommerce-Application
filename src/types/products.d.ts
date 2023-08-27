@@ -5,7 +5,6 @@ export interface CategoryInternal extends Category {
 }
 
 export type FilterProducts = {
-  category?: string;
   price: {
     operand: string;
     upper: number;
@@ -15,4 +14,5 @@ export type FilterProducts = {
   size?: string[];
   manufacturer?: string[];
   gender?: string[];
+  catId?: string;
 };
