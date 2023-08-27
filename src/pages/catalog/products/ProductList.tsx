@@ -10,7 +10,8 @@ const ProductList = () => {
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
+        //columns={{ xs: 2, sm: 4, md: 12 }}
+        padding={2}
       >
         {products.map((product) => (
           <ProductItem
