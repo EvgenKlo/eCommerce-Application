@@ -174,6 +174,26 @@ export class API {
     return result;
   }
 
+  async setCustomerLastName(ID: string, lastName: string, version = 1) {
+    let result = {};
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID })
+        .post({
+          body: { version, actions: [{ action: 'setLastName', lastName: lastName }] },
+        })
+        .execute();
+
+      result = body;
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(result);
+
+    return result;
+  }
+
   async getProduct(ID: string) {
     let errorMsg = '';
     try {

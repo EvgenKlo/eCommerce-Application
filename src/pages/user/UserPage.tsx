@@ -1,20 +1,28 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { useState } from 'react';
-import { Typography, Box, Paper, Button } from '@mui/material';
+import { Typography, Box, Paper, Button, Checkbox } from '@mui/material';
 import { KittySvg } from '@/components/UI/KittySvg';
 import FirstNameField from '../../components/UI/profileFields/FirstNameField';
 import { LastNameField } from '@/components/UI/profileFields/LastNameField';
 import EmailField from '../../components/UI/profileFields/EmailField';
 import { DateField } from '@/components/UI/profileFields/DateField';
 import { AddressForm } from '@/components/UI/AddressForm';
-import { type BaseAddress } from '@commercetools/platform-sdk';
+import { type CustomerDraft, type BaseAddress } from '@commercetools/platform-sdk';
+import { UpdateLastName } from '@/store/slices/customerSlice';
+import EditIcon from '@mui/icons-material/Edit';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 export const UserPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  console.log(dispatch);
+
   const customer = useAppSelector((state) => state.customers.customer);
-  console.log(customer);
+  //console.log(customer);
   const [isEditing, setIsEditing] = useState(false);
+
+  const [editLastName, setEditLastName] = useState(false);
+
+  const [data, setData] = useState({} as CustomerDraft);
 
   const getAddress = (address: BaseAddress) => {
     console.log(address);
@@ -130,7 +138,37 @@ export const UserPage: React.FC = () => {
                 sx={staticField}
                 variant="subtitle1"
               >
-                <span style={{ fontWeight: 'bold' }}>Last Name: </span>q{customer.lastName}
+                <span style={{ fontWeight: 'bold' }}>Last Name: </span>
+                {editLastName ? (
+                  <LastNameField
+                    data={customer}
+                    setData={setData}
+                  />
+                ) : (
+                  customer.lastName
+                )}
+                <Checkbox
+                  {...label}
+                  icon={<EditIcon />}
+                  checkedIcon={<EditIcon />}
+                  checked={editLastName}
+                  onChange={() => setEditLastName(!editLastName)}
+                />
+                <Button
+                  onClick={() => {
+                    data.lastName &&
+                      void dispatch(
+                        UpdateLastName({
+                          id: customer.id,
+                          lastName: data.lastName,
+                          version: customer.version,
+                        })
+                      );
+                    setEditLastName(false);
+                  }}
+                >
+                  Send last name
+                </Button>
               </Typography>
               <Typography
                 sx={staticField}
