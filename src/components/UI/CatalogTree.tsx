@@ -3,6 +3,8 @@ import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
 import { TreeView, TreeItem } from '@mui/lab';
 import { CategoryInternal } from '@/types/products';
 import { SetStateAction, SyntheticEvent } from 'react';
+import { useAppDispatch } from '@/hooks/reduxHooks';
+import { setCategory, resetFilter } from '@/store/slices/productSlice';
 
 const treeSX = {
   Maxheight: 400,
@@ -17,6 +19,7 @@ export const CategoriesTree: React.FC<{
   selected: string;
   setSelected: (id: string) => void;
 }> = ({ categories, handleClick, selected, setSelected }) => {
+  const dispatch = useAppDispatch();
   const renderTree = (cats: CategoryInternal[]) =>
     cats.map((nodes) => (
       <TreeItem
@@ -24,6 +27,8 @@ export const CategoriesTree: React.FC<{
         nodeId={nodes.id}
         label={nodes.name.en}
         onClick={() => {
+          dispatch(resetFilter());
+          dispatch(setCategory({ categoryId: nodes.id }));
           handleClick(nodes.id);
         }}
         sx={{ borderRadius: '5%' }}

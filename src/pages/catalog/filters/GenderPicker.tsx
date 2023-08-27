@@ -4,16 +4,17 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { Box, Button, Collapse } from '@mui/material';
-import { setFilterGender } from '@/store/slices/productSlice';
+import { setFilterGender, getProductsWithFilter } from '@/store/slices/productSlice';
 
 export const GenderPicker: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [checked, setChecked] = useState([] as number[]);
   const dispatch = useAppDispatch();
   const gender = useAppSelector((state) => state.products.gender);
+  const filterGenders = useAppSelector((state) => state.products.filters.gender);
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -28,7 +29,10 @@ export const GenderPicker: React.FC = () => {
     const filteredGender: string[] = newChecked.map((idx) => gender[idx]);
     dispatch(setFilterGender({ genders: filteredGender }));
   };
-
+  useEffect(() => {
+    if (!filterGenders?.length) setChecked([]);
+    dispatch(getProductsWithFilter());
+  }, [filterGenders]);
   const handleShow = () => setCollapsed((state) => !state);
 
   return (
