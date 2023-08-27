@@ -5,15 +5,20 @@ import { Link as RouterLink } from 'react-router-dom';
 import DiscountIcon from '@mui/icons-material/Discount';
 
 const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
-  const imageNumber = 0;
+  const imageOrPriceNumber = 0;
   const language = 'en';
 
   const price =
-    product.masterVariant.prices && product.masterVariant.prices[imageNumber].value.centAmount;
+    product.masterVariant.prices &&
+    product.masterVariant.prices[imageOrPriceNumber].value.centAmount;
 
   const discountPrice =
     product.masterVariant.prices &&
-    product.masterVariant.prices[imageNumber].discounted?.value.centAmount;
+    product.masterVariant.prices[imageOrPriceNumber].discounted?.value.centAmount;
+
+  const currencyCode =
+    product.masterVariant.prices &&
+    product.masterVariant.prices[imageOrPriceNumber].value.currencyCode;
 
   return (
     <Grid
@@ -41,7 +46,7 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
               component="img"
               image={
                 product.masterVariant.images?.length
-                  ? `${product.masterVariant.images[imageNumber].url}`
+                  ? `${product.masterVariant.images[imageOrPriceNumber].url}`
                   : 'https://media.istockphoto.com/id/1216251206/vector/no-image-available-icon.jpg?s=612x612&w=0&k=20&c=6C0wzKp_NZgexxoECc8HD4jRpXATfcu__peSYecAwt0='
               }
               alt={product.name[language]}
@@ -84,7 +89,7 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
                     >
                       {new Intl.NumberFormat('en-EN', {
                         style: 'currency',
-                        currency: product.masterVariant.prices[imageNumber].value.currencyCode,
+                        currency: currencyCode,
                       }).format(discountPrice)}
                     </Typography>
                   </Grid>
@@ -102,7 +107,7 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
                     {price &&
                       new Intl.NumberFormat('en-EN', {
                         style: 'currency',
-                        currency: product.masterVariant.prices[imageNumber].value.currencyCode,
+                        currency: currencyCode,
                       }).format(price)}
                   </Typography>
                 </Grid>
