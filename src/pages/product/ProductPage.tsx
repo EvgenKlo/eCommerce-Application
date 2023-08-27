@@ -8,6 +8,7 @@ import { Container } from '@mui/system';
 import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { ProductModalWindow } from './ProductModalWindow';
+import DiscountIcon from '@mui/icons-material/Discount';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -59,6 +60,18 @@ const ProductPage = () => {
         },
       ];
 
+  const priceNumber = 0;
+
+  const price =
+    product.masterVariant.prices && product.masterVariant.prices[priceNumber].value.centAmount;
+
+  const discountPrice =
+    product.masterVariant.prices &&
+    product.masterVariant.prices[priceNumber].discounted?.value.centAmount;
+
+  const currencyCode =
+    product.masterVariant.prices && product.masterVariant.prices[priceNumber].value.currencyCode;
+
   return (
     <Container>
       <Grid container>
@@ -103,17 +116,77 @@ const ProductPage = () => {
               {`${attribute.name} - ${attribute.value ? attribute.value.en : attribute.value}`}
             </Typography>
           ))}
-          <Typography
-            variant="body1"
-            sx={{ marginTop: '1rem' }}
+          <Grid
+            container
+            xl={12}
+            spacing={{ xs: 1 }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
           >
-            {product.masterVariant.prices?.length &&
-              'Price ' +
-                new Intl.NumberFormat('en-EN', {
-                  style: 'currency',
-                  currency: product.masterVariant.prices[0].value.currencyCode,
-                }).format(product.masterVariant.prices[0].value.centAmount)}
-          </Typography>
+            <Grid
+              item
+              sx={{ position: 'relative' }}
+            >
+              <Typography
+                variant="body2"
+                color="secondary.dark"
+                fontSize="1.5rem"
+                fontWeight={700}
+                sx={{ color: 'secondary.dark', fontSize: '1.5rem', fontWeight: 700 }}
+              >
+                Price
+              </Typography>
+            </Grid>
+            {discountPrice && (
+              <Grid
+                item
+                sx={{ position: 'relative' }}
+              >
+                <DiscountIcon
+                  sx={{
+                    position: 'absolute',
+                    color: 'info.main',
+                    bottom: -28,
+                    right: -28,
+                    zIndex: 10,
+                    fontSize: '2rem',
+                    display: discountPrice ? 'block' : 'none',
+                  }}
+                />
+                <Typography
+                  variant="body2"
+                  color="secondary.dark"
+                  fontSize="1.5rem"
+                  fontWeight={700}
+                  sx={{ color: 'secondary.dark', fontSize: '1.5rem', fontWeight: 700 }}
+                >
+                  {new Intl.NumberFormat('en-EN', {
+                    style: 'currency',
+                    currency: currencyCode,
+                  }).format(discountPrice)}
+                </Typography>
+              </Grid>
+            )}
+            <Grid item>
+              <Typography
+                variant="body2"
+                sx={{
+                  textDecoration: discountPrice && 'line-through',
+                  color: discountPrice ? 'text.disabled' : 'secondary.dark',
+                  fontSize: discountPrice ? '1rem' : '1.5rem',
+                  fontWeight: discountPrice ? 400 : 700,
+                }}
+              >
+                {price &&
+                  new Intl.NumberFormat('en-EN', {
+                    style: 'currency',
+                    currency: currencyCode,
+                  }).format(price)}
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
       <ProductModalWindow
