@@ -147,7 +147,7 @@ const ProductPage = () => {
                 <DiscountIcon
                   sx={{
                     position: 'absolute',
-                    color: 'secondary.dark',
+                    color: 'info.main',
                     bottom: -28,
                     right: -28,
                     zIndex: 10,

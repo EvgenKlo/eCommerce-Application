@@ -32,7 +32,7 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
         <DiscountIcon
           sx={{
             position: 'absolute',
-            color: 'secondary.dark',
+            color: 'info.main',
             top: 30,
             right: -25,
             zIndex: 10,
