@@ -1,12 +1,11 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { Box, ButtonGroup, Fade } from '@mui/material';
+import { Box, Fade } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Fingerprint from '@mui/icons-material/Fingerprint';
-import Button from '@mui/material/Button';
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
-import { setFilterColors } from '@/store/slices/productSlice';
+import { setFilterColors, getProductsWithFilter } from '@/store/slices/productSlice';
 
 const boxSX = {
   display: 'flex',
@@ -18,6 +17,7 @@ const boxSX = {
 
 export const ColorPicker: React.FC = () => {
   const colors = useAppSelector((state) => state.products.colors);
+  const filterColors = useAppSelector((state) => state.products.filters.colors);
   const [selected, setSelected] = useState([] as string[]);
   const dispatch = useAppDispatch();
 
@@ -28,7 +28,10 @@ export const ColorPicker: React.FC = () => {
     setSelected(res);
     dispatch(setFilterColors({ colors: res }));
   };
-
+  useEffect(() => {
+    if (!filterColors?.length) setSelected([]);
+    dispatch(getProductsWithFilter());
+  }, [filterColors]);
   return (
     <>
       <ColorLensOutlinedIcon sx={{ color: '#87a2ab' }} />

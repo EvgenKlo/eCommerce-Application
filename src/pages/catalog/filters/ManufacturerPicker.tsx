@@ -4,16 +4,17 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { Box, Button, Collapse } from '@mui/material';
-import { setFilterManufacturer } from '@/store/slices/productSlice';
+import { setFilterManufacturer, getProductsWithFilter } from '@/store/slices/productSlice';
 
 export const ManufacturerPicker: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [checked, setChecked] = useState([] as number[]);
   const dispatch = useAppDispatch();
   const manufacturers = useAppSelector((state) => state.products.manufacturer);
+  const filterManufacturers = useAppSelector((state) => state.products.filters.manufacturer);
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -28,7 +29,10 @@ export const ManufacturerPicker: React.FC = () => {
     const filteredManufacturers: string[] = newChecked.map((idx) => manufacturers[idx]);
     dispatch(setFilterManufacturer({ manufacturers: filteredManufacturers }));
   };
-
+  useEffect(() => {
+    if (!filterManufacturers) setChecked([]);
+    dispatch(getProductsWithFilter());
+  }, [filterManufacturers]);
   const handleShow = () => setCollapsed((state) => !state);
 
   return (
