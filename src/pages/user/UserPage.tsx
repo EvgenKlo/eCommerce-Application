@@ -1,15 +1,19 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { useState } from 'react';
-import { Typography, Box, Paper, Button, Checkbox } from '@mui/material';
+import { Typography, Box, Paper, Checkbox, IconButton, Tooltip } from '@mui/material';
 import { KittySvg } from '@/components/UI/KittySvg';
 import FirstNameField from '../../components/UI/profileFields/FirstNameField';
 import { LastNameField } from '@/components/UI/profileFields/LastNameField';
 import EmailField from '@/components/UI/profileFields/EmailField';
 import EditIcon from '@mui/icons-material/Edit';
+import { type CustomerDraft } from '@commercetools/platform-sdk';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { handleMouseDown } from '@/helpers/handleMouseDown';
+import CancelIcon from '@mui/icons-material/Cancel';
 // import EmailField from '../../components/UI/profileFields/EmailField';
 // import { DateField } from '@/components/UI/profileFields/DateField';
 // import { AddressForm } from '@/components/UI/AddressForm';
-import { type CustomerDraft } from '@commercetools/platform-sdk';
+
 import {
   UpdateLastName,
   UpdateFirstName,
@@ -17,28 +21,26 @@ import {
   UpdateDateOfBirth,
 } from '@/store/slices/customerSlice';
 import { DateField } from '@/components/UI/profileFields/DateField';
+// import { AddressForm } from '@/components/UI/AddressForm';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-const styleButton = {
-  marginLeft: '50px',
-  marginBottom: '5px',
-  fontSize: '10px',
-  fontWeight: 'bold',
-  padding: '2px 5px',
-  width: '200px',
-  height: '30px',
-};
+
 const styleEditIcon = { marginLeft: '15px' };
 
 const styleContainerField = {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  // justifyContent: 'space-between',
   maxWidth: '600px',
   '@media (max-width: 400px)': {
     flexDirection: 'column',
   },
+};
+
+const styleContainerButton = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
 };
 
 const boxStyle = {
@@ -48,6 +50,8 @@ const boxStyle = {
   alignContent: 'center',
   justifyContent: 'center',
 };
+
+const styleTitle = { display: 'block', fontWeight: 'bold', width: '140px' };
 
 export const UserPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -59,6 +63,12 @@ export const UserPage: React.FC = () => {
   const [editLastName, setEditLastName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
   const [editDateOfBirth, setEditDateOfBirth] = useState(false);
+  // const [editBillingAddress, setEditBillingAddress] = useState(false);
+  // const [editShippingAddress, setEditShippingAddress] = useState(false);
+
+  // const getAddress = (address: BaseAddress) => {
+  //   console.log(address);
+  // };
 
   const [data, setData] = useState({} as CustomerDraft);
 
@@ -108,40 +118,68 @@ export const UserPage: React.FC = () => {
             Profile information
           </Typography>
           <Box sx={styleContainerField}>
+            <Typography
+              sx={styleNameField}
+              variant="subtitle1"
+            >
+              <span style={styleTitle}>First name: </span>
+            </Typography>
+
             {editFirstName ? (
               <>
                 <FirstNameField
                   data={customer}
                   setData={setData}
                 />
-                <Button
-                  sx={styleButton}
-                  variant="contained"
-                  onClick={() => {
-                    data.firstName &&
-                      void dispatch(
-                        UpdateFirstName({
-                          id: customer.id,
-                          firstName: data.firstName,
-                          version: customer.version,
-                        })
-                      );
-                    setEditFirstName(false);
-                  }}
-                >
-                  update first name
-                </Button>
+
+                <Box sx={styleContainerButton}>
+                  <Tooltip
+                    title="save"
+                    arrow
+                    placement="right-start"
+                  >
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="info"
+                      disabled={!data.firstName}
+                      onClick={() => {
+                        data.firstName &&
+                          void dispatch(
+                            UpdateFirstName({
+                              id: customer.id,
+                              firstName: data.firstName,
+                              version: customer.version,
+                            })
+                          );
+                        setEditFirstName(false);
+                      }}
+                    >
+                      <CheckCircleOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip
+                    title="cancel"
+                    arrow
+                    placement="right-start"
+                  >
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="error"
+                      disabled={!!data.firstName}
+                      onClick={() => {
+                        setEditFirstName(false);
+                      }}
+                    >
+                      <CancelIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               </>
             ) : (
               <>
-                <Typography
-                  sx={styleNameField}
-                  variant="subtitle1"
-                >
-                  <span style={{ fontWeight: 'bold' }}>First name: </span>
+                {customer.firstName}
 
-                  {customer.firstName}
-                </Typography>
                 <Checkbox
                   {...label}
                   icon={
@@ -159,40 +197,65 @@ export const UserPage: React.FC = () => {
             )}
           </Box>
           <Box sx={styleContainerField}>
+            <Typography
+              sx={styleNameField}
+              variant="subtitle1"
+            >
+              <span style={styleTitle}>Last name: </span>
+            </Typography>
             {editLastName ? (
               <>
                 <LastNameField
                   data={customer}
                   setData={setData}
                 />
-                <Button
-                  sx={styleButton}
-                  variant="contained"
-                  onClick={() => {
-                    data.lastName &&
-                      void dispatch(
-                        UpdateLastName({
-                          id: customer.id,
-                          lastName: data.lastName,
-                          version: customer.version,
-                        })
-                      );
-                    setEditLastName(false);
-                  }}
-                >
-                  update last name
-                </Button>
+
+                <Box sx={styleContainerButton}>
+                  <Tooltip
+                    title="save"
+                    arrow
+                    placement="right-start"
+                  >
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="info"
+                      disabled={!data.lastName}
+                      onClick={() => {
+                        data.lastName &&
+                          void dispatch(
+                            UpdateLastName({
+                              id: customer.id,
+                              lastName: data.lastName,
+                              version: customer.version,
+                            })
+                          );
+                        setEditLastName(false);
+                      }}
+                    >
+                      <CheckCircleOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip
+                    title="cancel"
+                    arrow
+                    placement="right-start"
+                  >
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="error"
+                      disabled={!!data.lastName}
+                      onClick={() => {
+                        setEditLastName(false);
+                      }}
+                    >
+                      <CancelIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               </>
             ) : (
               <>
-                <Typography
-                  sx={styleNameField}
-                  variant="subtitle1"
-                >
-                  <span style={{ fontWeight: 'bold' }}>Last name: </span>
-
-                  {customer.lastName}
-                </Typography>
+                {customer.lastName}
                 <Checkbox
                   {...label}
                   icon={
@@ -210,40 +273,64 @@ export const UserPage: React.FC = () => {
             )}
           </Box>
           <Box sx={styleContainerField}>
+            <Typography
+              sx={styleNameField}
+              variant="subtitle1"
+            >
+              <span style={styleTitle}>Email: </span>
+            </Typography>
             {editEmail ? (
               <>
                 <EmailField
                   data={customer}
                   setData={setData}
                 />
-                <Button
-                  sx={styleButton}
-                  variant="contained"
-                  onClick={() => {
-                    data.email &&
-                      void dispatch(
-                        UpdateEmail({
-                          id: customer.id,
-                          email: data.email,
-                          version: customer.version,
-                        })
-                      );
-                    setEditEmail(false);
-                  }}
-                >
-                  update email
-                </Button>
+                <Box sx={styleContainerButton}>
+                  <Tooltip
+                    title="save"
+                    arrow
+                    placement="right-start"
+                  >
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="info"
+                      disabled={!data.email}
+                      onClick={() => {
+                        data.email &&
+                          void dispatch(
+                            UpdateEmail({
+                              id: customer.id,
+                              email: data.email,
+                              version: customer.version,
+                            })
+                          );
+                        setEditEmail(false);
+                      }}
+                    >
+                      <CheckCircleOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip
+                    title="cancel"
+                    arrow
+                    placement="right-start"
+                  >
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="error"
+                      disabled={!!data.email}
+                      onClick={() => {
+                        setEditEmail(false);
+                      }}
+                    >
+                      <CancelIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               </>
             ) : (
               <>
-                <Typography
-                  sx={styleNameField}
-                  variant="subtitle1"
-                >
-                  <span style={{ fontWeight: 'bold' }}>Email: </span>
-
-                  {customer.email}
-                </Typography>
+                {customer.email}
                 <Checkbox
                   {...label}
                   icon={
@@ -261,40 +348,66 @@ export const UserPage: React.FC = () => {
             )}
           </Box>
           <Box sx={styleContainerField}>
+            <Typography
+              sx={styleNameField}
+              variant="subtitle1"
+            >
+              <span style={styleTitle}>Date of birth: </span>
+            </Typography>
             {editDateOfBirth ? (
               <>
                 <DateField
                   data={customer}
                   setData={setData}
                 />
-                <Button
-                  sx={styleButton}
-                  variant="contained"
-                  onClick={() => {
-                    data.dateOfBirth &&
-                      void dispatch(
-                        UpdateDateOfBirth({
-                          id: customer.id,
-                          date: data.dateOfBirth,
-                          version: customer.version,
-                        })
-                      );
-                    setEditDateOfBirth(false);
-                  }}
-                >
-                  update date
-                </Button>
+                <Box sx={styleContainerButton}>
+                  <Tooltip
+                    title="save"
+                    arrow
+                    placement="right-start"
+                  >
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="info"
+                      disabled={!data.dateOfBirth}
+                      onClick={() => {
+                        data.dateOfBirth &&
+                          void dispatch(
+                            UpdateDateOfBirth({
+                              id: customer.id,
+                              date: data.dateOfBirth,
+                              version: customer.version,
+                            })
+                          );
+                        setEditDateOfBirth(false);
+                      }}
+                    >
+                      <CheckCircleOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip
+                    title="cancel"
+                    arrow
+                    placement="right-start"
+                  >
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="error"
+                      disabled={!!data.dateOfBirth}
+                      onClick={() => {
+                        setEditDateOfBirth(false);
+                      }}
+                    >
+                      <CancelIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               </>
             ) : (
               <>
-                <Typography
-                  sx={styleNameField}
-                  variant="subtitle1"
-                >
-                  <span style={{ fontWeight: 'bold' }}>Date of birth: </span>
+                {customer.dateOfBirth}
 
-                  {customer.dateOfBirth}
-                </Typography>
                 <Checkbox
                   {...label}
                   icon={
@@ -310,6 +423,9 @@ export const UserPage: React.FC = () => {
                 />
               </>
             )}
+          </Box>
+
+          <Box sx={styleContainerField}>
           </Box>
         </Paper>
       </Box>

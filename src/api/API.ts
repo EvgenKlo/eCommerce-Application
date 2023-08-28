@@ -225,10 +225,25 @@ export class API {
     } catch (error) {
       console.log(error);
     }
-    console.log(result);
-
     return result;
   }
+  // async setCustomerBillingAddress(ID: string, address: string) {
+  //   let result = {};
+  //   try {
+  //     const { body } = await this.client
+  //       .customers()
+  //       .withId({ ID })
+  //       .post({
+  //         body: { version, actions: [{ action: 'changeAddress', address: address }] },
+  //       })
+  //       .execute();
+
+  //     result = body;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   return result;
+  // }
 
   async getProduct(ID: string) {
     let errorMsg = '';
