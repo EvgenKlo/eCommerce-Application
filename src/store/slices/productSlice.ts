@@ -5,21 +5,26 @@ import {
   type FacetResults,
   type TermFacetResult,
 } from '@commercetools/platform-sdk';
-import { CategoryInternal, FilterProducts } from '@/types/products';
+import { CategoryInternal, InitialState } from '@/types/products';
 import { buildQueryFilter } from '@/helpers/buildQueryFilter';
 import { buildTree } from '@/helpers/buildTree';
+import { SortOptions } from '@/types/Enums';
 
-const initialState = {
-  categories: [] as CategoryInternal[],
-  products: [] as ProductProjection[],
-  product: {} as ProductProjection,
-  filters: { price: { operand: 'range', lower: 0, upper: 100 } } as FilterProducts,
-  colors: [] as string[],
-  size: [] as string[],
-  gender: [] as string[],
-  manufacturer: [] as string[],
+const initialState: InitialState = {
+  categories: [],
+  products: [],
+  product: {},
+  filters: { price: { operand: 'range', lower: 0, upper: 100 } },
+  colors: [],
+  size: [],
+  gender: [],
+  manufacturer: [],
   maxPrice: 100,
   isLoading: false,
+  sort: {
+    direction: 'asc',
+    prop: SortOptions.price,
+  },
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
@@ -54,7 +59,8 @@ export const getProductsWithFilter = createAsyncThunk(
     const state: RootState = thunkAPI.getState() as RootState;
     const passClient = state.customers.apiInstance;
     const filter = buildQueryFilter(state.products.filters);
-    const response = await passClient.getProductsWithFilter(filter);
+    const sort = `${state.products.sort.prop} ${state.products.sort.direction}`;
+    const response = await passClient.getProductsWithFilter(filter, sort);
     return response.data;
   }
 );
@@ -140,6 +146,9 @@ const productSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    setSortingOptions: (state, action: PayloadAction<typeof state.sort>) => {
+      state.sort = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getCategories.fulfilled, (state, action) => {
@@ -187,6 +196,7 @@ export const {
   resetFilter,
   setCategory,
   setLoading,
+  setSortingOptions,
 } = productSlice.actions;
 
 export default productSlice.reducer;
