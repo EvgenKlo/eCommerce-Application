@@ -19,6 +19,7 @@ const initialState = {
   gender: [] as string[],
   manufacturer: [] as string[],
   maxPrice: 100,
+  isLoading: false,
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
@@ -29,6 +30,7 @@ export const getCategories = createAsyncThunk('products/getCategories', async (_
 });
 
 export const getProducts = createAsyncThunk('products/getProducts', async (_, thunkAPI) => {
+  thunkAPI.dispatch(setLoading(true));
   const state: RootState = thunkAPI.getState() as RootState;
   const passClient = state.customers.apiInstance;
   const response = await passClient.getProducts();
@@ -38,6 +40,7 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
 export const getProductsByCat = createAsyncThunk(
   'products/getProductsByCat',
   async (catId: string, thunkAPI) => {
+    thunkAPI.dispatch(setLoading(true));
     const state: RootState = thunkAPI.getState() as RootState;
     const passClient = state.customers.apiInstance;
     const response = await passClient.getProductsByCat(catId);
@@ -47,6 +50,7 @@ export const getProductsByCat = createAsyncThunk(
 export const getProductsWithFilter = createAsyncThunk(
   'products/getProductsWithFilter',
   async (_, thunkAPI) => {
+    thunkAPI.dispatch(setLoading(true));
     const state: RootState = thunkAPI.getState() as RootState;
     const passClient = state.customers.apiInstance;
     const filter = buildQueryFilter(state.products.filters);
@@ -133,6 +137,9 @@ const productSlice = createSlice({
       newFilterState.price.upper = state.maxPrice;
       state.filters = newFilterState;
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getCategories.fulfilled, (state, action) => {
@@ -154,13 +161,16 @@ const productSlice = createSlice({
     });
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.product = action.payload.data ? action.payload.data : ({} as ProductProjection);
+      productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
 
     builder.addCase(getProductsByCat.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
+      productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
     builder.addCase(getProductsWithFilter.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
+      productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
   },
 });
@@ -176,6 +186,7 @@ export const {
   setFilterGender,
   resetFilter,
   setCategory,
+  setLoading,
 } = productSlice.actions;
 
 export default productSlice.reducer;

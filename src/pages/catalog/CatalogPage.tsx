@@ -19,9 +19,11 @@ import { SizePicker } from '@/pages/catalog/filters/SizePicker';
 import { GenderPicker } from '@/pages/catalog/filters/GenderPicker';
 import { ActiveFilters } from '@/pages/catalog/filters/ActiveFilters';
 import { useState, useEffect } from 'react';
+import { Loader } from '@/components/UI/Loader';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
+  const isLoading = useAppSelector((state) => state.products.isLoading);
 
   const [selected, setSelected] = useState('');
 
@@ -38,7 +40,6 @@ export const CatalogPage: React.FC = () => {
 
   const handleAllCategories = () => {
     dispatch(resetFilter());
-
     setSelected('');
   };
 
@@ -46,6 +47,7 @@ export const CatalogPage: React.FC = () => {
 
   return (
     <Container>
+      <Loader isLoading={isLoading} />
       <ActiveFilters />
       <Container sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
         <Box
