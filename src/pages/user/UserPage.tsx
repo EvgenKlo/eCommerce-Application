@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography, Box, Paper, Button, Checkbox } from '@mui/material';
 import { KittySvg } from '@/components/UI/KittySvg';
 import FirstNameField from '../../components/UI/profileFields/FirstNameField';
@@ -17,6 +17,7 @@ import {
   UpdateDateOfBirth,
 } from '@/store/slices/customerSlice';
 import { DateField } from '@/components/UI/profileFields/DateField';
+import { useNavigate } from 'react-router';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 const styleButton = {
@@ -50,6 +51,14 @@ const boxStyle = {
 };
 
 export const UserPage: React.FC = () => {
+  const auth = useAppSelector((state) => state.customers.authorized);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!auth) navigate('/');
+  }, []);
+
   const dispatch = useAppDispatch();
 
   const customer = useAppSelector((state) => state.customers.customer);
@@ -113,6 +122,7 @@ export const UserPage: React.FC = () => {
                 <FirstNameField
                   data={customer}
                   setData={setData}
+                  initialValue={customer.firstName || ''}
                 />
                 <Button
                   sx={styleButton}
@@ -164,6 +174,7 @@ export const UserPage: React.FC = () => {
                 <LastNameField
                   data={customer}
                   setData={setData}
+                  initialValue={customer.lastName || ''}
                 />
                 <Button
                   sx={styleButton}
@@ -215,6 +226,7 @@ export const UserPage: React.FC = () => {
                 <EmailField
                   data={customer}
                   setData={setData}
+                  initialValue={customer.email}
                 />
                 <Button
                   sx={styleButton}

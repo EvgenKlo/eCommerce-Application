@@ -243,23 +243,25 @@ export const Header: React.FC<logoutProps> = (props) => {
                   </RouterLink>
                 </Tooltip>
                 <Tooltip title="Exit">
-                  <IconButton
-                    onMouseDown={handleMouseDown}
-                    color="secondary"
-                    onClick={handleExit}
-                  >
-                    <LogoutIcon
-                      sx={{
-                        '&:hover': {
-                          color: 'red',
-                          transition: 'color 0.3s ease-in-out',
-                        },
-                        '@media (max-width: 400px)': {
-                          padding: '0px',
-                        },
-                      }}
-                    />
-                  </IconButton>
+                  <RouterLink to={'/'}>
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="secondary"
+                      onClick={handleExit}
+                    >
+                      <LogoutIcon
+                        sx={{
+                          '&:hover': {
+                            color: 'red',
+                            transition: 'color 0.3s ease-in-out',
+                          },
+                          '@media (max-width: 400px)': {
+                            padding: '0px',
+                          },
+                        }}
+                      />
+                    </IconButton>
+                  </RouterLink>
                 </Tooltip>
               </>
             )}

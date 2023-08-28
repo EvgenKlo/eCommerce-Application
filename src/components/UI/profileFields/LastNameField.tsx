@@ -6,8 +6,10 @@ import React, { useState } from 'react';
 export const LastNameField: React.FC<{
   data: CustomerDraft;
   setData: React.Dispatch<React.SetStateAction<CustomerDraft>>;
-}> = ({ data, setData }) => {
+  initialValue: string;
+}> = ({ data, setData, initialValue }) => {
   const [lastNameError, setLastNameError] = useState(false);
+  const [value, setValue] = useState(initialValue);
 
   return (
     <TextField
@@ -19,7 +21,9 @@ export const LastNameField: React.FC<{
       autoComplete="family-name"
       sx={{ marginBottom: 0.3 }}
       size="small"
+      value={value}
       onChange={(e) => {
+        setValue(e.target.value);
         if (FormValidator.nameValidator(e.target.value)) {
           setData({ ...data, lastName: '' });
           setLastNameError(true);
