@@ -9,7 +9,7 @@ import {
   CategoryOutlined as CategoryOutlinedIcon,
   PriceChange as PriceChangeIcon,
 } from '@mui/icons-material';
-import { Button, Box, Container, Divider, Typography } from '@mui/material';
+import { Button, Box, Container, Divider, Typography, Stack } from '@mui/material';
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
 import { RangeSlider } from '@/pages/catalog/filters/Slider';
@@ -20,6 +20,7 @@ import { GenderPicker } from '@/pages/catalog/filters/GenderPicker';
 import { ActiveFilters } from '@/pages/catalog/filters/ActiveFilters';
 import { useState, useEffect } from 'react';
 import { Loader } from '@/components/UI/Loader';
+import { Toolbar } from './filters/Toolbar';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
@@ -48,6 +49,7 @@ export const CatalogPage: React.FC = () => {
   return (
     <Container>
       <Loader isLoading={isLoading} />
+      <Toolbar />
       <ActiveFilters />
       <Container sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
         <Box
@@ -111,6 +113,7 @@ export const CatalogPage: React.FC = () => {
           <SizePicker />
           <GenderPicker />
         </Box>
+
         <ProductList />
       </Container>
     </Container>
