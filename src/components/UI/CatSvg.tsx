@@ -1,4 +1,4 @@
-export const CatSvg: React.FC = () => {
+export const CatSvg = () => {
   return (
     <>
       <svg

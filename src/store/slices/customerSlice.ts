@@ -58,6 +58,52 @@ export const SignInByToken = createAsyncThunk('customer/signInByToken', async (t
   return response;
 });
 
+export const UpdateFirstName = createAsyncThunk(
+  'customer/updateFirstName',
+  async (
+    { id, firstName, version }: { id: string; firstName: string; version: number },
+    thunkAPI
+  ) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const API = state.customers.apiInstance;
+    const response = await API.setCustomerFirstName(id, firstName, version);
+    return response;
+  }
+);
+
+export const UpdateLastName = createAsyncThunk(
+  'customer/updateLastName',
+  async (
+    { id, lastName, version }: { id: string; lastName: string; version: number },
+    thunkAPI
+  ) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const API = state.customers.apiInstance;
+    const response = await API.setCustomerLastName(id, lastName, version);
+    return response;
+  }
+);
+
+export const UpdateEmail = createAsyncThunk(
+  'customer/updateEmail',
+  async ({ id, email, version }: { id: string; email: string; version: number }, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const API = state.customers.apiInstance;
+    const response = await API.setCustomerEmail(id, email, version);
+    return response;
+  }
+);
+
+export const UpdateDateOfBirth = createAsyncThunk(
+  'customer/updateDateOfBirth',
+  async ({ id, date, version }: { id: string; date: string; version: number }, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const API = state.customers.apiInstance;
+    const response = await API.setCustomerDateOfBirth(id, date, version);
+    return response;
+  }
+);
+
 const customerSlice = createSlice({
   name: 'customer',
   initialState,
@@ -97,6 +143,18 @@ const customerSlice = createSlice({
     });
     builder.addCase(SignInByToken.fulfilled, (state, action) => {
       state.customer = action.payload;
+    });
+    builder.addCase(UpdateLastName.fulfilled, (state, action) => {
+      state.customer = action.payload as Customer;
+    });
+    builder.addCase(UpdateFirstName.fulfilled, (state, action) => {
+      state.customer = action.payload as Customer;
+    });
+    builder.addCase(UpdateEmail.fulfilled, (state, action) => {
+      state.customer = action.payload as Customer;
+    });
+    builder.addCase(UpdateDateOfBirth.fulfilled, (state, action) => {
+      state.customer = action.payload as Customer;
     });
   },
 });

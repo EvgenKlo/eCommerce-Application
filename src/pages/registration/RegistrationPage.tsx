@@ -49,8 +49,6 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
     if (data.firstName && data.lastName && data.email && data.email && data.dateOfBirth) {
       setLoading(true);
       void dispatch(createNewCustomer({ data, setLoading }));
-    } else if (!data.dateOfBirth) {
-      setDateError(true);
     }
   };
 
