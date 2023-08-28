@@ -1,13 +1,25 @@
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
+import {
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Checkbox,
+  Box,
+  Button,
+  Collapse,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { Box, Button, Collapse } from '@mui/material';
 import { setFilterGender, getProductsWithFilter } from '@/store/slices/productSlice';
+
+const boxSX = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  mt: 0,
+};
 
 export const GenderPicker: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -36,15 +48,7 @@ export const GenderPicker: React.FC = () => {
   const handleShow = () => setCollapsed((state) => !state);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        mt: 0,
-      }}
-    >
+    <Box sx={boxSX}>
       <Button
         variant="outlined"
         onClick={() => handleShow()}
