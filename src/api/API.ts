@@ -189,6 +189,42 @@ export class API {
     } catch (error) {
       console.log(error);
     }
+    return result;
+  }
+
+  async setCustomerEmail(ID: string, email: string, version = 1) {
+    let result = {};
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID })
+        .post({
+          body: { version, actions: [{ action: 'changeEmail', email: email }] },
+        })
+        .execute();
+
+      result = body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+
+  async setCustomerDateOfBirth(ID: string, date: string, version = 1) {
+    let result = {};
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID })
+        .post({
+          body: { version, actions: [{ action: 'setDateOfBirth', dateOfBirth: date }] },
+        })
+        .execute();
+
+      result = body;
+    } catch (error) {
+      console.log(error);
+    }
     console.log(result);
 
     return result;

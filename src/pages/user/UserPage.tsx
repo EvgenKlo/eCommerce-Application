@@ -4,12 +4,19 @@ import { Typography, Box, Paper, Button, Checkbox } from '@mui/material';
 import { KittySvg } from '@/components/UI/KittySvg';
 import FirstNameField from '../../components/UI/profileFields/FirstNameField';
 import { LastNameField } from '@/components/UI/profileFields/LastNameField';
+import EmailField from '@/components/UI/profileFields/EmailField';
+import EditIcon from '@mui/icons-material/Edit';
 // import EmailField from '../../components/UI/profileFields/EmailField';
 // import { DateField } from '@/components/UI/profileFields/DateField';
 // import { AddressForm } from '@/components/UI/AddressForm';
 import { type CustomerDraft } from '@commercetools/platform-sdk';
-import { UpdateLastName, UpdateFirstName } from '@/store/slices/customerSlice';
-import EditIcon from '@mui/icons-material/Edit';
+import {
+  UpdateLastName,
+  UpdateFirstName,
+  UpdateEmail,
+  UpdateDateOfBirth,
+} from '@/store/slices/customerSlice';
+import { DateField } from '@/components/UI/profileFields/DateField';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 const styleButton = {
@@ -23,6 +30,25 @@ const styleButton = {
 };
 const styleEditIcon = { marginLeft: '15px' };
 
+const styleContainerField = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  // justifyContent: 'space-between',
+  maxWidth: '600px',
+  '@media (max-width: 400px)': {
+    flexDirection: 'column',
+  },
+};
+
+const boxStyle = {
+  padding: '0px',
+  display: 'flex',
+  alignItems: 'center',
+  alignContent: 'center',
+  justifyContent: 'center',
+};
+
 export const UserPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
@@ -31,31 +57,12 @@ export const UserPage: React.FC = () => {
 
   const [editFirstName, setEditFirstName] = useState(false);
   const [editLastName, setEditLastName] = useState(false);
+  const [editEmail, setEditEmail] = useState(false);
+  const [editDateOfBirth, setEditDateOfBirth] = useState(false);
 
   const [data, setData] = useState({} as CustomerDraft);
 
-  // const handleSave = () => {
-  //   //отправка данных на сервер
-  //   console.log('');
-  // };
-
   const styleNameField = { marginTop: '5px', fontSize: '20px', textAlign: 'start' };
-
-  const boxStyle = {
-    padding: '0px',
-    display: 'flex',
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'center',
-  };
-
-  const boxStyleRow = {
-    padding: '0px',
-    display: 'flex',
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'start',
-  };
 
   return (
     <>
@@ -100,16 +107,7 @@ export const UserPage: React.FC = () => {
           >
             Profile information
           </Typography>
-
-          <Box
-            sx={{
-              ...boxStyleRow,
-              flexDirection: 'row',
-              '@media (max-width: 400px)': {
-                flexDirection: 'column',
-              },
-            }}
-          >
+          <Box sx={styleContainerField}>
             {editFirstName ? (
               <>
                 <FirstNameField
@@ -160,17 +158,7 @@ export const UserPage: React.FC = () => {
               </>
             )}
           </Box>
-
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              '@media (max-width: 400px)': {
-                flexDirection: 'column',
-              },
-            }}
-          >
+          <Box sx={styleContainerField}>
             {editLastName ? (
               <>
                 <LastNameField
@@ -217,6 +205,108 @@ export const UserPage: React.FC = () => {
                   checkedIcon={<EditIcon />}
                   checked={editLastName}
                   onChange={() => setEditLastName(!editLastName)}
+                />
+              </>
+            )}
+          </Box>
+          <Box sx={styleContainerField}>
+            {editEmail ? (
+              <>
+                <EmailField
+                  data={customer}
+                  setData={setData}
+                />
+                <Button
+                  sx={styleButton}
+                  variant="contained"
+                  onClick={() => {
+                    data.email &&
+                      void dispatch(
+                        UpdateEmail({
+                          id: customer.id,
+                          email: data.email,
+                          version: customer.version,
+                        })
+                      );
+                    setEditEmail(false);
+                  }}
+                >
+                  update email
+                </Button>
+              </>
+            ) : (
+              <>
+                <Typography
+                  sx={styleNameField}
+                  variant="subtitle1"
+                >
+                  <span style={{ fontWeight: 'bold' }}>Email: </span>
+
+                  {customer.email}
+                </Typography>
+                <Checkbox
+                  {...label}
+                  icon={
+                    <EditIcon
+                      fontSize="small"
+                      color="primary"
+                      sx={styleEditIcon}
+                    />
+                  }
+                  checkedIcon={<EditIcon />}
+                  checked={editEmail}
+                  onChange={() => setEditEmail(!editEmail)}
+                />
+              </>
+            )}
+          </Box>
+          <Box sx={styleContainerField}>
+            {editDateOfBirth ? (
+              <>
+                <DateField
+                  data={customer}
+                  setData={setData}
+                />
+                <Button
+                  sx={styleButton}
+                  variant="contained"
+                  onClick={() => {
+                    data.dateOfBirth &&
+                      void dispatch(
+                        UpdateDateOfBirth({
+                          id: customer.id,
+                          date: data.dateOfBirth,
+                          version: customer.version,
+                        })
+                      );
+                    setEditDateOfBirth(false);
+                  }}
+                >
+                  update date
+                </Button>
+              </>
+            ) : (
+              <>
+                <Typography
+                  sx={styleNameField}
+                  variant="subtitle1"
+                >
+                  <span style={{ fontWeight: 'bold' }}>Date of birth: </span>
+
+                  {customer.dateOfBirth}
+                </Typography>
+                <Checkbox
+                  {...label}
+                  icon={
+                    <EditIcon
+                      fontSize="small"
+                      color="primary"
+                      sx={styleEditIcon}
+                    />
+                  }
+                  checkedIcon={<EditIcon />}
+                  checked={editDateOfBirth}
+                  onChange={() => setEditDateOfBirth(!editDateOfBirth)}
                 />
               </>
             )}
