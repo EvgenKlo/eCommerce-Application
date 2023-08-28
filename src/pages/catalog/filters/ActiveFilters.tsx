@@ -1,7 +1,6 @@
-import { Divider, Stack, Button } from '@mui/material';
+import { Divider, Stack, Chip } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { useEffect, useState } from 'react';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { FilterProducts, filterActiveFormat } from '@/types/products';
 import {
   setPrice,
@@ -96,16 +95,13 @@ export const ActiveFilters: React.FC = () => {
       >
         {(Object.keys(result) as Array<keyof typeof result>).map((option) => {
           return (
-            <Button
+            <Chip
               key={option}
-              size="small"
-              sx={{ fontSize: '9px' }}
+              sx={{ fontSize: '12px' }}
               variant="outlined"
-              endIcon={<HighlightOffIcon />}
-              onClick={result[option].action}
-            >
-              {option}:{result[option]!.value}
-            </Button>
+              onDelete={result[option].action}
+              label={`${option}: ${result[option]!.value}`}
+            />
           );
         })}
       </Stack>
