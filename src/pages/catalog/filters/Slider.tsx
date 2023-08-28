@@ -1,17 +1,26 @@
 import { Slider } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { setPrice } from '@/store/slices/productSlice';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { getProductsWithFilter } from '@/store/slices/productSlice';
 
 export default function RangeSlider() {
   const price = useAppSelector((state) => state.products.filters.price);
+  const [currPrice, setCurrPrice] = useState([price.lower, price.upper]);
   const maxPrice = useAppSelector((state) => state.products.maxPrice);
-  const value = [price.lower, price.upper];
+
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    setCurrPrice([price.lower, price.upper]);
+  }, [JSON.stringify(price)]);
+
+  const handleChangeFinish = (_: Event | SyntheticEvent<Element, Event>) => {
+    dispatch(setPrice({ range: currPrice as number[], operand: '=' }));
+  };
+
   const handleChange = (_: Event | SyntheticEvent<Element, Event>, newValue: number | number[]) => {
-    dispatch(setPrice({ range: newValue as number[], operand: '=' }));
+    setCurrPrice(newValue as number[]);
   };
 
   return (
@@ -30,9 +39,9 @@ export default function RangeSlider() {
           },
         },
       }}
-      value={value}
+      value={currPrice}
       onChange={handleChange}
-      onChangeCommitted={() => dispatch(getProductsWithFilter())}
+      onChangeCommitted={handleChangeFinish}
       valueLabelDisplay="on"
       size="small"
       marks
