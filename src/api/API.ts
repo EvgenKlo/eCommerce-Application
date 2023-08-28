@@ -66,9 +66,7 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
-  async getProductsWithFilter(filter: string[]) {
-    console.log('filter', filter);
-
+  async getProductsWithFilter(filter: string[], sort: string) {
     let errorMsg = '';
     try {
       const respsone = await this.client
@@ -76,6 +74,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
+            sort,
             limit: API.limit,
             'filter.query': filter,
           },
