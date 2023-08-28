@@ -131,7 +131,10 @@ const productSlice = createSlice({
       state.filters.catId = action.payload.categoryId;
     },
     resetFilter: (state) => {
-      state.filters = initialState.filters;
+      const newFilterState = { ...initialState.filters };
+      newFilterState.price = { ...initialState.filters.price };
+      newFilterState.price.upper = state.maxPrice;
+      state.filters = newFilterState;
     },
   },
   extraReducers: (builder) => {
