@@ -1,11 +1,8 @@
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
+import { Divider, Stack, Button } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { useEffect, useState } from 'react';
-import { Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { FilterProducts } from '@/types/products';
+import { FilterProducts, filterActiveFormat } from '@/types/products';
 import {
   setPrice,
   setFilterColors,
@@ -15,41 +12,24 @@ import {
   getProductsWithFilter,
 } from '@/store/slices/productSlice';
 
-type filterActiveFormat = {
-  price: {
-    value: string;
-    action: () => void;
-  };
-  gender: {
-    value: string;
-    action: () => void;
-  };
-  color: {
-    value: string;
-    action: () => void;
-  };
-  size: {
-    value: string;
-    action: () => void;
-  };
-  brand: {
-    value: string;
-    action: () => void;
-  };
-};
-
-export default function ActiveFilters() {
+export const ActiveFilters: React.FC = () => {
   const filter = useAppSelector((state) => state.products.filters);
+
   const [activeFilter, setActiveFilter] = useState(filter);
+
   const maxPrice = useAppSelector((state) => state.products.maxPrice);
+
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     setActiveFilter(filter);
+
     dispatch(getProductsWithFilter());
   }, [JSON.stringify(filter)]);
 
   const format = (data: Required<FilterProducts>) => {
     const result: filterActiveFormat = {} as filterActiveFormat;
+
     Object.keys(data).forEach((filterOption) => {
       switch (filterOption) {
         case 'price':
@@ -57,13 +37,16 @@ export default function ActiveFilters() {
             value: `from ${data[filterOption].lower} to ${data[filterOption].upper}`,
             action: () => dispatch(setPrice({ range: [0, maxPrice], operand: '=' })),
           };
+
           break;
+
         case 'colors':
           if (data[filterOption].length)
             result.color = {
               value: (data[filterOption] as string[]).join(','),
               action: () => dispatch(setFilterColors({ colors: [] })),
             };
+
           break;
         case 'size':
           if (data[filterOption].length)
@@ -71,25 +54,32 @@ export default function ActiveFilters() {
               value: (data[filterOption] as string[]).join(','),
               action: () => dispatch(setFilterSize({ sizes: [] })),
             };
+
           break;
+
         case 'manufacturer':
           if (data[filterOption].length)
             result.brand = {
               value: (data[filterOption] as string[]).join(','),
               action: () => dispatch(setFilterManufacturer({ manufacturers: [] })),
             };
+
           break;
+
         case 'gender':
           if (data[filterOption].length)
             result.brand = {
               value: (data[filterOption] as string[]).join(','),
               action: () => dispatch(setFilterGender({ genders: [] })),
             };
+
           break;
       }
     });
+
     return result;
   };
+
   const result = format(activeFilter as Required<FilterProducts>);
   return (
     <div>
@@ -121,4 +111,4 @@ export default function ActiveFilters() {
       </Stack>
     </div>
   );
-}
+};

@@ -16,3 +16,26 @@ export type FilterProducts = {
   gender?: string[];
   catId?: string;
 };
+
+export type filterActiveFormat = {
+  price: {
+    value: string;
+    action: () => void;
+  };
+  gender: {
+    value: string;
+    action: () => void;
+  };
+  color: {
+    value: string;
+    action: () => void;
+  };
+  size: {
+    value: string;
+    action: () => void;
+  };
+  brand: {
+    value: string;
+    action: () => void;
+  };
+};
