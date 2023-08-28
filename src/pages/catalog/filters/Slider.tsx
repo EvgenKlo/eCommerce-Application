@@ -18,7 +18,7 @@ const sliderSX = {
   },
 };
 
-export default function RangeSlider() {
+export const RangeSlider: React.FC = () => {
   const price = useAppSelector((state) => state.products.filters.price);
   const [currPrice, setCurrPrice] = useState([price.lower, price.upper]);
   const maxPrice = useAppSelector((state) => state.products.maxPrice);
@@ -50,4 +50,4 @@ export default function RangeSlider() {
       max={maxPrice}
     />
   );
-}
+};

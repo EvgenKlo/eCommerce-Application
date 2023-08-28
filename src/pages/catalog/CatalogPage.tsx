@@ -3,37 +3,33 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import {
   getCategories,
   getProducts,
-  getProductsByCat,
   getProductsWithFilter,
   resetFilter,
 } from '@/store/slices/productSlice';
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-
-import { Button, Box, Container, Divider, Typography, Stack } from '@mui/material';
+import {
+  CategoryOutlined as CategoryOutlinedIcon,
+  PriceChange as PriceChangeIcon,
+} from '@mui/icons-material';
+import { Button, Box, Container, Divider, Typography } from '@mui/material';
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
-import RangeSlider from '@/pages/catalog/filters/Slider';
-import PriceChangeIcon from '@mui/icons-material/PriceChange';
+import { RangeSlider } from '@/pages/catalog/filters/Slider';
 import { ColorPicker } from '@/pages/catalog/filters/ColorPicker';
-import { ManufacturerPicker } from './filters/ManufacturerPicker';
-import { SizePicker } from './filters/SizePicker';
-import { GenderPicker } from './filters/GenderPicker';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
-import ActiveFilters from './filters/ActiveFilters';
+import { ManufacturerPicker } from '@/pages/catalog/filters/ManufacturerPicker';
+import { SizePicker } from '@/pages/catalog/filters/SizePicker';
+import { GenderPicker } from '@/pages/catalog/filters/GenderPicker';
+import { ActiveFilters } from '@/pages/catalog/filters/ActiveFilters';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
+
   const [selected, setSelected] = useState('');
+
   const dispatch = useAppDispatch();
 
   const loadData = (): void => {
     void dispatch(getCategories());
     void dispatch(getProducts());
-  };
-
-  const getCategoryList = (): void => {
-    void loadData();
   };
 
   useEffect(() => {
@@ -42,15 +38,11 @@ export const CatalogPage: React.FC = () => {
 
   const handleAllCategories = () => {
     dispatch(resetFilter());
-    // loadData();
+
     setSelected('');
   };
-  const handleCatClick = (catId: string) => dispatch(getProductsWithFilter());
-  const handleFilterClick = () => dispatch(getProductsWithFilter());
-  const handleFilterReset = () => {
-    dispatch(resetFilter());
-    loadData();
-  };
+
+  const handleCatClick = () => dispatch(getProductsWithFilter());
 
   return (
     <Container>
@@ -116,34 +108,6 @@ export const CatalogPage: React.FC = () => {
           <ManufacturerPicker />
           <SizePicker />
           <GenderPicker />
-          {/* <Stack
-            justifyContent="center"
-            direction="row"
-            spacing={1}
-            divider={
-              <Divider
-                orientation="vertical"
-                flexItem
-              />
-            }
-          >
-            <Button
-              size="small"
-              onClick={handleFilterClick}
-              variant="contained"
-              endIcon={<FilterAltIcon />}
-            >
-              Apply
-            </Button>
-            <Button
-              size="small"
-              onClick={handleFilterReset}
-              variant="contained"
-              endIcon={<SettingsBackupRestoreIcon />}
-            >
-              Reset
-            </Button>
-          </Stack> */}
         </Box>
         <ProductList />
       </Container>
