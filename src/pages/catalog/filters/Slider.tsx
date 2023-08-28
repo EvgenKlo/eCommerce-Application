@@ -2,7 +2,21 @@ import { Slider } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { setPrice } from '@/store/slices/productSlice';
 import { SyntheticEvent, useEffect, useState } from 'react';
-import { getProductsWithFilter } from '@/store/slices/productSlice';
+
+const sliderSX = {
+  maxWidth: '150px',
+  pb: 0.5,
+  '& .MuiSlider-valueLabel': {
+    fontSize: 9,
+    fontWeight: 'normal',
+    top: -6,
+    backgroundColor: 'rgba(135, 162, 171, 0.7)',
+    color: 'white',
+    '&:before': {
+      display: 'none',
+    },
+  },
+};
 
 export default function RangeSlider() {
   const price = useAppSelector((state) => state.products.filters.price);
@@ -25,20 +39,7 @@ export default function RangeSlider() {
 
   return (
     <Slider
-      sx={{
-        maxWidth: '150px',
-        pb: 0.5,
-        '& .MuiSlider-valueLabel': {
-          fontSize: 9,
-          fontWeight: 'normal',
-          top: -6,
-          backgroundColor: 'rgba(135, 162, 171, 0.7)',
-          color: 'white',
-          '&:before': {
-            display: 'none',
-          },
-        },
-      }}
+      sx={sliderSX}
       value={currPrice}
       onChange={handleChange}
       onChangeCommitted={handleChangeFinish}
