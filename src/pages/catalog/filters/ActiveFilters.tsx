@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { FilterProducts } from '@/types/products';
 import {
   setPrice,
@@ -106,10 +107,11 @@ export default function ActiveFilters() {
         {(Object.keys(result) as Array<keyof typeof result>).map((option) => {
           return (
             <Button
+              key={option}
               size="small"
               sx={{ fontSize: '9px' }}
               variant="outlined"
-              endIcon={<DeleteIcon />}
+              endIcon={<HighlightOffIcon />}
               onClick={result[option].action}
             >
               {option}:{result[option]!.value}
