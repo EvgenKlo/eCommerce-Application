@@ -42,7 +42,6 @@ const styleContainerButton = {
   flexDirection: 'row',
   alignItems: 'center',
 };
-
 const boxStyle = {
   padding: '0px',
   display: 'flex',
@@ -52,6 +51,7 @@ const boxStyle = {
 };
 
 const styleTitle = { display: 'block', fontWeight: 'bold', width: '140px' };
+const styleTitleAddress = { display: 'block', fontWeight: 'bold' };
 
 export const UserPage: React.FC = () => {
   const auth = useAppSelector((state) => state.customers.authorized);
@@ -80,7 +80,7 @@ export const UserPage: React.FC = () => {
 
   const [data, setData] = useState({} as CustomerDraft);
 
-  const styleNameField = { marginTop: '5px', fontSize: '20px', textAlign: 'start' };
+  const styleNameField = { fontSize: '20px', textAlign: 'start' };
 
   return (
     <>
@@ -436,7 +436,46 @@ export const UserPage: React.FC = () => {
             )}
           </Box>
 
-          <Box sx={styleContainerField}>
+          <Box>
+            {customer.addresses.map((address, index) => (
+              <Box key={index}>
+                <Typography sx={{ textAlign: 'start', margin: '10px' }}>{index + 1}</Typography>
+                {Object.entries(address)
+                  .slice(1)
+                  .map(([key, value]) => (
+                    <>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          alignContent: 'center',
+                          justifyContent: 'start',
+                        }}
+                      >
+                        <Typography
+                          key={key}
+                          sx={{
+                            textAlign: 'start',
+                          }}
+                          variant="subtitle1"
+                        >
+                          <span style={styleTitleAddress}>{key}:</span>
+                        </Typography>
+                        <Typography
+                          key={key}
+                          sx={{
+                            fontSize: '17px',
+                            marginLeft: '5px',
+                          }}
+                          variant="subtitle1"
+                        >
+                          {value}
+                        </Typography>
+                      </Box>
+                    </>
+                  ))}
+              </Box>
+            ))}
           </Box>
         </Paper>
       </Box>

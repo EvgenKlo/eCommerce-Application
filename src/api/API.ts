@@ -171,6 +171,7 @@ export class API {
     } catch (error) {
       console.log(error);
     }
+    console.log(result);
     return result;
   }
 
