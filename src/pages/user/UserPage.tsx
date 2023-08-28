@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { useState } from 'react';
 import { Typography, Box, Paper, Checkbox, IconButton, Tooltip } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { KittySvg } from '@/components/UI/KittySvg';
 import FirstNameField from '../../components/UI/profileFields/FirstNameField';
 import { LastNameField } from '@/components/UI/profileFields/LastNameField';
@@ -21,7 +21,7 @@ import {
   UpdateDateOfBirth,
 } from '@/store/slices/customerSlice';
 import { DateField } from '@/components/UI/profileFields/DateField';
-// import { AddressForm } from '@/components/UI/AddressForm';
+import { useNavigate } from 'react-router';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -54,6 +54,14 @@ const boxStyle = {
 const styleTitle = { display: 'block', fontWeight: 'bold', width: '140px' };
 
 export const UserPage: React.FC = () => {
+  const auth = useAppSelector((state) => state.customers.authorized);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!auth) navigate('/');
+  }, []);
+
   const dispatch = useAppDispatch();
 
   const customer = useAppSelector((state) => state.customers.customer);
@@ -130,6 +138,7 @@ export const UserPage: React.FC = () => {
                 <FirstNameField
                   data={customer}
                   setData={setData}
+                  initialValue={customer.firstName || ''}
                 />
 
                 <Box sx={styleContainerButton}>
@@ -208,6 +217,7 @@ export const UserPage: React.FC = () => {
                 <LastNameField
                   data={customer}
                   setData={setData}
+                  initialValue={customer.lastName || ''}
                 />
 
                 <Box sx={styleContainerButton}>
@@ -284,6 +294,7 @@ export const UserPage: React.FC = () => {
                 <EmailField
                   data={customer}
                   setData={setData}
+                  initialValue={customer.email}
                 />
                 <Box sx={styleContainerButton}>
                   <Tooltip
