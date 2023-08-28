@@ -8,7 +8,7 @@ import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/dec
 import { type returnType } from '@/types/apiClient';
 export class API {
   private client: ByProjectKeyRequestBuilder;
-
+  static limit = 100;
   constructor(client: ByProjectKeyRequestBuilder) {
     this.client = client;
   }
@@ -50,6 +50,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
+            limit: API.limit,
             facet: ['variants.attributes.color.en', 'variants.price.centAmount'],
             filter: [`categories.id:subtree("${catId}")`],
           },
@@ -75,6 +76,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
+            limit: API.limit,
             'filter.query': filter,
           },
         })
@@ -98,6 +100,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
+            limit: API.limit,
             facet: [
               'variants.attributes.color.en',
               'variants.attributes.size.en',
