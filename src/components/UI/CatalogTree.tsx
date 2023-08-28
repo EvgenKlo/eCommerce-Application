@@ -1,5 +1,7 @@
-import LabelOutlinedIcon from '@mui/icons-material/LabelOutlined';
-import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
+import {
+  LabelOutlined as LabelOutlinedIcon,
+  BeenhereOutlined as BeenhereOutlinedIcon,
+} from '@mui/icons-material';
 import { TreeView, TreeItem } from '@mui/lab';
 import { CategoryInternal } from '@/types/products';
 import { SetStateAction, SyntheticEvent } from 'react';
