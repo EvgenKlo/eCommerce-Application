@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 import {
-  type Category,
   type ProductProjection,
   type FacetResults,
   type TermFacetResult,
 } from '@commercetools/platform-sdk';
 import { CategoryInternal, FilterProducts } from '@/types/products';
+import { buildQueryFilter } from '@/helpers/buildQueryFilter';
+import { buildTree } from '@/helpers/buildTree';
 
 const initialState = {
   categories: [] as CategoryInternal[],
@@ -40,8 +41,6 @@ export const getProductsByCat = createAsyncThunk(
     const state: RootState = thunkAPI.getState() as RootState;
     const passClient = state.customers.apiInstance;
     const response = await passClient.getProductsByCat(catId);
-    // console.log('Query Filter', buildQueryFilter(state.products.filters));
-
     return response.data;
   }
 );
@@ -52,7 +51,6 @@ export const getProductsWithFilter = createAsyncThunk(
     const passClient = state.customers.apiInstance;
     const filter = buildQueryFilter(state.products.filters);
     const response = await passClient.getProductsWithFilter(filter);
-    // console.log('Query Filter', buildQueryFilter(state.products.filters));
     return response.data;
   }
 );
@@ -104,7 +102,6 @@ const productSlice = createSlice({
       state.size = size;
       state.gender = gender;
       state.manufacturer = manufacturer;
-
       const maxPrice = Math.max(...prices);
       state.maxPrice = maxPrice;
       state.filters.price.upper = maxPrice;
@@ -161,75 +158,14 @@ const productSlice = createSlice({
 
     builder.addCase(getProductsByCat.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
-      // productSlice.caseReducers.deriveAttributes(state);
     });
     builder.addCase(getProductsWithFilter.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
-      // productSlice.caseReducers.deriveAttributes(state);
     });
   },
 });
 
 export const selectProduct = (state: RootState) => state.products;
-
-//convert categories array into hierarchical format
-function buildTree(data: Category[]) {
-  const newData: CategoryInternal[] = data.map((node) => {
-    (node as CategoryInternal).children = [] as CategoryInternal[];
-    return node;
-  });
-  const rootNodes: CategoryInternal[] = newData.filter((node) => !node.ancestors.length);
-
-  newData.forEach((node) => {
-    if (!rootNodes.includes(node)) {
-      const closestParentId = node.ancestors.pop()?.id;
-      const parent = rootNodes.find((root) => root.id === closestParentId);
-      parent!.children?.push(node);
-    }
-  });
-  return rootNodes;
-}
-
-function buildQueryFilter(filter: FilterProducts): string[] {
-  const keys = Object.keys(filter);
-  const queryFilter = keys.reduce((query, key) => {
-    let option = '';
-    switch (key) {
-      case 'price':
-        if (filter[key].upper && filter[key].upper) {
-          option = `variants.price.centAmount:range ("${filter[key].lower}" to "${filter[key].upper}")`;
-        }
-        break;
-      case 'colors': {
-        if (filter[key]?.length)
-          option = `variants.attributes.color.en:"${filter[key]?.join('","')}"`;
-        break;
-      }
-      case 'size': {
-        if (filter[key]?.length)
-          option = `variants.attributes.size.en:"${filter[key]?.join('","')}"`;
-        break;
-      }
-      case 'gender': {
-        if (filter[key]?.length)
-          option = `variants.attributes.gender.en:"${filter[key]?.join('","')}"`;
-        break;
-      }
-      case 'manufacturer': {
-        if (filter[key]?.length)
-          option = `variants.attributes.designer.en:"${filter[key]?.join('","')}"`;
-        break;
-      }
-      case 'catId': {
-        option = `categories.id:subtree("${filter[key]}")`;
-        break;
-      }
-    }
-    query.push(option);
-    return query;
-  }, [] as string[]);
-  return queryFilter;
-}
 
 export const {
   setPrice,
