@@ -43,8 +43,6 @@ export class API {
   }
 
   async getProductsByCat(catId: string) {
-    console.log('catID', catId);
-
     let errorMsg = '';
     try {
       const respsone = await this.client
@@ -53,11 +51,7 @@ export class API {
         .get({
           queryArgs: {
             facet: ['variants.attributes.color.en', 'variants.price.centAmount'],
-            filter: [
-              `categories.id:subtree("${catId}")`,
-              // 'variants.attributes.color.en:"brown","yellow","white"',
-              // 'variants.price.centAmount:range ("5" to "9")',
-            ],
+            filter: [`categories.id:subtree("${catId}")`],
           },
         })
         .execute();
@@ -114,9 +108,6 @@ export class API {
           },
         })
         .execute();
-      // const result = body.results;
-      console.log('MAIN', body);
-
       return { data: body, error: errorMsg };
     } catch (error) {
       console.log(error);
