@@ -156,14 +156,14 @@ export class API {
     }
     return result;
   }
-  async setCustomername(ID: string, name: string, version = 1) {
+  async setCustomerFirstName(ID: string, firstName: string, version = 1) {
     let result = {};
     try {
       const { body } = await this.client
         .customers()
         .withId({ ID })
         .post({
-          body: { version, actions: [{ action: 'setFirstName', firstName: name }] },
+          body: { version, actions: [{ action: 'setFirstName', firstName: firstName }] },
         })
         .execute();
 

@@ -58,6 +58,19 @@ export const SignInByToken = createAsyncThunk('customer/signInByToken', async (t
   return response;
 });
 
+export const UpdateFirstName = createAsyncThunk(
+  'customer/updateFirstName',
+  async (
+    { id, firstName, version }: { id: string; firstName: string; version: number },
+    thunkAPI
+  ) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const API = state.customers.apiInstance;
+    const response = await API.setCustomerFirstName(id, firstName, version);
+    return response;
+  }
+);
+
 export const UpdateLastName = createAsyncThunk(
   'customer/updateLastName',
   async (
@@ -112,6 +125,9 @@ const customerSlice = createSlice({
       state.customer = action.payload;
     });
     builder.addCase(UpdateLastName.fulfilled, (state, action) => {
+      state.customer = action.payload as Customer;
+    });
+    builder.addCase(UpdateFirstName.fulfilled, (state, action) => {
       state.customer = action.payload as Customer;
     });
   },
