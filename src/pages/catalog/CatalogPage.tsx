@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import {
   getCategories,
@@ -19,6 +18,7 @@ import { ManufacturerPicker } from '@/pages/catalog/filters/ManufacturerPicker';
 import { SizePicker } from '@/pages/catalog/filters/SizePicker';
 import { GenderPicker } from '@/pages/catalog/filters/GenderPicker';
 import { ActiveFilters } from '@/pages/catalog/filters/ActiveFilters';
+import { useState, useEffect } from 'react';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);

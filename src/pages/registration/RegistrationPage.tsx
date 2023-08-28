@@ -5,32 +5,25 @@ import {
   Avatar,
   Button,
   CssBaseline,
-  TextField,
   Link,
   Grid,
   Box,
   Typography,
   Container,
-  OutlinedInput,
-  FormControl,
-  InputLabel,
-  InputAdornment,
   FormControlLabel,
   Checkbox,
-  FormHelperText,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { type BaseAddress, type CustomerDraft } from '@commercetools/platform-sdk';
 import { Loader } from '@/components/UI/Loader';
 import { useNavigate } from 'react-router-dom';
-
 import { AddressForm } from '@/components/UI/AddressForm';
-import { FormValidator } from '@/helpers/formValidator';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
+import EmailField from '@/components/UI/profileFields/EmailField';
+import PasswordField from '@/components/UI/profileFields/PasswordField';
+import FirstNameField from '@/components/UI/profileFields/FirstNameField';
+import { LastNameField } from '@/components/UI/profileFields/LastNameField';
+import { DateField } from '@/components/UI/profileFields/DateField';
 
 interface loginProps {
   handleLogin: (val: boolean) => void;
@@ -38,37 +31,26 @@ interface loginProps {
 
 export const RegistrationPage: React.FC<loginProps> = (props) => {
   const { handleLogin } = props;
+
   const dispatch = useAppDispatch();
+
   const customer = useAppSelector((state) => state.customers.customer);
 
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const [isLoading, setLoading] = useState(false);
 
   const [data, setData] = useState({} as CustomerDraft);
 
   const [showBillingAddress, setShowBillingAddress] = useState(false);
 
-  const [firstNameError, setFirstNameError] = useState(false);
-
-  const [lastNameError, setLastNameError] = useState(false);
-
-  const [emailError, setEmailError] = useState(false);
-  const [emailErrorText, setEmailErrorText] = useState('');
-
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordText, setPasswordText] = useState('');
-
-  const [dateError, setDateError] = useState(false);
-
-  const [isLoading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
   const register = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    if (!firstNameError && !lastNameError && !emailError && !passwordError && !dateError) {
+    if (data.firstName && data.lastName && data.email && data.email && data.dateOfBirth) {
       setLoading(true);
       void dispatch(createNewCustomer({ data, setLoading }));
+    } else if (!data.dateOfBirth) {
+      setDateError(true);
     }
   };
 
@@ -156,30 +138,9 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               xs={12}
               sm={6}
             >
-              <TextField
-                required
-                fullWidth
-                name="firstName"
-                id="firstName"
-                label={'First name'}
-                sx={{ marginBottom: 0.3 }}
-                size="small"
-                autoFocus
-                onChange={(e) => {
-                  if (FormValidator.nameValidator(e.target.value)) {
-                    setData({ ...data, firstName: '' });
-                    setFirstNameError(true);
-                  } else {
-                    setData({ ...data, firstName: e.target.value });
-                    setFirstNameError(false);
-                  }
-                }}
-                error={firstNameError}
-                helperText={
-                  firstNameError
-                    ? 'this field must not contain special characters or numbers'
-                    : null
-                }
+              <FirstNameField
+                data={data}
+                setData={setData}
               />
             </Grid>
             <Grid
@@ -187,28 +148,9 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               xs={12}
               sm={6}
             >
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last name"
-                name="lastName"
-                autoComplete="family-name"
-                sx={{ marginBottom: 0.3 }}
-                size="small"
-                onChange={(e) => {
-                  if (FormValidator.nameValidator(e.target.value)) {
-                    setData({ ...data, lastName: '' });
-                    setLastNameError(true);
-                  } else {
-                    setData({ ...data, lastName: e.target.value });
-                    setLastNameError(false);
-                  }
-                }}
-                error={lastNameError}
-                helperText={
-                  lastNameError ? 'this field must not contain special characters or numbers' : null
-                }
+              <LastNameField
+                data={data}
+                setData={setData}
               />
             </Grid>
 
@@ -216,122 +158,27 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               item
               xs={12}
             >
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email"
-                name="email"
-                autoComplete="email"
-                sx={{ marginBottom: 0.3 }}
-                size="small"
-                onChange={(e) => {
-                  if (!FormValidator.emailValidator(e.target.value) && e.target.value.length > 0) {
-                    setData({ ...data, email: '' });
-                    setEmailError(true);
-                    if (e.target.value[0] === ' ' || e.target.value.slice(-1) === ' ') {
-                      setEmailErrorText('e-mail must not start or end with a space');
-                    } else {
-                      setEmailErrorText('Invalid e-mail');
-                    }
-                  } else {
-                    if (e.target.value.slice(-1) === ' ') {
-                      setData({ ...data, email: '' });
-                      setEmailError(true);
-                      setEmailErrorText('e-mail must not start or end with a space');
-                    } else {
-                      setData({ ...data, email: e.target.value });
-                      setEmailError(false);
-                    }
-                  }
-                }}
-                error={emailError}
-                helperText={emailError ? emailErrorText : null}
+              <EmailField
+                data={data}
+                setData={setData}
               />
             </Grid>
             <Grid
               item
               xs={12}
             >
-              <FormControl
-                variant="outlined"
-                fullWidth
-                required
-              >
-                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                <OutlinedInput
-                  data-testid="password-input"
-                  error={passwordError}
-                  label={'Password'}
-                  onChange={(e) => {
-                    setPasswordText(e.target.value);
-                    if (
-                      !FormValidator.passwordValidator(e.target.value) &&
-                      e.target.value.length > 0
-                    ) {
-                      setData({ ...data, password: '' });
-                      setPasswordError(true);
-                    } else {
-                      setData({ ...data, password: e.target.value });
-                      setPasswordError(false);
-                    }
-                  }}
-                  id="outlined-adornment-password"
-                  type={showPassword ? 'text' : 'password'}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDown}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-                {passwordError && (
-                  <FormHelperText
-                    error
-                    id="outlined-adornment-password"
-                  >
-                    {passwordText[0] === ' ' || passwordText.slice(-1) === ' '
-                      ? 'password must not start or end with a space'
-                      : 'the password must be at least 8 characters long and contain: A-Z, a-z, 0-9 and at least one special character (e.g., !@#$%^&*)'}
-                  </FormHelperText>
-                )}
-              </FormControl>
+              <PasswordField
+                data={data}
+                setData={setData}
+              />
             </Grid>
             <Grid
               item
               xs={12}
             >
-              <DatePicker
-                label="Birth date"
-                format="yyyy/MM/dd"
-                onChange={(newDate) => {
-                  const birthDate = newDate as Date;
-                  if (FormValidator.ageValidator(birthDate)) {
-                    setDateError(false);
-                    setData({ ...data, dateOfBirth: birthDate.toISOString().substring(0, 10) });
-                  } else {
-                    setDateError(true);
-                    setData({ ...data, dateOfBirth: '' });
-                  }
-                }}
-                className="date-picker"
-                disableFuture
-                slotProps={{
-                  textField: {
-                    fullWidth: true,
-                    variant: 'outlined',
-                    error: dateError,
-                    required: true,
-
-                    helperText: dateError ? 'you must be over 14 years old' : null,
-                  },
-                }}
+              <DateField
+                data={data}
+                setData={setData}
               />
             </Grid>
           </Grid>
@@ -349,7 +196,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
             id={data.addresses ? data.addresses.length + 1 : 1}
             address={'shipping'}
             getAddress={getAddress}
-          ></AddressForm>
+          />
           {!showBillingAddress ? (
             <>
               <FormControlLabel

@@ -153,7 +153,7 @@ const productSlice = createSlice({
       });
     });
     builder.addCase(getProduct.fulfilled, (state, action) => {
-      state.product = action.payload ? action.payload : ({} as ProductProjection);
+      state.product = action.payload.data ? action.payload.data : ({} as ProductProjection);
     });
 
     builder.addCase(getProductsByCat.fulfilled, (state, action) => {
