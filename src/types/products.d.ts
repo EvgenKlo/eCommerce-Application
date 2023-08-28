@@ -1,4 +1,5 @@
 import { type Category } from '@commercetools/platform-sdk';
+import { SortOptions } from '@/types/Enums';
 
 export interface CategoryInternal extends Category {
   children?: CategoryInternal[];
@@ -37,5 +38,22 @@ export type filterActiveFormat = {
   brand: {
     value: string;
     action: () => void;
+  };
+};
+
+export type InitialState = {
+  categories: CategoryInternal[];
+  products: ProductProjection[];
+  product: ProductProjection;
+  filters: FilterProducts;
+  colors: string[];
+  size: string[];
+  gender: string[];
+  manufacturer: string[];
+  maxPrice: number;
+  isLoading: boolean;
+  sort: {
+    direction: 'asc' | 'desc';
+    prop: SortOptions;
   };
 };
