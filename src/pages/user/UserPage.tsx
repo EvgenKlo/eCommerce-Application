@@ -449,7 +449,11 @@ export const UserPage: React.FC = () => {
               </>
             )}
           </Box>
-
+          <Typography
+            sx={{ ...styleTitle, textAlign: 'start', marginTop: '10px', fontSize: '20px' }}
+          >
+            Addresses:{' '}
+          </Typography>
           <Box>
             {customer.addresses.map((address, index) => (
               <Box key={address.id}>
