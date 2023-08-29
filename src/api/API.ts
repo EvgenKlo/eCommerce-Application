@@ -156,14 +156,33 @@ export class API {
     }
     return result;
   }
-  async setCustomername(ID: string, name: string, version = 1) {
+  async setCustomerFirstName(ID: string, firstName: string, version = 1) {
     let result = {};
     try {
       const { body } = await this.client
         .customers()
         .withId({ ID })
         .post({
-          body: { version, actions: [{ action: 'setFirstName', firstName: name }] },
+          body: { version, actions: [{ action: 'setFirstName', firstName: firstName }] },
+        })
+        .execute();
+
+      result = body;
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(result);
+    return result;
+  }
+
+  async setCustomerLastName(ID: string, lastName: string, version = 1) {
+    let result = {};
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID })
+        .post({
+          body: { version, actions: [{ action: 'setLastName', lastName: lastName }] },
         })
         .execute();
 
@@ -173,6 +192,59 @@ export class API {
     }
     return result;
   }
+
+  async setCustomerEmail(ID: string, email: string, version = 1) {
+    let result = {};
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID })
+        .post({
+          body: { version, actions: [{ action: 'changeEmail', email: email }] },
+        })
+        .execute();
+
+      result = body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+
+  async setCustomerDateOfBirth(ID: string, date: string, version = 1) {
+    let result = {};
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID })
+        .post({
+          body: { version, actions: [{ action: 'setDateOfBirth', dateOfBirth: date }] },
+        })
+        .execute();
+
+      result = body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+  // async setCustomerBillingAddress(ID: string, address: string) {
+  //   let result = {};
+  //   try {
+  //     const { body } = await this.client
+  //       .customers()
+  //       .withId({ ID })
+  //       .post({
+  //         body: { version, actions: [{ action: 'changeAddress', address: address }] },
+  //       })
+  //       .execute();
+
+  //     result = body;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   return result;
+  // }
 
   async getProduct(ID: string) {
     let errorMsg = '';

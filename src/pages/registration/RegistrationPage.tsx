@@ -49,8 +49,6 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
     if (data.firstName && data.lastName && data.email && data.email && data.dateOfBirth) {
       setLoading(true);
       void dispatch(createNewCustomer({ data, setLoading }));
-    } else if (!data.dateOfBirth) {
-      setDateError(true);
     }
   };
 
@@ -141,6 +139,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <FirstNameField
                 data={data}
                 setData={setData}
+                initialValue={customer.firstName || ''}
               />
             </Grid>
             <Grid
@@ -151,6 +150,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <LastNameField
                 data={data}
                 setData={setData}
+                initialValue={customer.lastName || ''}
               />
             </Grid>
 
@@ -161,6 +161,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <EmailField
                 data={data}
                 setData={setData}
+                initialValue={customer.email || ''}
               />
             </Grid>
             <Grid
@@ -196,6 +197,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
             id={data.addresses ? data.addresses.length + 1 : 1}
             address={'shipping'}
             getAddress={getAddress}
+            addressValue={{ street: '', city: '', country: '', postalCode: '' }}
           />
           {!showBillingAddress ? (
             <>
@@ -282,6 +284,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 id={data.addresses ? data.addresses.length + 1 : 1}
                 address={'billing'}
                 getAddress={getAddress}
+                addressValue={{ street: '', city: '', country: '', postalCode: '' }}
               ></AddressForm>
 
               <FormControlLabel

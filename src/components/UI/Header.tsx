@@ -228,36 +228,40 @@ export const Header: React.FC<logoutProps> = (props) => {
             {authorized && (
               <>
                 <Tooltip title="Profile">
-                  <IconButton onMouseDown={handleMouseDown}>
-                    <PersonIcon
-                      sx={{
-                        color: 'white',
-                        '&:hover': {
-                          color: 'info.main',
-                          transition: 'color 0.3s ease-in-out',
-                        },
-                      }}
-                    />
-                  </IconButton>
+                  <RouterLink to={'/profile'}>
+                    <IconButton onMouseDown={handleMouseDown}>
+                      <PersonIcon
+                        sx={{
+                          color: location.pathname === '/profile' ? 'info.main' : 'white',
+                          '&:hover': {
+                            color: 'info.main',
+                            transition: 'color 0.3s ease-in-out',
+                          },
+                        }}
+                      />
+                    </IconButton>
+                  </RouterLink>
                 </Tooltip>
                 <Tooltip title="Exit">
-                  <IconButton
-                    onMouseDown={handleMouseDown}
-                    color="secondary"
-                    onClick={handleExit}
-                  >
-                    <LogoutIcon
-                      sx={{
-                        '&:hover': {
-                          color: 'red',
-                          transition: 'color 0.3s ease-in-out',
-                        },
-                        '@media (max-width: 400px)': {
-                          padding: '0px',
-                        },
-                      }}
-                    />
-                  </IconButton>
+                  <RouterLink to={'/'}>
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="secondary"
+                      onClick={handleExit}
+                    >
+                      <LogoutIcon
+                        sx={{
+                          '&:hover': {
+                            color: 'red',
+                            transition: 'color 0.3s ease-in-out',
+                          },
+                          '@media (max-width: 400px)': {
+                            padding: '0px',
+                          },
+                        }}
+                      />
+                    </IconButton>
+                  </RouterLink>
                 </Tooltip>
               </>
             )}

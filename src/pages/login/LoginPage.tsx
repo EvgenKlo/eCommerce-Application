@@ -84,6 +84,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
               <EmailField
                 data={formsValue}
                 setData={setFormsValue}
+                initialValue=""
               />
             </Grid>
             <Grid

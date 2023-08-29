@@ -6,9 +6,11 @@ import React, { useState } from 'react';
 const EmailField: React.FC<{
   data: CustomerDraft;
   setData: React.Dispatch<React.SetStateAction<CustomerDraft>>;
-}> = ({ data, setData }) => {
+  initialValue: string;
+}> = ({ data, setData, initialValue }) => {
   const [emailError, setEmailError] = useState(false);
   const [emailErrorText, setEmailErrorText] = useState('');
+  const [value, setValue] = useState(initialValue);
 
   return (
     <TextField
@@ -20,7 +22,9 @@ const EmailField: React.FC<{
       autoComplete="email"
       sx={{ marginBottom: 0.3 }}
       size="small"
+      value={value}
       onChange={(e) => {
+        setValue(e.target.value);
         if (!FormValidator.emailValidator(e.target.value) && e.target.value.length > 0) {
           setData({ ...data, email: '' });
           setEmailError(true);
