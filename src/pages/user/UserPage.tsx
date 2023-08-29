@@ -136,7 +136,7 @@ export const UserPage: React.FC = () => {
             {editFirstName ? (
               <>
                 <FirstNameField
-                  data={customer}
+                  data={data}
                   setData={setData}
                   initialValue={customer.firstName || ''}
                 />
@@ -162,6 +162,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditFirstName(false);
+                          setData({} as CustomerDraft);
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -179,6 +180,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditFirstName(false);
+                        setData({} as CustomerDraft);
                       }}
                     >
                       <CancelIcon />
@@ -216,7 +218,7 @@ export const UserPage: React.FC = () => {
             {editLastName ? (
               <>
                 <LastNameField
-                  data={customer}
+                  data={data}
                   setData={setData}
                   initialValue={customer.lastName || ''}
                 />
@@ -242,6 +244,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditLastName(false);
+                          setData({} as CustomerDraft);
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -258,6 +261,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditLastName(false);
+                        setData({} as CustomerDraft);
                       }}
                     >
                       <CancelIcon />
@@ -294,7 +298,7 @@ export const UserPage: React.FC = () => {
             {editEmail ? (
               <>
                 <EmailField
-                  data={customer}
+                  data={data}
                   setData={setData}
                   initialValue={customer.email}
                 />
@@ -319,6 +323,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditEmail(false);
+                          setData({} as CustomerDraft);
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -335,6 +340,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditEmail(false);
+                        setData({} as CustomerDraft);
                       }}
                     >
                       <CancelIcon />
@@ -371,7 +377,7 @@ export const UserPage: React.FC = () => {
             {editDateOfBirth ? (
               <>
                 <DateField
-                  data={customer}
+                  data={data}
                   setData={setData}
                 />
                 <Box sx={styleContainerButton}>
@@ -395,6 +401,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditDateOfBirth(false);
+                          setData({} as CustomerDraft);
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -412,6 +419,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditDateOfBirth(false);
+                        setData({} as CustomerDraft);
                       }}
                     >
                       <CancelIcon />
