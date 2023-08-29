@@ -43,6 +43,7 @@ export type filterActiveFormat = {
 
 export type InitialState = {
   categories: CategoryInternal[];
+  categoriesNotTransfromed: Category[];
   products: ProductProjection[];
   product: ProductProjection;
   filters: FilterProducts;

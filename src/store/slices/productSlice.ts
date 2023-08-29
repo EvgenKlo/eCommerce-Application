@@ -4,6 +4,7 @@ import {
   type ProductProjection,
   type FacetResults,
   type TermFacetResult,
+  type Category,
 } from '@commercetools/platform-sdk';
 import { CategoryInternal, InitialState } from '@/types/products';
 import { buildQueryFilter } from '@/helpers/buildQueryFilter';
@@ -12,6 +13,7 @@ import { SortOptions } from '@/types/Enums';
 
 const initialState: InitialState = {
   categories: [],
+  categoriesNotTransfromed: [],
   products: [],
   product: {},
   filters: { price: { operand: 'range', lower: 0, upper: 100 } },
@@ -32,7 +34,7 @@ export const getCategories = createAsyncThunk('products/getCategories', async (_
   const state: RootState = thunkAPI.getState() as RootState;
   const passClient = state.customers.apiInstance;
   const response = await passClient.getCategories();
-  await passClient.getProductsBySearch('test');
+  // await passClient.getProductsBySearch('test');
   return response.data;
 });
 
@@ -171,6 +173,7 @@ const productSlice = createSlice({
       let categories = [] as CategoryInternal[];
       if (action.payload) categories = buildTree(action.payload);
       state.categories = categories;
+      state.categoriesNotTransfromed = action.payload as Category[];
     });
 
     builder.addCase(getProducts.fulfilled, (state, action) => {
