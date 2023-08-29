@@ -147,24 +147,26 @@ export const UserPage: React.FC = () => {
                     arrow
                     placement="right-start"
                   >
-                    <IconButton
-                      onMouseDown={handleMouseDown}
-                      color="info"
-                      disabled={!data.firstName}
-                      onClick={() => {
-                        data.firstName &&
-                          void dispatch(
-                            UpdateFirstName({
-                              id: customer.id,
-                              firstName: data.firstName,
-                              version: customer.version,
-                            })
-                          );
-                        setEditFirstName(false);
-                      }}
-                    >
-                      <CheckCircleOutlineIcon />
-                    </IconButton>
+                    <span>
+                      <IconButton
+                        onMouseDown={handleMouseDown}
+                        color="info"
+                        disabled={!data.firstName}
+                        onClick={() => {
+                          data.firstName &&
+                            void dispatch(
+                              UpdateFirstName({
+                                id: customer.id,
+                                firstName: data.firstName,
+                                version: customer.version,
+                              })
+                            );
+                          setEditFirstName(false);
+                        }}
+                      >
+                        <CheckCircleOutlineIcon />
+                      </IconButton>
+                    </span>
                   </Tooltip>
 
                   <Tooltip
@@ -175,7 +177,6 @@ export const UserPage: React.FC = () => {
                     <IconButton
                       onMouseDown={handleMouseDown}
                       color="error"
-                      disabled={!!data.firstName}
                       onClick={() => {
                         setEditFirstName(false);
                       }}
@@ -226,24 +227,26 @@ export const UserPage: React.FC = () => {
                     arrow
                     placement="right-start"
                   >
-                    <IconButton
-                      onMouseDown={handleMouseDown}
-                      color="info"
-                      disabled={!data.lastName}
-                      onClick={() => {
-                        data.lastName &&
-                          void dispatch(
-                            UpdateLastName({
-                              id: customer.id,
-                              lastName: data.lastName,
-                              version: customer.version,
-                            })
-                          );
-                        setEditLastName(false);
-                      }}
-                    >
-                      <CheckCircleOutlineIcon />
-                    </IconButton>
+                    <span>
+                      <IconButton
+                        onMouseDown={handleMouseDown}
+                        color="info"
+                        disabled={!data.lastName}
+                        onClick={() => {
+                          data.lastName &&
+                            void dispatch(
+                              UpdateLastName({
+                                id: customer.id,
+                                lastName: data.lastName,
+                                version: customer.version,
+                              })
+                            );
+                          setEditLastName(false);
+                        }}
+                      >
+                        <CheckCircleOutlineIcon />
+                      </IconButton>
+                    </span>
                   </Tooltip>
                   <Tooltip
                     title="cancel"
@@ -253,7 +256,6 @@ export const UserPage: React.FC = () => {
                     <IconButton
                       onMouseDown={handleMouseDown}
                       color="error"
-                      disabled={!!data.lastName}
                       onClick={() => {
                         setEditLastName(false);
                       }}
@@ -302,24 +304,26 @@ export const UserPage: React.FC = () => {
                     arrow
                     placement="right-start"
                   >
-                    <IconButton
-                      onMouseDown={handleMouseDown}
-                      color="info"
-                      disabled={!data.email}
-                      onClick={() => {
-                        data.email &&
-                          void dispatch(
-                            UpdateEmail({
-                              id: customer.id,
-                              email: data.email,
-                              version: customer.version,
-                            })
-                          );
-                        setEditEmail(false);
-                      }}
-                    >
-                      <CheckCircleOutlineIcon />
-                    </IconButton>
+                    <span>
+                      <IconButton
+                        onMouseDown={handleMouseDown}
+                        color="info"
+                        disabled={!data.email}
+                        onClick={() => {
+                          data.email &&
+                            void dispatch(
+                              UpdateEmail({
+                                id: customer.id,
+                                email: data.email,
+                                version: customer.version,
+                              })
+                            );
+                          setEditEmail(false);
+                        }}
+                      >
+                        <CheckCircleOutlineIcon />
+                      </IconButton>
+                    </span>
                   </Tooltip>
                   <Tooltip
                     title="cancel"
@@ -329,7 +333,6 @@ export const UserPage: React.FC = () => {
                     <IconButton
                       onMouseDown={handleMouseDown}
                       color="error"
-                      disabled={!!data.email}
                       onClick={() => {
                         setEditEmail(false);
                       }}
@@ -377,24 +380,26 @@ export const UserPage: React.FC = () => {
                     arrow
                     placement="right-start"
                   >
-                    <IconButton
-                      onMouseDown={handleMouseDown}
-                      color="info"
-                      disabled={!data.dateOfBirth}
-                      onClick={() => {
-                        data.dateOfBirth &&
-                          void dispatch(
-                            UpdateDateOfBirth({
-                              id: customer.id,
-                              date: data.dateOfBirth,
-                              version: customer.version,
-                            })
-                          );
-                        setEditDateOfBirth(false);
-                      }}
-                    >
-                      <CheckCircleOutlineIcon />
-                    </IconButton>
+                    <span>
+                      <IconButton
+                        onMouseDown={handleMouseDown}
+                        color="info"
+                        disabled={!data.dateOfBirth}
+                        onClick={() => {
+                          data.dateOfBirth &&
+                            void dispatch(
+                              UpdateDateOfBirth({
+                                id: customer.id,
+                                date: data.dateOfBirth,
+                                version: customer.version,
+                              })
+                            );
+                          setEditDateOfBirth(false);
+                        }}
+                      >
+                        <CheckCircleOutlineIcon />
+                      </IconButton>
+                    </span>
                   </Tooltip>
 
                   <Tooltip
@@ -405,7 +410,6 @@ export const UserPage: React.FC = () => {
                     <IconButton
                       onMouseDown={handleMouseDown}
                       color="error"
-                      disabled={!!data.dateOfBirth}
                       onClick={() => {
                         setEditDateOfBirth(false);
                       }}
@@ -438,41 +442,38 @@ export const UserPage: React.FC = () => {
 
           <Box>
             {customer.addresses.map((address, index) => (
-              <Box key={index}>
+              <Box key={address.id}>
                 <Typography sx={{ textAlign: 'start', margin: '10px' }}>{index + 1}</Typography>
                 {Object.entries(address)
                   .slice(1)
                   .map(([key, value]) => (
-                    <>
-                      <Box
+                    <Box
+                      key={address.id + key}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        alignContent: 'center',
+                        justifyContent: 'start',
+                      }}
+                    >
+                      <Typography
                         sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          alignContent: 'center',
-                          justifyContent: 'start',
+                          textAlign: 'start',
                         }}
+                        variant="subtitle1"
                       >
-                        <Typography
-                          key={key}
-                          sx={{
-                            textAlign: 'start',
-                          }}
-                          variant="subtitle1"
-                        >
-                          <span style={styleTitleAddress}>{key}:</span>
-                        </Typography>
-                        <Typography
-                          key={key}
-                          sx={{
-                            fontSize: '17px',
-                            marginLeft: '5px',
-                          }}
-                          variant="subtitle1"
-                        >
-                          {value}
-                        </Typography>
-                      </Box>
-                    </>
+                        <span style={styleTitleAddress}>{key}:</span>
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: '17px',
+                          marginLeft: '5px',
+                        }}
+                        variant="subtitle1"
+                      >
+                        {value}
+                      </Typography>
+                    </Box>
                   ))}
               </Box>
             ))}
