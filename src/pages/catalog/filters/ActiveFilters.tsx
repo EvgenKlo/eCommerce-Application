@@ -10,6 +10,8 @@ import {
   setFilterGender,
   getProductsWithFilter,
 } from '@/store/slices/productSlice';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 export const ActiveFilters: React.FC = () => {
   const filter = useAppSelector((state) => state.products.filters);
@@ -96,6 +98,7 @@ export const ActiveFilters: React.FC = () => {
         {(Object.keys(result) as Array<keyof typeof result>).map((option) => {
           return (
             <Chip
+              deleteIcon={option == 'price' ? <RestartAltIcon /> : <HighlightOffIcon />}
               key={option}
               sx={{ fontSize: '12px' }}
               variant="outlined"
