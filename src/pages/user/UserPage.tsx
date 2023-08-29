@@ -10,6 +10,7 @@ import { type CustomerDraft } from '@commercetools/platform-sdk';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import CancelIcon from '@mui/icons-material/Cancel';
+
 // import EmailField from '../../components/UI/profileFields/EmailField';
 // import { DateField } from '@/components/UI/profileFields/DateField';
 // import { AddressForm } from '@/components/UI/AddressForm';
@@ -81,6 +82,7 @@ export const UserPage: React.FC = () => {
   const [data, setData] = useState({} as CustomerDraft);
 
   const styleNameField = { fontSize: '20px', textAlign: 'start' };
+  const countryNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' });
 
   return (
     <>
@@ -454,7 +456,7 @@ export const UserPage: React.FC = () => {
                 <Typography sx={{ textAlign: 'start', margin: '10px' }}>{index + 1}</Typography>
                 {Object.entries(address)
                   .slice(1)
-                  .map(([key, value]) => (
+                  .map(([key, value]: [string, string]) => (
                     <Box
                       key={address.id + key}
                       sx={{
@@ -472,15 +474,29 @@ export const UserPage: React.FC = () => {
                       >
                         <span style={styleTitleAddress}>{key}:</span>
                       </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: '17px',
-                          marginLeft: '5px',
-                        }}
-                        variant="subtitle1"
-                      >
-                        {value}
-                      </Typography>
+
+                      {key === 'country' ? (
+                        <Typography
+                          key={key}
+                          sx={{
+                            fontSize: '17px',
+                            marginLeft: '5px',
+                          }}
+                          variant="subtitle1"
+                        >
+                          {countryNamesInEnglish.of(value)}
+                        </Typography>
+                      ) : (
+                        <Typography
+                          sx={{
+                            fontSize: '17px',
+                            marginLeft: '5px',
+                          }}
+                          variant="subtitle1"
+                        >
+                          {value}
+                        </Typography>
+                      )}
                     </Box>
                   ))}
               </Box>
