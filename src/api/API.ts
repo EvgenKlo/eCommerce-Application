@@ -66,7 +66,7 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
-  async getProductsWithFilter(filter: string[], sort: string) {
+  async getProductsWithFilter(filter: string[], sort: string, search: string = '') {
     let errorMsg = '';
     try {
       const respsone = await this.client
@@ -74,13 +74,36 @@ export class API {
         .search()
         .get({
           queryArgs: {
+            'text.en': search,
             sort,
             limit: API.limit,
             'filter.query': filter,
           },
         })
         .execute();
-      console.log('success', respsone.body);
+      const result = respsone;
+      return { data: result.body.results, error: errorMsg };
+    } catch (error) {
+      console.log('error', error);
+      console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  async getProductsBySearch(search: string) {
+    let errorMsg = '';
+    try {
+      const respsone = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            'text.en': search,
+            limit: API.limit,
+          },
+        })
+        .execute();
+      console.log('SEARCH', respsone.body);
       const result = respsone;
       return { data: result.body.results, error: errorMsg };
     } catch (error) {

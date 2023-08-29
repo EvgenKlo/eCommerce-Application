@@ -25,12 +25,14 @@ const initialState: InitialState = {
     direction: 'asc',
     prop: SortOptions.price,
   },
+  search: '',
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
   const state: RootState = thunkAPI.getState() as RootState;
   const passClient = state.customers.apiInstance;
   const response = await passClient.getCategories();
+  await passClient.getProductsBySearch('test');
   return response.data;
 });
 
@@ -60,7 +62,18 @@ export const getProductsWithFilter = createAsyncThunk(
     const passClient = state.customers.apiInstance;
     const filter = buildQueryFilter(state.products.filters);
     const sort = `${state.products.sort.prop} ${state.products.sort.direction}`;
-    const response = await passClient.getProductsWithFilter(filter, sort);
+    const search = state.products.search;
+    const response = await passClient.getProductsWithFilter(filter, sort, search);
+    return response.data;
+  }
+);
+export const getProductsbySearch = createAsyncThunk(
+  'products/getProductsbySearch',
+  async (searchStr: string, thunkAPI) => {
+    thunkAPI.dispatch(setLoading(true));
+    const state: RootState = thunkAPI.getState() as RootState;
+    const passClient = state.customers.apiInstance;
+    const response = await passClient.getProductsBySearch(searchStr);
     return response.data;
   }
 );
@@ -149,6 +162,9 @@ const productSlice = createSlice({
     setSortingOptions: (state, action: PayloadAction<typeof state.sort>) => {
       state.sort = action.payload;
     },
+    setSearch: (state, action: PayloadAction<typeof state.search>) => {
+      state.search = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getCategories.fulfilled, (state, action) => {
@@ -181,6 +197,10 @@ const productSlice = createSlice({
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
       productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
+    builder.addCase(getProductsbySearch.fulfilled, (state, action) => {
+      state.products = action.payload ? action.payload : ([] as ProductProjection[]);
+      productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
+    });
   },
 });
 
@@ -197,6 +217,7 @@ export const {
   setCategory,
   setLoading,
   setSortingOptions,
+  setSearch,
 } = productSlice.actions;
 
 export default productSlice.reducer;

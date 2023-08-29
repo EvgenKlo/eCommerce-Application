@@ -56,4 +56,5 @@ export type InitialState = {
     direction: 'asc' | 'desc';
     prop: SortOptions;
   };
+  search: string;
 };
