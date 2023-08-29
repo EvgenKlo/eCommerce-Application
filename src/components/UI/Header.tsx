@@ -232,7 +232,7 @@ export const Header: React.FC<logoutProps> = (props) => {
                     <IconButton onMouseDown={handleMouseDown}>
                       <PersonIcon
                         sx={{
-                          color: 'white',
+                          color: location.pathname === '/profile' ? 'info.main' : 'white',
                           '&:hover': {
                             color: 'info.main',
                             transition: 'color 0.3s ease-in-out',
