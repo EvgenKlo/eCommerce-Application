@@ -21,9 +21,11 @@ import { ActiveFilters } from '@/pages/catalog/filters/ActiveFilters';
 import { useState, useEffect } from 'react';
 import { Loader } from '@/components/UI/Loader';
 import { Toolbar } from './filters/Toolbar';
+import { BreadCrumbs } from './filters/Breadcrumbs';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
+  const activeCat = useAppSelector((state) => state.products.filters.catId);
   const isLoading = useAppSelector((state) => state.products.isLoading);
 
   const [selected, setSelected] = useState('');
@@ -39,6 +41,10 @@ export const CatalogPage: React.FC = () => {
     void loadData();
   }, []);
 
+  useEffect(() => {
+    activeCat ? setSelected(activeCat) : setSelected('');
+  }, [activeCat]);
+
   const handleAllCategories = () => {
     dispatch(resetFilter());
     setSelected('');
@@ -49,6 +55,7 @@ export const CatalogPage: React.FC = () => {
   return (
     <Container>
       <Loader isLoading={isLoading} />
+      <BreadCrumbs />
       <Toolbar />
       <ActiveFilters />
       <Container sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>

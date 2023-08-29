@@ -4,7 +4,7 @@ import {
 } from '@mui/icons-material';
 import { TreeView, TreeItem } from '@mui/lab';
 import { CategoryInternal } from '@/types/products';
-import { SetStateAction, SyntheticEvent, useState } from 'react';
+import { SetStateAction, SyntheticEvent, useEffect, useState } from 'react';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { setCategory, resetFilter, setSearch } from '@/store/slices/productSlice';
 
@@ -23,6 +23,11 @@ export const CategoriesTree: React.FC<{
 }> = ({ categories, handleClick, selected, setSelected }) => {
   const dispatch = useAppDispatch();
   const [expanded, setExpanded] = useState([] as string[]);
+
+  // useEffect(() => {
+  //   const node = categories.find((node) => node.id === selected);
+  //   if (node!.children?.length) setExpanded([node!.id]);
+  // }, [selected]);
 
   const renderTree = (cats: CategoryInternal[]) =>
     cats.map((nodes) => (
