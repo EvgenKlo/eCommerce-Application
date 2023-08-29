@@ -10,9 +10,11 @@ export const buildTree = (data: Category[]) => {
 
   newData.forEach((node) => {
     if (!rootNodes.includes(node)) {
-      const closestParentId = node.ancestors.pop()?.id;
-      const parent = rootNodes.find((root) => root.id === closestParentId);
-      parent!.children?.push(node);
+      node.ancestors.forEach(({ id }) => {
+        const closestParentId = id;
+        const parent = rootNodes.find((root) => root.id === closestParentId);
+        parent!.children?.push(node);
+      });
     }
   });
   return rootNodes;
