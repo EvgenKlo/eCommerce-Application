@@ -75,6 +75,8 @@ export class API {
         .get({
           queryArgs: {
             'text.en': search,
+            fuzzy: true,
+            fuzzyLevel: 2,
             sort,
             limit: API.limit,
             'filter.query': filter,
