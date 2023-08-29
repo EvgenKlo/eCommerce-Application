@@ -6,19 +6,25 @@ import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import { IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useSelector } from 'react-redux';
 
 export const Search: React.FC = () => {
+  const stateSearch = useAppSelector((state) => state.products.search);
   const dispatch = useAppDispatch();
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState(stateSearch);
 
   const handleSearch = () => {
-    void dispatch(getProductsWithFilter());
+    void dispatch(setSearch(searchText));
     void dispatch(resetFilter());
+    void dispatch(getProductsWithFilter());
   };
 
   useEffect(() => {
-    dispatch(setSearch(searchText));
-  }, [searchText]);
+    if (!stateSearch) {
+      setSearchText('');
+      void dispatch(getProductsWithFilter());
+    }
+  }, [stateSearch]);
 
   return (
     <Stack

@@ -6,7 +6,7 @@ import { TreeView, TreeItem } from '@mui/lab';
 import { CategoryInternal } from '@/types/products';
 import { SetStateAction, SyntheticEvent, useState } from 'react';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { setCategory, resetFilter } from '@/store/slices/productSlice';
+import { setCategory, resetFilter, setSearch } from '@/store/slices/productSlice';
 
 const treeSX = {
   Maxheight: 400,
@@ -32,6 +32,7 @@ export const CategoriesTree: React.FC<{
         label={nodes.name.en}
         onClick={() => {
           dispatch(resetFilter());
+          dispatch(setSearch(''));
           dispatch(setCategory({ categoryId: nodes.id }));
           handleClick(nodes.id);
           if (nodes.children?.length) setExpanded([nodes.id]);

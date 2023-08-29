@@ -9,12 +9,14 @@ import {
   setFilterManufacturer,
   setFilterGender,
   getProductsWithFilter,
+  setSearch,
 } from '@/store/slices/productSlice';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 export const ActiveFilters: React.FC = () => {
   const filter = useAppSelector((state) => state.products.filters);
+  const search = useAppSelector((state) => state.products.search);
 
   const [activeFilter, setActiveFilter] = useState(filter);
 
@@ -100,13 +102,25 @@ export const ActiveFilters: React.FC = () => {
             <Chip
               deleteIcon={option == 'price' ? <RestartAltIcon /> : <HighlightOffIcon />}
               key={option}
-              sx={{ fontSize: '12px' }}
+              sx={{
+                fontSize: '12px',
+                backgroundColor: option == 'price' ? '#d9e0f7' : 'transparent',
+              }}
               variant="outlined"
               onDelete={result[option].action}
               label={`${option}: ${result[option]!.value}`}
             />
           );
         })}
+        {search && (
+          <Chip
+            key="search"
+            sx={{ fontSize: '12px', backgroundColor: '#f9eefb' }}
+            variant="outlined"
+            onDelete={() => dispatch(setSearch(''))}
+            label={`You searched:${search}`}
+          />
+        )}
       </Stack>
     </div>
   );
