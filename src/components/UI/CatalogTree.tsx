@@ -24,10 +24,13 @@ export const CategoriesTree: React.FC<{
   const dispatch = useAppDispatch();
   const [expanded, setExpanded] = useState([] as string[]);
 
-  // useEffect(() => {
-  //   const node = categories.find((node) => node.id === selected);
-  //   if (node!.children?.length) setExpanded([node!.id]);
-  // }, [selected]);
+  useEffect(() => {
+    const node = categories.find((node) => node.id === selected);
+    if (node) {
+      if (node!.children?.length) setExpanded([node!.id]);
+    }
+    if (selected == '') setExpanded([]);
+  }, [selected]);
 
   const renderTree = (cats: CategoryInternal[]) =>
     cats.map((nodes) => (
