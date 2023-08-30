@@ -27,10 +27,10 @@ export const RangeSlider: React.FC = () => {
 
   useEffect(() => {
     setCurrPrice([price.lower, price.upper]);
-  }, [JSON.stringify(price)]);
+  }, [price.lower, price.upper]);
 
-  const handleChangeFinish = (_: Event | SyntheticEvent<Element, Event>) => {
-    dispatch(setPrice({ range: currPrice as number[], operand: '=' }));
+  const handleChangeFinish = () => {
+    void dispatch(setPrice({ range: currPrice, operand: '=' }));
   };
 
   const handleChange = (_: Event | SyntheticEvent<Element, Event>, newValue: number | number[]) => {

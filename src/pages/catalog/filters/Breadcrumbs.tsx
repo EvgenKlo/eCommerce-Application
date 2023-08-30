@@ -1,7 +1,7 @@
 import { Breadcrumbs, Link } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { useEffect, useState } from 'react';
-import { Category } from '@commercetools/platform-sdk';
+import { type Category } from '@commercetools/platform-sdk';
 import { setCategory, resetFilter, setSearch } from '@/store/slices/productSlice';
 
 export const BreadCrumbs: React.FC = () => {
@@ -12,7 +12,7 @@ export const BreadCrumbs: React.FC = () => {
 
   useEffect(() => {
     setPath(buildPath(categories, activeCat ? activeCat : ''));
-  }, [activeCat]);
+  }, [activeCat, buildPath, setPath, categories]);
 
   function buildPath(cats: Category[], cat: string): Array<{ name: string; action: () => void }> {
     const path = [] as Array<{ name: string; action: () => void }>;

@@ -20,7 +20,7 @@ export const Search: React.FC = () => {
       setSearchText('');
       void dispatch(getProductsWithFilter());
     }
-  }, [stateSearch]);
+  }, [stateSearch, dispatch]);
 
   return (
     <Stack
@@ -35,7 +35,7 @@ export const Search: React.FC = () => {
         InputProps={{
           type: 'search',
         }}
-        onChange={(event) => setSearchText(event.target.value as string)}
+        onChange={(event) => setSearchText(event.target.value)}
         onKeyDown={(event) => {
           if (event.key === 'Enter') handleSearch();
         }}

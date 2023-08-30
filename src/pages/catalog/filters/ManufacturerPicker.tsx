@@ -48,8 +48,8 @@ export const ManufacturerPicker: React.FC = () => {
   };
   useEffect(() => {
     if (!filterManufacturers?.length) setChecked([]);
-    dispatch(getProductsWithFilter());
-  }, [filterManufacturers]);
+    void dispatch(getProductsWithFilter());
+  }, [filterManufacturers, dispatch]);
 
   const handleShow = () => setCollapsed((state) => !state);
 

@@ -17,7 +17,9 @@ const options = Object.keys(SortOptions) as Array<keyof typeof SortOptions>;
 
 export const SortBar: React.FC = () => {
   const dispatch = useAppDispatch();
+
   const [sort, setSort] = useState(SortOptions.price);
+
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -25,9 +27,9 @@ export const SortBar: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(setSortingOptions({ direction: sortDirection, prop: sort }));
-    dispatch(getProductsWithFilter());
-  }, [sort, sortDirection]);
+    void dispatch(setSortingOptions({ direction: sortDirection, prop: sort }));
+    void dispatch(getProductsWithFilter());
+  }, [sort, sortDirection, dispatch]);
   return (
     <Box sx={{ display: 'flex' }}>
       <FormControl

@@ -30,7 +30,7 @@ export const CategoriesTree: React.FC<{
       if (node.children?.length) setExpanded([node.id]);
     }
     if (selected == '') setExpanded([]);
-  }, [selected]);
+  }, [selected, categories]);
 
   const renderTree = (cats: CategoryInternal[]) =>
     cats.map((nodes) => (

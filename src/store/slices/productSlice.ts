@@ -15,7 +15,7 @@ const initialState: InitialState = {
   categories: [],
   categoriesNotTransfromed: [],
   products: [],
-  product: {},
+  product: {} as ProductProjection,
   filters: { price: { operand: 'range', lower: 0, upper: 100 } },
   colors: [],
   size: [],

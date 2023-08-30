@@ -1,4 +1,4 @@
-import { type Category } from '@commercetools/platform-sdk';
+import { type Category, type ProductProjection } from '@commercetools/platform-sdk';
 import { SortOptions } from '@/types/Enums';
 
 export interface CategoryInternal extends Category {

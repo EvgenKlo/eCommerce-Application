@@ -27,8 +27,8 @@ export const ActiveFilters: React.FC = () => {
   useEffect(() => {
     setActiveFilter(filter);
 
-    dispatch(getProductsWithFilter());
-  }, [JSON.stringify(filter)]);
+    void dispatch(getProductsWithFilter());
+  }, [JSON.stringify(filter), dispatch, setActiveFilter, filter]);
 
   const format = (data: Required<FilterProducts>) => {
     const result: filterActiveFormat = {} as filterActiveFormat;
@@ -46,7 +46,7 @@ export const ActiveFilters: React.FC = () => {
         case 'colors':
           if (data[filterOption].length)
             result.color = {
-              value: (data[filterOption] as string[]).join(','),
+              value: data[filterOption].join(','),
               action: () => dispatch(setFilterColors({ colors: [] })),
             };
 
@@ -54,7 +54,7 @@ export const ActiveFilters: React.FC = () => {
         case 'size':
           if (data[filterOption].length)
             result.size = {
-              value: (data[filterOption] as string[]).join(','),
+              value: data[filterOption].join(','),
               action: () => dispatch(setFilterSize({ sizes: [] })),
             };
 
@@ -63,7 +63,7 @@ export const ActiveFilters: React.FC = () => {
         case 'manufacturer':
           if (data[filterOption].length)
             result.brand = {
-              value: (data[filterOption] as string[]).join(','),
+              value: data[filterOption].join(','),
               action: () => dispatch(setFilterManufacturer({ manufacturers: [] })),
             };
 
@@ -72,7 +72,7 @@ export const ActiveFilters: React.FC = () => {
         case 'gender':
           if (data[filterOption].length)
             result.brand = {
-              value: (data[filterOption] as string[]).join(','),
+              value: data[filterOption].join(','),
               action: () => dispatch(setFilterGender({ genders: [] })),
             };
 

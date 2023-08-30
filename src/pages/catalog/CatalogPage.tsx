@@ -39,7 +39,7 @@ export const CatalogPage: React.FC = () => {
 
   useEffect(() => {
     void loadData();
-  }, []);
+  }, [loadData]);
 
   useEffect(() => {
     activeCat ? setSelected(activeCat) : setSelected('');
@@ -50,7 +50,7 @@ export const CatalogPage: React.FC = () => {
     setSelected('');
   };
 
-  const handleCatClick = () => dispatch(getProductsWithFilter());
+  const handleCatClick = () => void dispatch(getProductsWithFilter());
 
   return (
     <Container>

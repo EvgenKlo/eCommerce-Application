@@ -26,14 +26,14 @@ export const ColorPicker: React.FC = () => {
 
     setSelected(res);
 
-    dispatch(setFilterColors({ colors: res }));
+    void dispatch(setFilterColors({ colors: res }));
   };
 
   useEffect(() => {
     if (!filterColors?.length) setSelected([]);
 
-    dispatch(getProductsWithFilter());
-  }, [filterColors]);
+    void dispatch(getProductsWithFilter());
+  }, [filterColors, dispatch]);
 
   return (
     <>
