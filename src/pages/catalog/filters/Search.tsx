@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { resetFilter, setSearch, getProductsWithFilter } from '@/store/slices/productSlice';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Autocomplete from '@mui/material/Autocomplete';
-import { IconButton } from '@mui/material';
+import { TextField, Stack, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useSelector } from 'react-redux';
 
 export const Search: React.FC = () => {
   const stateSearch = useAppSelector((state) => state.products.search);

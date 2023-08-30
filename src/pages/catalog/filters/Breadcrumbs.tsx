@@ -1,10 +1,6 @@
-import * as React from 'react';
-import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
+import { Breadcrumbs, Link } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Category } from '@commercetools/platform-sdk';
 import { setCategory, resetFilter, setSearch } from '@/store/slices/productSlice';
 

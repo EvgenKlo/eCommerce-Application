@@ -34,7 +34,6 @@ export const getCategories = createAsyncThunk('products/getCategories', async (_
   const state: RootState = thunkAPI.getState() as RootState;
   const passClient = state.customers.apiInstance;
   const response = await passClient.getCategories();
-  // await passClient.getProductsBySearch('test');
   return response.data;
 });
 
