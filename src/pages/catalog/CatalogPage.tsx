@@ -9,7 +9,7 @@ import {
   CategoryOutlined as CategoryOutlinedIcon,
   PriceChange as PriceChangeIcon,
 } from '@mui/icons-material';
-import { Button, Box, Container, Divider, Typography, Stack } from '@mui/material';
+import { Button, Box, Container, Divider, Typography } from '@mui/material';
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
 import { RangeSlider } from '@/pages/catalog/filters/Slider';

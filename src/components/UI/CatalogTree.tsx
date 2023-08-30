@@ -27,7 +27,7 @@ export const CategoriesTree: React.FC<{
   useEffect(() => {
     const node = categories.find((node) => node.id === selected);
     if (node) {
-      if (node!.children?.length) setExpanded([node!.id]);
+      if (node.children?.length) setExpanded([node.id]);
     }
     if (selected == '') setExpanded([]);
   }, [selected]);
@@ -59,7 +59,7 @@ export const CategoriesTree: React.FC<{
       defaultExpandIcon={<LabelOutlinedIcon />}
       sx={treeSX}
       selected={selected}
-      onNodeSelect={(event: SyntheticEvent<Element, Event>, nodeId: SetStateAction<string>) => {
+      onNodeSelect={(_event: SyntheticEvent<Element, Event>, nodeId: SetStateAction<string>) => {
         setSelected(nodeId as string);
       }}
       expanded={expanded}

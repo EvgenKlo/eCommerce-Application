@@ -6,10 +6,9 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  Stack,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { useAppDispatch } from '@/hooks/reduxHooks';
 import { getProductsWithFilter, setSortingOptions } from '@/store/slices/productSlice';
 import { SortOptions } from '@/types/Enums';
 import FilterListIcon from '@mui/icons-material/FilterList';
