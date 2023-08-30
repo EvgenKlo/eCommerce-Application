@@ -27,7 +27,7 @@ export const RangeSlider: React.FC = () => {
 
   useEffect(() => {
     setCurrPrice([price.lower, price.upper]);
-  }, [price.lower, price.upper]);
+  }, [JSON.stringify(price)]);
 
   const handleChangeFinish = () => {
     void dispatch(setPrice({ range: currPrice, operand: '=' }));

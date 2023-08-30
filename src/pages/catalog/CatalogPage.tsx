@@ -39,7 +39,7 @@ export const CatalogPage: React.FC = () => {
 
   useEffect(() => {
     void loadData();
-  }, [loadData]);
+  }, []);
 
   useEffect(() => {
     activeCat ? setSelected(activeCat) : setSelected('');
