@@ -28,7 +28,7 @@ export const CatalogPage: React.FC = () => {
   const activeCat = useAppSelector((state) => state.products.filters.catId);
   const isLoading = useAppSelector((state) => state.products.isLoading);
 
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(activeCat ? activeCat : '');
 
   const dispatch = useAppDispatch();
 

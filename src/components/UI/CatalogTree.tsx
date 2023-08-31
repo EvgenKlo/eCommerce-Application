@@ -5,7 +5,7 @@ import {
 import { TreeView, TreeItem } from '@mui/lab';
 import { CategoryInternal } from '@/types/products';
 import { SetStateAction, SyntheticEvent, useEffect, useState } from 'react';
-import { useAppDispatch } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { setCategory, resetFilter, setSearch } from '@/store/slices/productSlice';
 
 const treeSX = {
@@ -22,15 +22,19 @@ export const CategoriesTree: React.FC<{
   setSelected: (id: string) => void;
 }> = ({ categories, handleClick, selected, setSelected }) => {
   const dispatch = useAppDispatch();
+  const categoriesNotTransfromed = useAppSelector(
+    (state) => state.products.categoriesNotTransfromed
+  );
   const [expanded, setExpanded] = useState([] as string[]);
 
   useEffect(() => {
-    const node = categories.find((node) => node.id === selected);
+    const node = categoriesNotTransfromed.find((node) => node.id === selected);
     if (node) {
-      if (node.children?.length) setExpanded([node.id]);
+      if (!node.ancestors?.length) setExpanded([node.id]);
+      else node.ancestors.reverse().forEach((node) => setExpanded([node.id]));
     }
     if (selected == '') setExpanded([]);
-  }, [selected, categories]);
+  }, [selected, categories, categoriesNotTransfromed]);
 
   const renderTree = (cats: CategoryInternal[]) =>
     cats.map((nodes) => (
