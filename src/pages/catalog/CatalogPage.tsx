@@ -1,33 +1,60 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { getCategories, getProducts, getProductsByCat } from '@/store/slices/productSlice';
-
-import { Button, Box, Container, Typography, Divider } from '@mui/material';
+import {
+  getCategories,
+  getProducts,
+  getProductsWithFilter,
+  resetFilter,
+} from '@/store/slices/productSlice';
+import { Recycling as RecyclingIcon, PriceChange as PriceChangeIcon } from '@mui/icons-material';
+import { Button, Box, Container, Divider, Typography } from '@mui/material';
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
-import RangeSlider from '@/components/UI/Slider';
+import { RangeSlider } from '@/pages/catalog/filters/Slider';
+import { ColorPicker } from '@/pages/catalog/filters/ColorPicker';
+import { ManufacturerPicker } from '@/pages/catalog/filters/ManufacturerPicker';
+import { SizePicker } from '@/pages/catalog/filters/SizePicker';
+import { GenderPicker } from '@/pages/catalog/filters/GenderPicker';
+import { ActiveFilters } from '@/pages/catalog/filters/ActiveFilters';
+import { useState, useEffect } from 'react';
+import { Loader } from '@/components/UI/Loader';
+import { Toolbar } from './filters/Toolbar';
+import { BreadCrumbs } from './filters/Breadcrumbs';
 
 export const CatalogPage: React.FC = () => {
   const categories = useAppSelector((state) => state.products.categories);
+  const activeCat = useAppSelector((state) => state.products.filters.catId);
+  const isLoading = useAppSelector((state) => state.products.isLoading);
+
+  const [selected, setSelected] = useState(activeCat ? activeCat : '');
 
   const dispatch = useAppDispatch();
 
-  const getCategoryList = (): void => {
+  const loadData = (): void => {
     void dispatch(getCategories());
     void dispatch(getProducts());
   };
-  // console.log(categories);
 
-  const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
+  useEffect(() => {
+    if (!categories.length) void loadData();
+  }, []);
+
+  useEffect(() => {
+    activeCat ? setSelected(activeCat) : setSelected('');
+  }, [activeCat]);
+
+  const handleAllCategories = () => {
+    dispatch(resetFilter());
+    setSelected('');
+  };
+
+  const handleCatClick = () => void dispatch(getProductsWithFilter());
 
   return (
     <Container>
-      <Button
-        variant="outlined"
-        onClick={getCategoryList}
-        sx={{ mb: 2 }}
-      >
-        Load Categories list
-      </Button>
+      <Loader isLoading={isLoading} />
+      <BreadCrumbs />
+      <Toolbar />
+      <ActiveFilters />
       <Container sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
         <Box
           sx={{
@@ -38,18 +65,59 @@ export const CatalogPage: React.FC = () => {
             pt: 1,
           }}
         >
-          <Typography variant="h5">Categories</Typography>
+          <Typography
+            variant="h5"
+            color="#87a2ab"
+          >
+            Categories
+          </Typography>
           <Divider sx={{ mb: 2, mt: 2 }} />
+
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<RecyclingIcon />}
+            sx={{ '&:focus': { outline: 'none' } }}
+            onClick={() => handleAllCategories()}
+          >
+            Reset
+          </Button>
           {categories.length !== 0 && (
             <CategoriesTree
               categories={categories}
               handleClick={handleCatClick}
+              selected={selected}
+              setSelected={setSelected}
             />
           )}
-          <Divider sx={{ mb: 2, mt: 2 }} />
-          <Typography variant="h6">Price:</Typography>
-          <RangeSlider />
+          <Divider
+            component="li"
+            sx={{ mb: 2, mt: 2 }}
+            textAlign="left"
+          >
+            <Typography
+              variant="h6"
+              color="#60677b"
+            >
+              Filter options
+            </Typography>
+          </Divider>
+          <Box>
+            <PriceChangeIcon sx={{ display: 'block', marginInline: 'auto', color: '#87a2ab' }} />
+            <RangeSlider />
+          </Box>
+          <Divider
+            sx={{ mb: 2, mt: 2 }}
+            variant="middle"
+          />
+          <Box>
+            <ColorPicker />
+          </Box>
+          <ManufacturerPicker />
+          <SizePicker />
+          <GenderPicker />
         </Box>
+
         <ProductList />
       </Container>
     </Container>

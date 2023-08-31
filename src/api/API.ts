@@ -8,7 +8,7 @@ import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/dec
 import { type returnType } from '@/types/apiClient';
 export class API {
   private client: ByProjectKeyRequestBuilder;
-
+  static limit = 100;
   constructor(client: ByProjectKeyRequestBuilder) {
     this.client = client;
   }
@@ -25,7 +25,14 @@ export class API {
   async getCategories() {
     let errorMsg = '';
     try {
-      const { body } = await this.client.categories().get().execute();
+      const { body } = await this.client
+        .categories()
+        .get({
+          queryArgs: {
+            sort: 'orderHint asc',
+          },
+        })
+        .execute();
       const result = body.results;
       return { data: result, error: errorMsg };
     } catch (error) {
@@ -36,39 +43,68 @@ export class API {
   }
 
   async getProductsByCat(catId: string) {
-    console.log('catID', catId);
-
     let errorMsg = '';
     try {
-      // const response = await this.client
-      // .productProjections()
-      // .search()
-      // .get({
-      //   queryArgs: {
-      //     facet: 'categories.id',
-      //   },
-      // })
-      // .execute();
       const respsone = await this.client
         .productProjections()
         .search()
         .get({
           queryArgs: {
-            'filter.query': [
-              `categories.id:subtree("${catId}")`,
-              //'variants.price.centAmount:range ("5" to "9")',
-            ],
+            limit: API.limit,
+            facet: ['variants.attributes.color.en', 'variants.price.centAmount'],
+            filter: [`categories.id:subtree("${catId}")`],
           },
         })
-        // const { body } = await this.client
-        //   .products()
-        //   .get({
-        //     queryArgs: {
-        //       'filter.query': `categories.id:subtree("${catId}")`,
-        //     },
-        //   })
         .execute();
-      console.log('success', respsone);
+      console.log('CAT', respsone.body);
+      const result = respsone;
+      return { data: result.body.results, error: errorMsg };
+    } catch (error) {
+      console.log('error', error);
+      console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  async getProductsWithFilter(filter: string[], sort: string, search: string = '') {
+    let errorMsg = '';
+    try {
+      const respsone = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            'text.en': search,
+            fuzzy: true,
+            sort,
+            limit: API.limit,
+            'filter.query': filter,
+          },
+        })
+        .execute();
+      const result = respsone;
+      return { data: result.body.results, error: errorMsg };
+    } catch (error) {
+      console.log('error', error);
+      console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  async getProductsBySearch(search: string) {
+    let errorMsg = '';
+    try {
+      const respsone = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            'text.en': search,
+            limit: API.limit,
+          },
+        })
+        .execute();
+      console.log('SEARCH', respsone.body);
       const result = respsone;
       return { data: result.body.results, error: errorMsg };
     } catch (error) {
@@ -82,9 +118,23 @@ export class API {
   async getProducts() {
     let errorMsg = '';
     try {
-      const { body } = await this.client.productProjections().get().execute();
-      const result = body.results;
-      return { data: result, error: errorMsg };
+      const { body } = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            limit: API.limit,
+            facet: [
+              'variants.attributes.color.en',
+              'variants.attributes.size.en',
+              'variants.attributes.gender.en',
+              'variants.attributes.designer.en',
+              'variants.price.centAmount',
+            ],
+          },
+        })
+        .execute();
+      return { data: body, error: errorMsg };
     } catch (error) {
       console.log(error);
       if (error instanceof Error) errorMsg = error.message;
