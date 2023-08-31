@@ -49,6 +49,9 @@ export const SizePicker: React.FC = () => {
 
   useEffect(() => {
     if (!filterSizes?.length) setChecked([]);
+    else {
+      setChecked([...filterSizes.map((_, idx) => idx)]);
+    }
 
     void dispatch(getProductsWithFilter());
   }, [filterSizes, dispatch]);

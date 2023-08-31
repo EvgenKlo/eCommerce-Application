@@ -48,6 +48,9 @@ export const ManufacturerPicker: React.FC = () => {
   };
   useEffect(() => {
     if (!filterManufacturers?.length) setChecked([]);
+    else {
+      setChecked([...filterManufacturers.map((_, idx) => idx)]);
+    }
     void dispatch(getProductsWithFilter());
   }, [filterManufacturers, dispatch]);
 
