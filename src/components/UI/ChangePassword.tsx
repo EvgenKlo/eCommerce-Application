@@ -24,7 +24,7 @@ const VerticalLinearStepper: React.FC<{
   const [data, setData] = useState({} as CustomerDraft);
 
   const [requestData, setRequestData] = useState({
-    id: customer.id,
+    //id: customer.id,
     version: customer.version,
     currentPassword: '',
     newPassword: '',
