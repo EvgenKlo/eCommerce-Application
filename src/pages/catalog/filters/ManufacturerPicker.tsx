@@ -24,7 +24,7 @@ const boxSX = {
 export const ManufacturerPicker: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
-  const [checked, setChecked] = useState([] as number[]);
+  const [checked, setChecked] = useState([] as string[]);
 
   const dispatch = useAppDispatch();
 
@@ -32,7 +32,7 @@ export const ManufacturerPicker: React.FC = () => {
 
   const filterManufacturers = useAppSelector((state) => state.products.filters.manufacturer);
 
-  const handleToggle = (value: number) => () => {
+  const handleToggle = (value: string) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -43,13 +43,13 @@ export const ManufacturerPicker: React.FC = () => {
     }
 
     setChecked(newChecked);
-    const filteredManufacturers: string[] = newChecked.map((idx) => manufacturers[idx]);
+    const filteredManufacturers: string[] = [...newChecked];
     dispatch(setFilterManufacturer({ manufacturers: filteredManufacturers }));
   };
   useEffect(() => {
     if (!filterManufacturers?.length) setChecked([]);
     else {
-      setChecked([...filterManufacturers.map((_, idx) => idx)]);
+      setChecked([...filterManufacturers]);
     }
     void dispatch(getProductsWithFilter());
   }, [filterManufacturers]);
@@ -71,7 +71,7 @@ export const ManufacturerPicker: React.FC = () => {
           timeout="auto"
           unmountOnExit
         >
-          {manufacturers.map((value, idx) => {
+          {manufacturers.map((value) => {
             const labelId = `${value}`;
 
             return (
@@ -81,13 +81,13 @@ export const ManufacturerPicker: React.FC = () => {
               >
                 <ListItemButton
                   role={undefined}
-                  onClick={handleToggle(idx)}
+                  onClick={handleToggle(value)}
                   dense
                 >
                   <ListItemIcon>
                     <Checkbox
                       edge="start"
-                      checked={checked.indexOf(idx) !== -1}
+                      checked={checked.indexOf(value) !== -1}
                       tabIndex={-1}
                       disableRipple
                       inputProps={{ 'aria-labelledby': labelId }}

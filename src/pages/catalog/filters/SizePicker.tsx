@@ -24,7 +24,7 @@ const boxSX = {
 export const SizePicker: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
-  const [checked, setChecked] = useState([] as number[]);
+  const [checked, setChecked] = useState([] as string[]);
 
   const dispatch = useAppDispatch();
 
@@ -32,7 +32,7 @@ export const SizePicker: React.FC = () => {
 
   const filterSizes = useAppSelector((state) => state.products.filters.size);
 
-  const handleToggle = (value: number) => () => {
+  const handleToggle = (value: string) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -43,14 +43,14 @@ export const SizePicker: React.FC = () => {
     }
 
     setChecked(newChecked);
-    const filteredSizes: string[] = newChecked.map((idx) => sizes[idx]);
+    const filteredSizes: string[] = [...newChecked];
     dispatch(setFilterSize({ sizes: filteredSizes }));
   };
 
   useEffect(() => {
     if (!filterSizes?.length) setChecked([]);
     else {
-      setChecked([...filterSizes.map((_, idx) => idx)]);
+      setChecked([...filterSizes]);
     }
 
     void dispatch(getProductsWithFilter());
@@ -73,7 +73,7 @@ export const SizePicker: React.FC = () => {
           timeout="auto"
           unmountOnExit
         >
-          {sizes.map((value, idx) => {
+          {sizes.map((value) => {
             const labelId = `${value}`;
 
             return (
@@ -83,13 +83,13 @@ export const SizePicker: React.FC = () => {
               >
                 <ListItemButton
                   role={undefined}
-                  onClick={handleToggle(idx)}
+                  onClick={handleToggle(value)}
                   dense
                 >
                   <ListItemIcon>
                     <Checkbox
                       edge="start"
-                      checked={checked.indexOf(idx) !== -1}
+                      checked={checked.indexOf(value) !== -1}
                       tabIndex={-1}
                       disableRipple
                       inputProps={{ 'aria-labelledby': labelId }}

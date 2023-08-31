@@ -23,11 +23,11 @@ const boxSX = {
 
 export const GenderPicker: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [checked, setChecked] = useState([] as number[]);
+  const [checked, setChecked] = useState([] as string[]);
   const dispatch = useAppDispatch();
   const gender = useAppSelector((state) => state.products.gender);
   const filterGenders = useAppSelector((state) => state.products.filters.gender);
-  const handleToggle = (value: number) => () => {
+  const handleToggle = (value: string) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -38,13 +38,13 @@ export const GenderPicker: React.FC = () => {
     }
 
     setChecked(newChecked);
-    const filteredGender: string[] = newChecked.map((idx) => gender[idx]);
+    const filteredGender: string[] = [...newChecked];
     dispatch(setFilterGender({ genders: filteredGender }));
   };
   useEffect(() => {
     if (!filterGenders?.length) setChecked([]);
     else {
-      setChecked([...filterGenders.map((_, idx) => idx)]);
+      setChecked([...filterGenders]);
     }
     void dispatch(getProductsWithFilter());
   }, [filterGenders]);
@@ -66,7 +66,7 @@ export const GenderPicker: React.FC = () => {
           timeout="auto"
           unmountOnExit
         >
-          {gender.map((value, idx) => {
+          {gender.map((value) => {
             const labelId = `${value}`;
 
             return (
@@ -76,13 +76,13 @@ export const GenderPicker: React.FC = () => {
               >
                 <ListItemButton
                   role={undefined}
-                  onClick={handleToggle(idx)}
+                  onClick={handleToggle(value)}
                   dense
                 >
                   <ListItemIcon>
                     <Checkbox
                       edge="start"
-                      checked={checked.indexOf(idx) !== -1}
+                      checked={checked.indexOf(value) !== -1}
                       tabIndex={-1}
                       disableRipple
                       inputProps={{ 'aria-labelledby': labelId }}
