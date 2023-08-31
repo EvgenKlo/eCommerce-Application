@@ -38,7 +38,7 @@ export const CatalogPage: React.FC = () => {
   };
 
   useEffect(() => {
-    void loadData();
+    if (!categories.length) void loadData();
   }, []);
 
   useEffect(() => {
