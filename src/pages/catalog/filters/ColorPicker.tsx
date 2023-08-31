@@ -16,7 +16,7 @@ const boxSX = {
 export const ColorPicker: React.FC = () => {
   const colors = useAppSelector((state) => state.products.colors);
   const filterColors = useAppSelector((state) => state.products.filters.colors);
-  const [selected, setSelected] = useState([] as string[]);
+  const [selected, setSelected] = useState(filterColors ? filterColors : []);
   const dispatch = useAppDispatch();
 
   const handleClick = (color: string): void => {
