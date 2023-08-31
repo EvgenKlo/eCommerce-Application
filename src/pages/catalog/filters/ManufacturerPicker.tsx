@@ -52,7 +52,7 @@ export const ManufacturerPicker: React.FC = () => {
       setChecked([...filterManufacturers.map((_, idx) => idx)]);
     }
     void dispatch(getProductsWithFilter());
-  }, [filterManufacturers, dispatch]);
+  }, [filterManufacturers]);
 
   const handleShow = () => setCollapsed((state) => !state);
 

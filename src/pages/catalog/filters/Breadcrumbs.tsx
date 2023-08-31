@@ -12,7 +12,7 @@ export const BreadCrumbs: React.FC = () => {
 
   useEffect(() => {
     setPath(buildPath(categories, activeCat ? activeCat : ''));
-  }, [activeCat, buildPath, setPath, categories]);
+  }, [activeCat, categories]);
 
   function buildPath(cats: Category[], cat: string): Array<{ name: string; action: () => void }> {
     const path = [] as Array<{ name: string; action: () => void }>;

@@ -54,7 +54,7 @@ export const SizePicker: React.FC = () => {
     }
 
     void dispatch(getProductsWithFilter());
-  }, [filterSizes, dispatch]);
+  }, [filterSizes]);
 
   const handleShow = () => setCollapsed((state) => !state);
 

@@ -20,7 +20,7 @@ export const Search: React.FC = () => {
       setSearchText('');
       void dispatch(getProductsWithFilter());
     }
-  }, [stateSearch, dispatch]);
+  }, [stateSearch]);
 
   return (
     <Stack

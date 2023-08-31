@@ -29,7 +29,7 @@ export const SortBar: React.FC = () => {
   useEffect(() => {
     void dispatch(setSortingOptions({ direction: sortDirection, prop: sort }));
     void dispatch(getProductsWithFilter());
-  }, [sort, sortDirection, dispatch]);
+  }, [sort, sortDirection]);
   return (
     <Box sx={{ display: 'flex' }}>
       <FormControl
