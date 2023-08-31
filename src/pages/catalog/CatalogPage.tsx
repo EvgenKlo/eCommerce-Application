@@ -5,10 +5,7 @@ import {
   getProductsWithFilter,
   resetFilter,
 } from '@/store/slices/productSlice';
-import {
-  CategoryOutlined as CategoryOutlinedIcon,
-  PriceChange as PriceChangeIcon,
-} from '@mui/icons-material';
+import { Recycling as RecyclingIcon, PriceChange as PriceChangeIcon } from '@mui/icons-material';
 import { Button, Box, Container, Divider, Typography } from '@mui/material';
 import ProductList from './products/ProductList';
 import { CategoriesTree } from '@/components/UI/CatalogTree';
@@ -79,11 +76,11 @@ export const CatalogPage: React.FC = () => {
           <Button
             variant="outlined"
             size="small"
-            startIcon={<CategoryOutlinedIcon />}
+            startIcon={<RecyclingIcon />}
             sx={{ '&:focus': { outline: 'none' } }}
             onClick={() => handleAllCategories()}
           >
-            All
+            Reset
           </Button>
           {categories.length !== 0 && (
             <CategoriesTree
