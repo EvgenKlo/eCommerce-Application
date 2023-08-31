@@ -3,7 +3,11 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 import { API } from '@/api/API';
 import { getApiRoot } from '@/api/lib/Client';
-import { type CustomerDraft, type Customer } from '@commercetools/platform-sdk';
+import {
+  type CustomerDraft,
+  type Customer,
+  type MyCustomerChangePassword,
+} from '@commercetools/platform-sdk';
 
 export interface Credentials {
   email: string;
@@ -104,6 +108,16 @@ export const UpdateDateOfBirth = createAsyncThunk(
   }
 );
 
+export const UpdatePassword = createAsyncThunk(
+  'customer/updatePassword',
+  async (data: MyCustomerChangePassword, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const API = state.customers.apiInstance;
+    const response = await API.changeCustomerPassword(data);
+    return response;
+  }
+);
+
 const customerSlice = createSlice({
   name: 'customer',
   initialState,
@@ -154,6 +168,9 @@ const customerSlice = createSlice({
       state.customer = action.payload as Customer;
     });
     builder.addCase(UpdateDateOfBirth.fulfilled, (state, action) => {
+      state.customer = action.payload as Customer;
+    });
+    builder.addCase(UpdatePassword.fulfilled, (state, action) => {
       state.customer = action.payload as Customer;
     });
   },

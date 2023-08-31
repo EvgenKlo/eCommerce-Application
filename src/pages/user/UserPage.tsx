@@ -21,7 +21,6 @@ import {
 } from '@/store/slices/customerSlice';
 import { DateField } from '@/components/UI/profileFields/DateField';
 import { useNavigate } from 'react-router';
-import PasswordField from '@/components/UI/profileFields/PasswordField';
 import VerticalLinearStepper from '@/components/UI/ChangePassword';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -66,6 +65,8 @@ export const UserPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const customer = useAppSelector((state) => state.customers.customer);
+
+  console.log(customer);
 
   const [editFirstName, setEditFirstName] = useState(false);
   const [editLastName, setEditLastName] = useState(false);

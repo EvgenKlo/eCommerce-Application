@@ -38,7 +38,9 @@ export const LoginPage: React.FC<loginProps> = (props) => {
         handleLogin(true);
         navigate('/');
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [customer]);
 
   return (

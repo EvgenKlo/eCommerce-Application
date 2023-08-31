@@ -8,20 +8,22 @@ import Typography from '@mui/material/Typography';
 import PasswordField from './profileFields/PasswordField';
 import { useState } from 'react';
 import { type CustomerDraft } from '@commercetools/platform-sdk';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import ChangePasswordMessage from './ChangePasswordMessage';
+import { UpdatePassword } from '@/store/slices/customerSlice';
 
 const VerticalLinearStepper: React.FC<{
   setEditPassword: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ setEditPassword }) => {
   const customer = useAppSelector((state) => state.customers.customer);
 
+  const dispatch = useAppDispatch();
+
   const [activeStep, setActiveStep] = useState(0);
 
   const [data, setData] = useState({} as CustomerDraft);
 
   const [requestData, setRequestData] = useState({
-    id: customer.id,
     version: customer.version,
     currentPassword: '',
     newPassword: '',
@@ -70,11 +72,12 @@ const VerticalLinearStepper: React.FC<{
       },
     },
     {
-      label: 'сonfirm new password',
+      label: 'Confirm new password',
       initialValue: confirmPassword,
       next: () => {
         if (data.password && data.password === requestData.newPassword) {
           console.log(requestData);
+          void dispatch(UpdatePassword(requestData));
           setData({ ...data, password: '' });
           setEditPassword(false);
         } else {
