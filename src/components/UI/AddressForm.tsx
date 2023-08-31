@@ -37,7 +37,6 @@ export const AddressForm: React.FC<Props> = (props) => {
 
   useEffect(() => {
     getAddress(addressData);
-    // eslint-disable-next-line
   }, [addressData]);
 
   const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' });

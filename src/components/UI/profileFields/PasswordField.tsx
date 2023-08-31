@@ -16,10 +16,13 @@ import React, { useState } from 'react';
 const PasswordField: React.FC<{
   data: CustomerDraft;
   setData: React.Dispatch<React.SetStateAction<CustomerDraft>>;
-}> = ({ data, setData }) => {
+  initialValue: string;
+}> = ({ data, setData, initialValue }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [passwordText, setPasswordText] = useState('');
+
+  const [value, setValue] = useState(initialValue);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -34,7 +37,9 @@ const PasswordField: React.FC<{
         data-testid="password-input"
         error={passwordError}
         label={'Password'}
+        value={value}
         onChange={(e) => {
+          setValue(e.target.value);
           setPasswordText(e.target.value);
           if (!FormValidator.passwordValidator(e.target.value) && e.target.value.length > 0) {
             setData({ ...data, password: '' });

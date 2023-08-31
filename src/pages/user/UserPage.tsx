@@ -11,8 +11,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-// import EmailField from '../../components/UI/profileFields/EmailField';
-// import { DateField } from '@/components/UI/profileFields/DateField';
 // import { AddressForm } from '@/components/UI/AddressForm';
 
 import {
@@ -23,6 +21,8 @@ import {
 } from '@/store/slices/customerSlice';
 import { DateField } from '@/components/UI/profileFields/DateField';
 import { useNavigate } from 'react-router';
+import PasswordField from '@/components/UI/profileFields/PasswordField';
+import VerticalLinearStepper from '@/components/UI/ChangePassword';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -60,18 +60,18 @@ export const UserPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!auth) navigate('/');
+    if (!auth) return navigate('/');
   }, []);
 
   const dispatch = useAppDispatch();
 
   const customer = useAppSelector((state) => state.customers.customer);
-  //console.log(customer);
 
   const [editFirstName, setEditFirstName] = useState(false);
   const [editLastName, setEditLastName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
   const [editDateOfBirth, setEditDateOfBirth] = useState(false);
+  const [editPassword, setEditPassword] = useState(false);
   // const [editBillingAddress, setEditBillingAddress] = useState(false);
   // const [editShippingAddress, setEditShippingAddress] = useState(false);
 
@@ -164,7 +164,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditFirstName(false);
-                          setData({} as CustomerDraft);
+                          setData({ ...data, firstName: '' });
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -182,7 +182,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditFirstName(false);
-                        setData({} as CustomerDraft);
+                        setData({ ...data, firstName: '' });
                       }}
                     >
                       <CancelIcon />
@@ -196,11 +196,11 @@ export const UserPage: React.FC = () => {
 
                 <Checkbox
                   {...label}
+                  sx={styleEditIcon}
                   icon={
                     <EditIcon
                       fontSize="small"
                       color="primary"
-                      sx={styleEditIcon}
                     />
                   }
                   checkedIcon={<EditIcon />}
@@ -246,7 +246,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditLastName(false);
-                          setData({} as CustomerDraft);
+                          setData({ ...data, lastName: '' });
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -263,7 +263,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditLastName(false);
-                        setData({} as CustomerDraft);
+                        setData({ ...data, lastName: '' });
                       }}
                     >
                       <CancelIcon />
@@ -276,11 +276,11 @@ export const UserPage: React.FC = () => {
                 {customer.lastName}
                 <Checkbox
                   {...label}
+                  sx={styleEditIcon}
                   icon={
                     <EditIcon
                       fontSize="small"
                       color="primary"
-                      sx={styleEditIcon}
                     />
                   }
                   checkedIcon={<EditIcon />}
@@ -325,7 +325,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditEmail(false);
-                          setData({} as CustomerDraft);
+                          setData({ ...data, email: '' });
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -342,7 +342,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditEmail(false);
-                        setData({} as CustomerDraft);
+                        setData({ ...data, email: '' });
                       }}
                     >
                       <CancelIcon />
@@ -355,11 +355,11 @@ export const UserPage: React.FC = () => {
                 {customer.email}
                 <Checkbox
                   {...label}
+                  sx={styleEditIcon}
                   icon={
                     <EditIcon
                       fontSize="small"
                       color="primary"
-                      sx={styleEditIcon}
                     />
                   }
                   checkedIcon={<EditIcon />}
@@ -403,7 +403,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditDateOfBirth(false);
-                          setData({} as CustomerDraft);
+                          setData({ ...data, dateOfBirth: '' });
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -421,7 +421,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditDateOfBirth(false);
-                        setData({} as CustomerDraft);
+                        setData({ ...data, dateOfBirth: '' });
                       }}
                     >
                       <CancelIcon />
@@ -435,11 +435,11 @@ export const UserPage: React.FC = () => {
 
                 <Checkbox
                   {...label}
+                  sx={styleEditIcon}
                   icon={
                     <EditIcon
                       fontSize="small"
                       color="primary"
-                      sx={styleEditIcon}
                     />
                   }
                   checkedIcon={<EditIcon />}
@@ -449,6 +449,37 @@ export const UserPage: React.FC = () => {
               </>
             )}
           </Box>
+
+          <Box sx={styleContainerField}>
+            <Typography
+              sx={styleNameField}
+              variant="subtitle1"
+            >
+              <span style={styleTitle}>Password: </span>
+            </Typography>
+            {editPassword ? (
+              <VerticalLinearStepper setEditPassword={setEditPassword} />
+            ) : (
+              <>
+                {customer.password}
+
+                <Checkbox
+                  {...label}
+                  sx={styleEditIcon}
+                  icon={
+                    <EditIcon
+                      fontSize="small"
+                      color="primary"
+                    />
+                  }
+                  checkedIcon={<EditIcon />}
+                  checked={editDateOfBirth}
+                  onChange={() => setEditPassword(!editPassword)}
+                />
+              </>
+            )}
+          </Box>
+
           <Typography
             sx={{ ...styleTitle, textAlign: 'start', marginTop: '10px', fontSize: '20px' }}
           >

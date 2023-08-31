@@ -38,9 +38,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
         handleLogin(true);
         navigate('/');
       }
-      // eslint-disable-next-line no-empty
     } catch (error) {}
-    // eslint-disable-next-line
   }, [customer]);
 
   return (
@@ -95,6 +93,7 @@ export const LoginPage: React.FC<loginProps> = (props) => {
               <PasswordField
                 data={formsValue}
                 setData={setFormsValue}
+                initialValue=""
               />
             </Grid>
           </Grid>

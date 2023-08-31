@@ -32,7 +32,6 @@ const ProductPage = () => {
           navigate('error');
         }
       });
-    // eslint-disable-next-line
   }, []);
 
   if (!product.id) {
@@ -107,15 +106,17 @@ const ProductPage = () => {
           >
             {product.description?.en}
           </Typography>
-          {product.masterVariant.attributes?.map((attribute) => (
-            <Typography
-              variant="body1"
-              key={attribute.name}
-            >
-              {/* eslint-disable-next-line */}
-              {`${attribute.name} - ${attribute.value ? attribute.value.en : attribute.value}`}
-            </Typography>
-          ))}
+          {product.masterVariant.attributes?.map((attribute) => {
+            const value = attribute.value as { en: string };
+            return (
+              <Typography
+                variant="body1"
+                key={attribute.name}
+              >
+                {`${attribute.name} - ${value.en}`}
+              </Typography>
+            );
+          })}
           <Grid
             container
             xl={12}
