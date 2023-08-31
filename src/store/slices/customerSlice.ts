@@ -6,7 +6,7 @@ import { getApiRoot } from '@/api/lib/Client';
 import {
   type CustomerDraft,
   type Customer,
-  type MyCustomerChangePassword,
+  type CustomerChangePassword,
 } from '@commercetools/platform-sdk';
 
 export interface Credentials {
@@ -110,7 +110,7 @@ export const UpdateDateOfBirth = createAsyncThunk(
 
 export const UpdatePassword = createAsyncThunk(
   'customer/updatePassword',
-  async (data: MyCustomerChangePassword, thunkAPI) => {
+  async (data: CustomerChangePassword, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const API = state.customers.apiInstance;
     const response = await API.changeCustomerPassword(data);

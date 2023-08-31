@@ -3,7 +3,7 @@ import {
   Customer,
   CustomerSignInResult,
   CustomerDraft,
-  MyCustomerChangePassword,
+  CustomerChangePassword,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { type returnType } from '@/types/apiClient';
@@ -279,10 +279,10 @@ export class API {
     return result;
   }
 
-  async changeCustomerPassword(data: MyCustomerChangePassword) {
+  async changeCustomerPassword(data: CustomerChangePassword) {
     let result = {};
     try {
-      const { body } = await this.client.me().password().post({ body: data }).execute();
+      const { body } = await this.client.customers().password().post({ body: data }).execute();
       result = body;
     } catch (error) {
       console.log(error);
