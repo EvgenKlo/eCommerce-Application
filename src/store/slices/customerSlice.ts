@@ -115,7 +115,7 @@ export const UpdatePassword = createAsyncThunk(
     const state: RootState = thunkAPI.getState() as RootState;
     const client = state.customers.apiInstance;
     const response = await client.changeCustomerPassword(data);
-    if (data) {
+    if (response.data) {
       localStorage.removeItem('tokendata');
       const passClient = new API(
         getApiRoot('password', {
