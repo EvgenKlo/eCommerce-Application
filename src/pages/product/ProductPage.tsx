@@ -3,12 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { type ProductProjection } from '@commercetools/platform-sdk';
 import { useEffect, useState } from 'react';
 import { Loader } from '@/components/UI/Loader';
-import { Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { ProductModalWindow } from './ProductModalWindow';
 import DiscountIcon from '@mui/icons-material/Discount';
+import { Link } from 'react-router-dom';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -187,6 +188,14 @@ const ProductPage = () => {
                   }).format(price)}
               </Typography>
             </Grid>
+          </Grid>
+          <Grid
+            item
+            sx={{ display: 'flex', justifyContent: 'end' }}
+          >
+            <Link to={'/catalog'}>
+              <Button variant="contained">Go to Catalog</Button>
+            </Link>
           </Grid>
         </Grid>
       </Grid>
