@@ -280,14 +280,23 @@ export class API {
   }
 
   async changeCustomerPassword(data: MyCustomerChangePassword) {
-    let result = {};
+    // let result = {};
+    // try {
+    //   const { body } = await this.client.me().password().post({ body: data }).execute();
+    //   result = body;
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    // return result;
+    let errorMsg = '';
     try {
-      const { body } = await this.client.me().password().post({ body: data }).execute();
-      result = body;
+      const result = await this.client.me().password().post({ body: data }).execute();
+      return { data: result.body, error: errorMsg };
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
     }
-    return result;
   }
   // async setCustomerBillingAddress(ID: string, address: string) {
   //   let result = {};

@@ -61,6 +61,8 @@ export const getProductsWithFilter = createAsyncThunk(
     thunkAPI.dispatch(setLoading(true));
     const state: RootState = thunkAPI.getState() as RootState;
     const passClient = state.customers.apiInstance;
+    console.log(passClient);
+
     const filter = buildQueryFilter(state.products.filters);
     const sort = `${state.products.sort.prop} ${state.products.sort.direction}`;
     const search = state.products.search;

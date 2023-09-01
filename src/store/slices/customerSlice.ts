@@ -8,6 +8,7 @@ import {
   type Customer,
   type MyCustomerChangePassword,
 } from '@commercetools/platform-sdk';
+import { type TokenStore } from '@commercetools/sdk-client-v2';
 
 export interface Credentials {
   email: string;
@@ -112,8 +113,21 @@ export const UpdatePassword = createAsyncThunk(
   'customer/updatePassword',
   async (data: MyCustomerChangePassword, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
-    const API = state.customers.apiInstance;
-    const response = await API.changeCustomerPassword(data);
+    const client = state.customers.apiInstance;
+    const response = await client.changeCustomerPassword(data);
+    if (data) {
+      localStorage.removeItem('tokendata');
+      const passClient = new API(
+        getApiRoot('password', {
+          email: state.customers.customer.email,
+          password: data.newPassword,
+        })
+      );
+      await passClient.signIn({
+        email: state.customers.customer.email,
+        password: data.newPassword,
+      });
+    }
     return response;
   }
 );
@@ -171,7 +185,9 @@ const customerSlice = createSlice({
       state.customer = action.payload as Customer;
     });
     builder.addCase(UpdatePassword.fulfilled, (state, action) => {
-      state.customer = action.payload as Customer;
+      const token = JSON.parse(localStorage.getItem('tokendata')!) as TokenStore;
+      state.customer = action.payload.data as Customer;
+      state.apiInstance = new API(getApiRoot('token', { token: token.refreshToken }));
     });
   },
 });

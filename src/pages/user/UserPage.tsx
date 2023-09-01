@@ -55,16 +55,15 @@ const styleTitleAddress = { display: 'block', fontWeight: 'bold' };
 
 export const UserPage: React.FC = () => {
   const auth = useAppSelector((state) => state.customers.authorized);
+  const customer = useAppSelector((state) => state.customers.customer);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!auth) return navigate('/');
-  }, []);
+  // if (!auth) navigate('/');
+  // useEffect(() => {
+  //   if (!auth) navigate('/');
+  // }, [customer]);
 
   const dispatch = useAppDispatch();
-
-  const customer = useAppSelector((state) => state.customers.customer);
 
   console.log(customer);
 
@@ -486,58 +485,60 @@ export const UserPage: React.FC = () => {
           >
             Addresses:{' '}
           </Typography>
-          <Box>
-            {customer.addresses.map((address, index) => (
-              <Box key={address.id}>
-                <Typography sx={{ textAlign: 'start', margin: '10px' }}>{index + 1}</Typography>
-                {Object.entries(address)
-                  .slice(1)
-                  .map(([key, value]: [string, string]) => (
-                    <Box
-                      key={address.id + key}
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        alignContent: 'center',
-                        justifyContent: 'start',
-                      }}
-                    >
-                      <Typography
+          {!!customer.id && (
+            <Box>
+              {customer.addresses.map((address, index) => (
+                <Box key={address.id}>
+                  <Typography sx={{ textAlign: 'start', margin: '10px' }}>{index + 1}</Typography>
+                  {Object.entries(address)
+                    .slice(1)
+                    .map(([key, value]: [string, string]) => (
+                      <Box
+                        key={address.id + key}
                         sx={{
-                          textAlign: 'start',
+                          display: 'flex',
+                          alignItems: 'center',
+                          alignContent: 'center',
+                          justifyContent: 'start',
                         }}
-                        variant="subtitle1"
                       >
-                        <span style={styleTitleAddress}>{key}:</span>
-                      </Typography>
+                        <Typography
+                          sx={{
+                            textAlign: 'start',
+                          }}
+                          variant="subtitle1"
+                        >
+                          <span style={styleTitleAddress}>{key}:</span>
+                        </Typography>
 
-                      {key === 'country' ? (
-                        <Typography
-                          key={key}
-                          sx={{
-                            fontSize: '17px',
-                            marginLeft: '5px',
-                          }}
-                          variant="subtitle1"
-                        >
-                          {countryNamesInEnglish.of(value)}
-                        </Typography>
-                      ) : (
-                        <Typography
-                          sx={{
-                            fontSize: '17px',
-                            marginLeft: '5px',
-                          }}
-                          variant="subtitle1"
-                        >
-                          {value}
-                        </Typography>
-                      )}
-                    </Box>
-                  ))}
-              </Box>
-            ))}
-          </Box>
+                        {key === 'country' ? (
+                          <Typography
+                            key={key}
+                            sx={{
+                              fontSize: '17px',
+                              marginLeft: '5px',
+                            }}
+                            variant="subtitle1"
+                          >
+                            {countryNamesInEnglish.of(value)}
+                          </Typography>
+                        ) : (
+                          <Typography
+                            sx={{
+                              fontSize: '17px',
+                              marginLeft: '5px',
+                            }}
+                            variant="subtitle1"
+                          >
+                            {value}
+                          </Typography>
+                        )}
+                      </Box>
+                    ))}
+                </Box>
+              ))}
+            </Box>
+          )}
         </Paper>
       </Box>
     </>
