@@ -54,14 +54,20 @@ const styleTitle = { display: 'block', fontWeight: 'bold', width: '140px' };
 const styleTitleAddress = { display: 'block', fontWeight: 'bold' };
 
 export const UserPage: React.FC = () => {
-  const auth = useAppSelector((state) => state.customers.authorized);
+  //const auth = useAppSelector((state) => state.customers.authorized);
   const customer = useAppSelector((state) => state.customers.customer);
 
   const navigate = useNavigate();
-  // if (!auth) navigate('/');
-  // useEffect(() => {
-  //   if (!auth) navigate('/');
-  // }, [customer]);
+
+  useEffect(() => {
+    try {
+      if (!customer.id) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [customer]);
 
   const dispatch = useAppDispatch();
 
