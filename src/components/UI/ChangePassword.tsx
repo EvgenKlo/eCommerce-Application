@@ -9,8 +9,7 @@ import PasswordField from './profileFields/PasswordField';
 import { useState } from 'react';
 import { type CustomerDraft } from '@commercetools/platform-sdk';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import ChangePasswordMessage from './ChangePasswordMessage';
-import { UpdatePassword } from '@/store/slices/customerSlice';
+import { UpdatePassword, changeSnackbarInfo } from '@/store/slices/customerSlice';
 
 const VerticalLinearStepper: React.FC<{
   setEditPassword: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,7 +23,6 @@ const VerticalLinearStepper: React.FC<{
   const [data, setData] = useState({} as CustomerDraft);
 
   const [requestData, setRequestData] = useState({
-    //id: customer.id,
     version: customer.version,
     currentPassword: '',
     newPassword: '',
@@ -32,13 +30,14 @@ const VerticalLinearStepper: React.FC<{
 
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  //const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const steps = [
     {
       label: 'Enter your old password',
       initialValue: requestData.currentPassword,
-      next: () => {
+      next: (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         if (data.password) {
           setRequestData({ ...requestData, currentPassword: data.password });
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -51,7 +50,8 @@ const VerticalLinearStepper: React.FC<{
     {
       label: 'Enter new password',
       initialValue: requestData.newPassword,
-      next: () => {
+      next: (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         if (data.password) {
           setRequestData({ ...requestData, newPassword: data.password });
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -63,39 +63,40 @@ const VerticalLinearStepper: React.FC<{
       back: () => {
         if (data.password) {
           setRequestData({ ...requestData, newPassword: data.password });
-          setActiveStep((prevActiveStep) => prevActiveStep - 1);
-          setData({ ...data, password: '' });
         } else if (requestData.newPassword) {
           setRequestData({ ...requestData, newPassword: '' });
-          setData({ ...data, password: '' });
-          setActiveStep((prevActiveStep) => prevActiveStep - 1);
         }
+        setData({ ...data, password: '' });
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
       },
     },
     {
       label: 'Confirm new password',
       initialValue: confirmPassword,
-      next: () => {
+      next: (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         if (data.password && data.password === requestData.newPassword) {
           console.log(requestData);
           void dispatch(UpdatePassword(requestData));
           setData({ ...data, password: '' });
           setEditPassword(false);
         } else {
-          setOpenSnackbar(true);
-          console.log('bad request', requestData);
+          dispatch(
+            changeSnackbarInfo({
+              name: '',
+              message: 'Wrong password entered in the verification field',
+            })
+          );
         }
       },
       back: () => {
         if (data.password) {
           setConfirmPassword(data.password);
-          setActiveStep((prevActiveStep) => prevActiveStep - 1);
-          setData({ ...data, password: '' });
         } else {
-          setData({ ...data, password: '' });
           setConfirmPassword('');
-          setActiveStep((prevActiveStep) => prevActiveStep - 1);
         }
+        setData({ ...data, password: '' });
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
       },
     },
   ];
@@ -114,40 +115,40 @@ const VerticalLinearStepper: React.FC<{
               {step.label}
             </StepLabel>
             <StepContent>
-              <PasswordField
-                data={data}
-                setData={setData}
-                initialValue={step.initialValue}
-              />
-              <Box sx={{ mb: 2 }}>
-                <div>
-                  <Button
-                    variant="contained"
-                    onClick={step.next}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    {index === steps.length - 1 ? 'Change password' : 'Continue'}
-                  </Button>
-                  <Button
-                    disabled={index === 0}
-                    onClick={step.back}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    Back
-                  </Button>
-                </div>
+              <Box
+                component="form"
+                onSubmit={step.next}
+                noValidate={false}
+              >
+                <PasswordField
+                  data={data}
+                  setData={setData}
+                  initialValue={step.initialValue}
+                />
+                <Box sx={{ mb: 2 }}>
+                  <div>
+                    <Button
+                      variant="contained"
+                      sx={{ mt: 1, mr: 1 }}
+                      type="submit"
+                    >
+                      {index === steps.length - 1 ? 'Change password' : 'Continue'}
+                    </Button>
+                    <Button
+                      disabled={index === 0}
+                      onClick={step.back}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      Back
+                    </Button>
+                  </div>
+                </Box>
               </Box>
             </StepContent>
           </Step>
         ))}
       </Stepper>
       <Button onClick={() => setEditPassword(false)}>Reset</Button>
-      <ChangePasswordMessage
-        openSnackbar={openSnackbar}
-        setOpenSnackbar={setOpenSnackbar}
-        severity="error"
-        message="Wrong password entered in the verification field"
-      />
     </Box>
   );
 };

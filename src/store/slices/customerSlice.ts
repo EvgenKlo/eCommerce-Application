@@ -153,6 +153,12 @@ const customerSlice = createSlice({
       state.authorized = false;
       state.customer = {} as Customer;
     },
+    changeSnackbarInfo: (state, action: PayloadAction<{ name: string; message: string }>) => {
+      state.snackbarInfo = {
+        name: action.payload.name || '',
+        errorMassage: action.payload.message,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
@@ -185,15 +191,27 @@ const customerSlice = createSlice({
       state.customer = action.payload as Customer;
     });
     builder.addCase(UpdatePassword.fulfilled, (state, action) => {
-      const token = JSON.parse(localStorage.getItem('tokendata')!) as TokenStore;
-      state.customer = action.payload.data as Customer;
-      state.apiInstance = new API(getApiRoot('token', { token: token.refreshToken }));
+      if (action.payload.data) {
+        const token = JSON.parse(localStorage.getItem('tokendata')!) as TokenStore;
+        state.customer = action.payload.data;
+        state.apiInstance = new API(getApiRoot('token', { token: token.refreshToken }));
+        state.snackbarInfo = {
+          name: action.payload.data?.firstName || '',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          name: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
   },
 });
 
 export const selectCustomer = (state: RootState) => state.customers;
 
-export const { createCustomer, setAuthorization, setApi, signOut } = customerSlice.actions;
+export const { createCustomer, setAuthorization, setApi, signOut, changeSnackbarInfo } =
+  customerSlice.actions;
 
 export default customerSlice.reducer;
