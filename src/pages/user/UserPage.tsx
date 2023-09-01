@@ -71,8 +71,6 @@ export const UserPage: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  console.log(customer);
-
   const [editFirstName, setEditFirstName] = useState(false);
   const [editLastName, setEditLastName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);

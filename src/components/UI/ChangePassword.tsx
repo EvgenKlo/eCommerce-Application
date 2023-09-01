@@ -148,7 +148,12 @@ const VerticalLinearStepper: React.FC<{
           </Step>
         ))}
       </Stepper>
-      <Button onClick={() => setEditPassword(false)}>Reset</Button>
+      <Button
+        onClick={() => setEditPassword(false)}
+        variant="contained"
+      >
+        Reset
+      </Button>
     </Box>
   );
 };
