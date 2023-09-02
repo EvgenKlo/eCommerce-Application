@@ -11,8 +11,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-// import { AddressForm } from '@/components/UI/AddressForm';
-
 import {
   UpdateLastName,
   UpdateFirstName,
@@ -21,7 +19,8 @@ import {
 } from '@/store/slices/customerSlice';
 import { DateField } from '@/components/UI/profileFields/DateField';
 import { useNavigate } from 'react-router';
-import VerticalLinearStepper from '@/components/UI/ChangePassword';
+import VerticalLinearStepper from '@/pages/user/password/ChangePassword';
+import AddressesList from './addresses/AddressesList';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -50,16 +49,14 @@ const boxStyle = {
   justifyContent: 'center',
 };
 
-const styleTitle = { display: 'block', fontWeight: 'bold', width: '140px' };
-const styleTitleAddress = { display: 'block', fontWeight: 'bold' };
+export const styleTitle = { display: 'block', fontWeight: 'bold', minWidth: '140px' };
 
 export const UserPage: React.FC = () => {
-  //const auth = useAppSelector((state) => state.customers.authorized);
   const customer = useAppSelector((state) => state.customers.customer);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  /* useEffect(() => {
     try {
       if (!customer.id) {
         navigate('/');
@@ -67,7 +64,7 @@ export const UserPage: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [customer]);
+  }, [customer]); */
 
   const dispatch = useAppDispatch();
 
@@ -76,17 +73,10 @@ export const UserPage: React.FC = () => {
   const [editEmail, setEditEmail] = useState(false);
   const [editDateOfBirth, setEditDateOfBirth] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
-  // const [editBillingAddress, setEditBillingAddress] = useState(false);
-  // const [editShippingAddress, setEditShippingAddress] = useState(false);
-
-  // const getAddress = (address: BaseAddress) => {
-  //   console.log(address);
-  // };
 
   const [data, setData] = useState({} as CustomerDraft);
 
   const styleNameField = { fontSize: '20px', textAlign: 'start' };
-  const countryNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' });
 
   return (
     <>
@@ -484,65 +474,7 @@ export const UserPage: React.FC = () => {
             )}
           </Box>
 
-          <Typography
-            sx={{ ...styleTitle, textAlign: 'start', marginTop: '10px', fontSize: '20px' }}
-          >
-            Addresses:{' '}
-          </Typography>
-          {!!customer.id && (
-            <Box>
-              {customer.addresses.map((address, index) => (
-                <Box key={address.id}>
-                  <Typography sx={{ textAlign: 'start', margin: '10px' }}>{index + 1}</Typography>
-                  {Object.entries(address)
-                    .slice(1)
-                    .map(([key, value]: [string, string]) => (
-                      <Box
-                        key={address.id + key}
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          alignContent: 'center',
-                          justifyContent: 'start',
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            textAlign: 'start',
-                          }}
-                          variant="subtitle1"
-                        >
-                          <span style={styleTitleAddress}>{key}:</span>
-                        </Typography>
-
-                        {key === 'country' ? (
-                          <Typography
-                            key={key}
-                            sx={{
-                              fontSize: '17px',
-                              marginLeft: '5px',
-                            }}
-                            variant="subtitle1"
-                          >
-                            {countryNamesInEnglish.of(value)}
-                          </Typography>
-                        ) : (
-                          <Typography
-                            sx={{
-                              fontSize: '17px',
-                              marginLeft: '5px',
-                            }}
-                            variant="subtitle1"
-                          >
-                            {value}
-                          </Typography>
-                        )}
-                      </Box>
-                    ))}
-                </Box>
-              ))}
-            </Box>
-          )}
+          {!!customer.id && <AddressesList customer={customer} />}
         </Paper>
       </Box>
     </>

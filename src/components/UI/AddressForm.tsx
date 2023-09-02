@@ -15,7 +15,7 @@ const countryList = Object.keys(postalCodeRegexMap);
 type Props = {
   address: string;
   getAddress: (address: BaseAddress) => void;
-  id: number;
+  id: number | undefined;
   addressValue: { street: string; city: string; country: string; postalCode: string };
 };
 
@@ -23,7 +23,11 @@ export const AddressForm: React.FC<Props> = (props) => {
   const { address, getAddress, id, addressValue } = props;
 
   const [addressData, setAddressData] = useState({
-    id: id + '',
+    id: id ? id + '' : undefined,
+    streetName: addressValue.street,
+    city: addressValue.city,
+    postalCode: addressValue.postalCode,
+    country: addressValue.country,
   } as BaseAddress);
 
   const [cityError, setCityError] = useState(false);

@@ -286,7 +286,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 address={'billing'}
                 getAddress={getAddress}
                 addressValue={{ street: '', city: '', country: '', postalCode: '' }}
-              ></AddressForm>
+              />
 
               <FormControlLabel
                 control={
