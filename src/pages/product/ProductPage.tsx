@@ -3,12 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { type ProductProjection } from '@commercetools/platform-sdk';
 import { useEffect, useState } from 'react';
 import { Loader } from '@/components/UI/Loader';
-import { Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { ProductModalWindow } from './ProductModalWindow';
 import DiscountIcon from '@mui/icons-material/Discount';
+import { Link } from 'react-router-dom';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -32,7 +33,6 @@ const ProductPage = () => {
           navigate('error');
         }
       });
-    // eslint-disable-next-line
   }, []);
 
   if (!product.id) {
@@ -107,15 +107,17 @@ const ProductPage = () => {
           >
             {product.description?.en}
           </Typography>
-          {product.masterVariant.attributes?.map((attribute) => (
-            <Typography
-              variant="body1"
-              key={attribute.name}
-            >
-              {/* eslint-disable-next-line */}
-              {`${attribute.name} - ${attribute.value ? attribute.value.en : attribute.value}`}
-            </Typography>
-          ))}
+          {product.masterVariant.attributes?.map((attribute) => {
+            const value = attribute.value as { en: string };
+            return (
+              <Typography
+                variant="body1"
+                key={attribute.name}
+              >
+                {`${attribute.name} - ${value.en}`}
+              </Typography>
+            );
+          })}
           <Grid
             container
             xl={12}
@@ -186,6 +188,14 @@ const ProductPage = () => {
                   }).format(price)}
               </Typography>
             </Grid>
+          </Grid>
+          <Grid
+            item
+            sx={{ display: 'flex', justifyContent: 'end' }}
+          >
+            <Link to={'/catalog'}>
+              <Button variant="contained">Go to Catalog</Button>
+            </Link>
           </Grid>
         </Grid>
       </Grid>

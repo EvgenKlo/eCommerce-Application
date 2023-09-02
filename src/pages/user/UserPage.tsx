@@ -11,8 +11,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-// import EmailField from '../../components/UI/profileFields/EmailField';
-// import { DateField } from '@/components/UI/profileFields/DateField';
 // import { AddressForm } from '@/components/UI/AddressForm';
 
 import {
@@ -23,6 +21,7 @@ import {
 } from '@/store/slices/customerSlice';
 import { DateField } from '@/components/UI/profileFields/DateField';
 import { useNavigate } from 'react-router';
+import VerticalLinearStepper from '@/components/UI/ChangePassword';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -55,23 +54,28 @@ const styleTitle = { display: 'block', fontWeight: 'bold', width: '140px' };
 const styleTitleAddress = { display: 'block', fontWeight: 'bold' };
 
 export const UserPage: React.FC = () => {
-  const auth = useAppSelector((state) => state.customers.authorized);
+  //const auth = useAppSelector((state) => state.customers.authorized);
+  const customer = useAppSelector((state) => state.customers.customer);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!auth) navigate('/');
-  }, []);
+    try {
+      if (!customer.id) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [customer]);
 
   const dispatch = useAppDispatch();
-
-  const customer = useAppSelector((state) => state.customers.customer);
-  //console.log(customer);
 
   const [editFirstName, setEditFirstName] = useState(false);
   const [editLastName, setEditLastName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
   const [editDateOfBirth, setEditDateOfBirth] = useState(false);
+  const [editPassword, setEditPassword] = useState(false);
   // const [editBillingAddress, setEditBillingAddress] = useState(false);
   // const [editShippingAddress, setEditShippingAddress] = useState(false);
 
@@ -164,7 +168,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditFirstName(false);
-                          setData({} as CustomerDraft);
+                          setData({ ...data, firstName: '' });
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -182,7 +186,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditFirstName(false);
-                        setData({} as CustomerDraft);
+                        setData({ ...data, firstName: '' });
                       }}
                     >
                       <CancelIcon />
@@ -196,11 +200,11 @@ export const UserPage: React.FC = () => {
 
                 <Checkbox
                   {...label}
+                  sx={styleEditIcon}
                   icon={
                     <EditIcon
                       fontSize="small"
                       color="primary"
-                      sx={styleEditIcon}
                     />
                   }
                   checkedIcon={<EditIcon />}
@@ -246,7 +250,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditLastName(false);
-                          setData({} as CustomerDraft);
+                          setData({ ...data, lastName: '' });
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -263,7 +267,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditLastName(false);
-                        setData({} as CustomerDraft);
+                        setData({ ...data, lastName: '' });
                       }}
                     >
                       <CancelIcon />
@@ -276,11 +280,11 @@ export const UserPage: React.FC = () => {
                 {customer.lastName}
                 <Checkbox
                   {...label}
+                  sx={styleEditIcon}
                   icon={
                     <EditIcon
                       fontSize="small"
                       color="primary"
-                      sx={styleEditIcon}
                     />
                   }
                   checkedIcon={<EditIcon />}
@@ -325,7 +329,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditEmail(false);
-                          setData({} as CustomerDraft);
+                          setData({ ...data, email: '' });
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -342,7 +346,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditEmail(false);
-                        setData({} as CustomerDraft);
+                        setData({ ...data, email: '' });
                       }}
                     >
                       <CancelIcon />
@@ -355,11 +359,11 @@ export const UserPage: React.FC = () => {
                 {customer.email}
                 <Checkbox
                   {...label}
+                  sx={styleEditIcon}
                   icon={
                     <EditIcon
                       fontSize="small"
                       color="primary"
-                      sx={styleEditIcon}
                     />
                   }
                   checkedIcon={<EditIcon />}
@@ -403,7 +407,7 @@ export const UserPage: React.FC = () => {
                               })
                             );
                           setEditDateOfBirth(false);
-                          setData({} as CustomerDraft);
+                          setData({ ...data, dateOfBirth: '' });
                         }}
                       >
                         <CheckCircleOutlineIcon />
@@ -421,7 +425,7 @@ export const UserPage: React.FC = () => {
                       color="error"
                       onClick={() => {
                         setEditDateOfBirth(false);
-                        setData({} as CustomerDraft);
+                        setData({ ...data, dateOfBirth: '' });
                       }}
                     >
                       <CancelIcon />
@@ -435,11 +439,11 @@ export const UserPage: React.FC = () => {
 
                 <Checkbox
                   {...label}
+                  sx={styleEditIcon}
                   icon={
                     <EditIcon
                       fontSize="small"
                       color="primary"
-                      sx={styleEditIcon}
                     />
                   }
                   checkedIcon={<EditIcon />}
@@ -449,63 +453,96 @@ export const UserPage: React.FC = () => {
               </>
             )}
           </Box>
+
+          <Box sx={styleContainerField}>
+            <Typography
+              sx={styleNameField}
+              variant="subtitle1"
+            >
+              <span style={styleTitle}>Password: </span>
+            </Typography>
+            {editPassword ? (
+              <VerticalLinearStepper setEditPassword={setEditPassword} />
+            ) : (
+              <>
+                {customer.password}
+
+                <Checkbox
+                  {...label}
+                  sx={styleEditIcon}
+                  icon={
+                    <EditIcon
+                      fontSize="small"
+                      color="primary"
+                    />
+                  }
+                  checkedIcon={<EditIcon />}
+                  checked={editDateOfBirth}
+                  onChange={() => setEditPassword(!editPassword)}
+                />
+              </>
+            )}
+          </Box>
+
           <Typography
             sx={{ ...styleTitle, textAlign: 'start', marginTop: '10px', fontSize: '20px' }}
           >
             Addresses:{' '}
           </Typography>
-          <Box>
-            {customer.addresses.map((address, index) => (
-              <Box key={address.id}>
-                <Typography sx={{ textAlign: 'start', margin: '10px' }}>{index + 1}</Typography>
-                {Object.entries(address)
-                  .slice(1)
-                  .map(([key, value]: [string, string]) => (
-                    <Box
-                      key={address.id + key}
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        alignContent: 'center',
-                        justifyContent: 'start',
-                      }}
-                    >
-                      <Typography
+          {!!customer.id && (
+            <Box>
+              {customer.addresses.map((address, index) => (
+                <Box key={address.id}>
+                  <Typography sx={{ textAlign: 'start', margin: '10px' }}>{index + 1}</Typography>
+                  {Object.entries(address)
+                    .slice(1)
+                    .map(([key, value]: [string, string]) => (
+                      <Box
+                        key={address.id + key}
                         sx={{
-                          textAlign: 'start',
+                          display: 'flex',
+                          alignItems: 'center',
+                          alignContent: 'center',
+                          justifyContent: 'start',
                         }}
-                        variant="subtitle1"
                       >
-                        <span style={styleTitleAddress}>{key}:</span>
-                      </Typography>
+                        <Typography
+                          sx={{
+                            textAlign: 'start',
+                          }}
+                          variant="subtitle1"
+                        >
+                          <span style={styleTitleAddress}>{key}:</span>
+                        </Typography>
 
-                      {key === 'country' ? (
-                        <Typography
-                          key={key}
-                          sx={{
-                            fontSize: '17px',
-                            marginLeft: '5px',
-                          }}
-                          variant="subtitle1"
-                        >
-                          {countryNamesInEnglish.of(value)}
-                        </Typography>
-                      ) : (
-                        <Typography
-                          sx={{
-                            fontSize: '17px',
-                            marginLeft: '5px',
-                          }}
-                          variant="subtitle1"
-                        >
-                          {value}
-                        </Typography>
-                      )}
-                    </Box>
-                  ))}
-              </Box>
-            ))}
-          </Box>
+                        {key === 'country' ? (
+                          <Typography
+                            key={key}
+                            sx={{
+                              fontSize: '17px',
+                              marginLeft: '5px',
+                            }}
+                            variant="subtitle1"
+                          >
+                            {countryNamesInEnglish.of(value)}
+                          </Typography>
+                        ) : (
+                          <Typography
+                            sx={{
+                              fontSize: '17px',
+                              marginLeft: '5px',
+                            }}
+                            variant="subtitle1"
+                          >
+                            {value}
+                          </Typography>
+                        )}
+                      </Box>
+                    ))}
+                </Box>
+              ))}
+            </Box>
+          )}
         </Paper>
       </Box>
     </>

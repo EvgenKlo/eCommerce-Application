@@ -3,6 +3,7 @@ import {
   Customer,
   CustomerSignInResult,
   CustomerDraft,
+  MyCustomerChangePassword,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { type returnType } from '@/types/apiClient';
@@ -221,7 +222,6 @@ export class API {
     } catch (error) {
       console.log(error);
     }
-    console.log(result);
     return result;
   }
 
@@ -277,6 +277,17 @@ export class API {
       console.log(error);
     }
     return result;
+  }
+
+  async changeCustomerPassword(data: MyCustomerChangePassword) {
+    let errorMsg = '';
+    try {
+      const result = await this.client.me().password().post({ body: data }).execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
   }
   // async setCustomerBillingAddress(ID: string, address: string) {
   //   let result = {};

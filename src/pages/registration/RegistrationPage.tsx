@@ -58,9 +58,9 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
         handleLogin(true);
         navigate('/');
       }
-      // eslint-disable-next-line no-empty
-    } catch (error) {}
-    // eslint-disable-next-line
+    } catch (error) {
+      console.log(error);
+    }
   }, [customer]);
 
   const getAddress = (address: BaseAddress) => {
@@ -171,6 +171,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <PasswordField
                 data={data}
                 setData={setData}
+                initialValue=""
               />
             </Grid>
             <Grid
