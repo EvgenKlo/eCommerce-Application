@@ -26,52 +26,57 @@ const AddressesItem: React.FC<{
   return (
     <Grid
       container
-      sx={{ marginBottom: 2, border: 1, borderRadius: 2, padding: 2 }}
+      sx={{
+        marginBottom: 2,
+        border: 1,
+        borderRadius: 2,
+        padding: 2,
+        justifyContent: 'space-between',
+      }}
     >
       {update ? (
-        <Box
-          component="form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (data.streetName && data.city && data.country && data.postalCode) {
-              setUpdate(false);
-              void dispatch(UpdateCustomerAddress({ id: address.id as string, data: data }));
-            }
-          }}
-          noValidate={false}
-        >
-          <AddressForm
-            address=""
-            id={undefined}
-            getAddress={getAddress}
-            addressValue={{
-              street: address.streetName as string,
-              city: address.city as string,
-              country: address.country,
-              postalCode: address.postalCode as string,
+        <Grid item>
+          <Box
+            component="form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (data.streetName && data.city && data.country && data.postalCode) {
+                setUpdate(false);
+                void dispatch(UpdateCustomerAddress({ id: address.id as string, data: data }));
+              }
             }}
-          />
-          <Button
-            variant="contained"
-            sx={{ margin: 2 }}
-            onClick={() => setUpdate(false)}
+            noValidate={false}
           >
-            Reset
-          </Button>
-          <Button
-            variant="contained"
-            sx={{ margin: 2 }}
-            type="submit"
-          >
-            Update address
-          </Button>
-        </Box>
+            <AddressForm
+              address=""
+              id={undefined}
+              getAddress={getAddress}
+              addressValue={{
+                street: address.streetName as string,
+                city: address.city as string,
+                country: address.country,
+                postalCode: address.postalCode as string,
+              }}
+            />
+            <Button
+              variant="contained"
+              sx={{ margin: 2 }}
+              onClick={() => setUpdate(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ margin: 2 }}
+              type="submit"
+            >
+              Update address
+            </Button>
+          </Box>
+        </Grid>
       ) : (
         <>
-          <Grid
-            item
-            width="70%"
-          >
+          <Grid item>
             {Object.entries(address)
               .slice(1)
               .map(([key, value]: [string, string]) => (

@@ -33,7 +33,7 @@ const AddressesList: React.FC<{
           />
         ))
       ) : (
-        <Typography>No addresses</Typography>
+        <Typography margin={2}>No addresses</Typography>
       )}
       {newAddress ? (
         <Box
@@ -58,7 +58,7 @@ const AddressesList: React.FC<{
             sx={{ margin: 2 }}
             onClick={() => setNewAddress(false)}
           >
-            Reset
+            Cancel
           </Button>
           <Button
             variant="contained"

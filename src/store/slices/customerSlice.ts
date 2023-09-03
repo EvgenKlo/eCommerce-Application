@@ -35,6 +35,7 @@ const initialState = {
     name: '',
     errorMassage: '',
   },
+  isLoading: true,
 };
 
 export const createNewCustomer = createAsyncThunk(
@@ -250,6 +251,9 @@ const customerSlice = createSlice({
         errorMassage: action.payload.message,
       };
     },
+    isLoading: (state, action: PayloadAction<true | false>) => {
+      state.isLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
@@ -275,6 +279,7 @@ const customerSlice = createSlice({
     });
     builder.addCase(SignInByToken.fulfilled, (state, action) => {
       state.customer = action.payload;
+      state.isLoading = false;
     });
     builder.addCase(UpdateLastName.fulfilled, (state, action) => {
       state.customer = action.payload as Customer;
@@ -336,7 +341,7 @@ const customerSlice = createSlice({
 
 export const selectCustomer = (state: RootState) => state.customers;
 
-export const { createCustomer, setAuthorization, setApi, signOut, changeSnackbarInfo } =
+export const { createCustomer, setAuthorization, setApi, signOut, changeSnackbarInfo, isLoading } =
   customerSlice.actions;
 
 export default customerSlice.reducer;

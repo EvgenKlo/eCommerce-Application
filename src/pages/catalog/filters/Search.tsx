@@ -25,11 +25,12 @@ export const Search: React.FC = () => {
   return (
     <Stack
       direction="row"
-      sx={{ mt: 0.8, ml: 2 }}
+      sx={{ mt: 0.8, ml: 2, display: 'flex', width: '50%', minWidth: '270px' }}
     >
       <TextField
+        fullWidth
         value={searchText}
-        sx={{ width: 500, height: 50 }}
+        sx={{ height: 50 }}
         label="Search input"
         variant="standard"
         InputProps={{

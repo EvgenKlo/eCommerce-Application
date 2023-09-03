@@ -33,7 +33,8 @@ export const AddressSettings: React.FC<{
   return (
     <Grid
       item
-      width="30%"
+      maxWidth={250}
+      sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginLeft: 1 }}
     >
       <FormControlLabel
         control={

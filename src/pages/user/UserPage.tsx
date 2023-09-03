@@ -21,6 +21,7 @@ import { DateField } from '@/components/UI/profileFields/DateField';
 import { useNavigate } from 'react-router';
 import VerticalLinearStepper from '@/pages/user/password/ChangePassword';
 import AddressesList from './addresses/AddressesList';
+import { Loader } from '@/components/UI/Loader';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -54,17 +55,15 @@ export const styleTitle = { display: 'block', fontWeight: 'bold', minWidth: '140
 export const UserPage: React.FC = () => {
   const customer = useAppSelector((state) => state.customers.customer);
 
+  const isLoading = useAppSelector((state) => state.customers.isLoading);
+
   const navigate = useNavigate();
 
-  /* useEffect(() => {
-    try {
-      if (!customer.id) {
-        navigate('/');
-      }
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    if (!isLoading && !customer.id) {
+      navigate('/login');
     }
-  }, [customer]); */
+  }, [isLoading]);
 
   const dispatch = useAppDispatch();
 
@@ -80,6 +79,7 @@ export const UserPage: React.FC = () => {
 
   return (
     <>
+      <Loader isLoading={isLoading} />
       <Box
         sx={{
           ...boxStyle,
@@ -111,7 +111,7 @@ export const UserPage: React.FC = () => {
       <Box style={{ ...boxStyle, padding: '60px' }}>
         <Paper
           elevation={6}
-          style={{ padding: '20px', background: '#FFF0F5', width: '900px' }}
+          style={{ padding: '20px', background: '#FFF0F5' }}
         >
           <Typography
             variant="h4"
@@ -185,9 +185,8 @@ export const UserPage: React.FC = () => {
                 </Box>
               </>
             ) : (
-              <>
+              <Typography>
                 {customer.firstName}
-
                 <Checkbox
                   {...label}
                   sx={styleEditIcon}
@@ -201,7 +200,7 @@ export const UserPage: React.FC = () => {
                   checked={editFirstName}
                   onChange={() => setEditFirstName(!editFirstName)}
                 />
-              </>
+              </Typography>
             )}
           </Box>
           <Box sx={styleContainerField}>
@@ -266,7 +265,7 @@ export const UserPage: React.FC = () => {
                 </Box>
               </>
             ) : (
-              <>
+              <Typography>
                 {customer.lastName}
                 <Checkbox
                   {...label}
@@ -281,7 +280,7 @@ export const UserPage: React.FC = () => {
                   checked={editLastName}
                   onChange={() => setEditLastName(!editLastName)}
                 />
-              </>
+              </Typography>
             )}
           </Box>
           <Box sx={styleContainerField}>
@@ -345,7 +344,7 @@ export const UserPage: React.FC = () => {
                 </Box>
               </>
             ) : (
-              <>
+              <Typography>
                 {customer.email}
                 <Checkbox
                   {...label}
@@ -360,7 +359,7 @@ export const UserPage: React.FC = () => {
                   checked={editEmail}
                   onChange={() => setEditEmail(!editEmail)}
                 />
-              </>
+              </Typography>
             )}
           </Box>
           <Box sx={styleContainerField}>
@@ -424,7 +423,7 @@ export const UserPage: React.FC = () => {
                 </Box>
               </>
             ) : (
-              <>
+              <Typography>
                 {customer.dateOfBirth}
 
                 <Checkbox
@@ -440,7 +439,7 @@ export const UserPage: React.FC = () => {
                   checked={editDateOfBirth}
                   onChange={() => setEditDateOfBirth(!editDateOfBirth)}
                 />
-              </>
+              </Typography>
             )}
           </Box>
 
@@ -454,7 +453,7 @@ export const UserPage: React.FC = () => {
             {editPassword ? (
               <VerticalLinearStepper setEditPassword={setEditPassword} />
             ) : (
-              <>
+              <Typography>
                 {customer.password}
 
                 <Checkbox
@@ -470,7 +469,7 @@ export const UserPage: React.FC = () => {
                   checked={editDateOfBirth}
                   onChange={() => setEditPassword(!editPassword)}
                 />
-              </>
+              </Typography>
             )}
           </Box>
 

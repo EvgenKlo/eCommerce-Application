@@ -74,7 +74,10 @@ const ProductPage = () => {
 
   return (
     <Container>
-      <Grid container>
+      <Grid
+        container
+        columnSpacing={2}
+      >
         <Grid
           item
           sx={{ width: { xs: '100%', sm: '50%' }, marginBottom: { xs: '1rem', sm: '0' } }}

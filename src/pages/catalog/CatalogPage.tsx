@@ -1,124 +1,78 @@
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import {
-  getCategories,
-  getProducts,
-  getProductsWithFilter,
-  resetFilter,
-} from '@/store/slices/productSlice';
-import { Recycling as RecyclingIcon, PriceChange as PriceChangeIcon } from '@mui/icons-material';
-import { Button, Box, Container, Divider, Typography } from '@mui/material';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import { Box, Button, Container, Modal } from '@mui/material';
 import ProductList from './products/ProductList';
-import { CategoriesTree } from '@/components/UI/CatalogTree';
-import { RangeSlider } from '@/pages/catalog/filters/Slider';
-import { ColorPicker } from '@/pages/catalog/filters/ColorPicker';
-import { ManufacturerPicker } from '@/pages/catalog/filters/ManufacturerPicker';
-import { SizePicker } from '@/pages/catalog/filters/SizePicker';
-import { GenderPicker } from '@/pages/catalog/filters/GenderPicker';
 import { ActiveFilters } from '@/pages/catalog/filters/ActiveFilters';
-import { useState, useEffect } from 'react';
 import { Loader } from '@/components/UI/Loader';
 import { Toolbar } from './filters/Toolbar';
 import { BreadCrumbs } from './filters/Breadcrumbs';
+import { Filters } from './filters/Filters';
+import { useState } from 'react';
+import { handleMouseDown } from '@/helpers/handleMouseDown';
+import CloseIcon from '@mui/icons-material/Close';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  //width: 400,
+  bgcolor: '#f6f3f7',
+  boxShadow: 24,
+  p: 4,
+  display: 'flex',
+  height: '100%',
+};
 
 export const CatalogPage: React.FC = () => {
-  const categories = useAppSelector((state) => state.products.categories);
-  const activeCat = useAppSelector((state) => state.products.filters.catId);
   const isLoading = useAppSelector((state) => state.products.isLoading);
 
-  const [selected, setSelected] = useState(activeCat ? activeCat : '');
-
-  const dispatch = useAppDispatch();
-
-  const loadData = (): void => {
-    void dispatch(getCategories());
-    void dispatch(getProducts());
-  };
-
-  useEffect(() => {
-    if (!categories.length) void loadData();
-  }, []);
-
-  useEffect(() => {
-    activeCat ? setSelected(activeCat) : setSelected('');
-  }, [activeCat]);
-
-  const handleAllCategories = () => {
-    dispatch(resetFilter());
-    setSelected('');
-  };
-
-  const handleCatClick = () => void dispatch(getProductsWithFilter());
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <Container>
       <Loader isLoading={isLoading} />
-      <BreadCrumbs />
-      <Toolbar />
-      <ActiveFilters />
-      <Container sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
-        <Box
-          sx={{
-            backgroundColor: '#f6f3f7',
-            flexBasis: '25%',
-            maxWidth: '300px',
-            borderRadius: '1%',
-            pt: 1,
-          }}
-        >
-          <Typography
-            variant="h5"
-            color="#87a2ab"
-          >
-            Categories
-          </Typography>
-          <Divider sx={{ mb: 2, mt: 2 }} />
-
+      <Button
+        sx={{ display: { xs: 'flex', sm: 'none' } }}
+        onClick={handleOpen}
+      >
+        Filters
+      </Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Filters />
           <Button
-            variant="outlined"
-            size="small"
-            startIcon={<RecyclingIcon />}
-            sx={{ '&:focus': { outline: 'none' } }}
-            onClick={() => handleAllCategories()}
+            sx={{
+              borderRadius: '50%',
+              width: '60px',
+              height: '60px',
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+            }}
+            onMouseDown={handleMouseDown}
+            onClick={handleClose}
           >
-            Reset
+            <CloseIcon sx={{ width: '100%', height: '100%' }}></CloseIcon>
           </Button>
-          {categories.length !== 0 && (
-            <CategoriesTree
-              categories={categories}
-              handleClick={handleCatClick}
-              selected={selected}
-              setSelected={setSelected}
-            />
-          )}
-          <Divider
-            component="li"
-            sx={{ mb: 2, mt: 2 }}
-            textAlign="left"
-          >
-            <Typography
-              variant="h6"
-              color="#60677b"
-            >
-              Filter options
-            </Typography>
-          </Divider>
-          <Box>
-            <PriceChangeIcon sx={{ display: 'block', marginInline: 'auto', color: '#87a2ab' }} />
-            <RangeSlider />
-          </Box>
-          <Divider
-            sx={{ mb: 2, mt: 2 }}
-            variant="middle"
-          />
-          <Box>
-            <ColorPicker />
-          </Box>
-          <ManufacturerPicker />
-          <SizePicker />
-          <GenderPicker />
         </Box>
-
-        <ProductList />
+      </Modal>
+      <BreadCrumbs />
+      <ActiveFilters />
+      <Container sx={{ display: 'flex' }}>
+        <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+          <Filters />
+        </Box>
+        <Box>
+          <Toolbar />
+          <ProductList />
+        </Box>
       </Container>
     </Container>
   );
