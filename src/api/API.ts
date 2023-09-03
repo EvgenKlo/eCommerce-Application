@@ -4,9 +4,11 @@ import {
   CustomerSignInResult,
   CustomerDraft,
   MyCustomerChangePassword,
+  BaseAddress,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { type returnType } from '@/types/apiClient';
+
 export class API {
   private client: ByProjectKeyRequestBuilder;
   static limit = 100;
@@ -138,6 +140,18 @@ export class API {
       return { data: body, error: errorMsg };
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async getProduct(ID: string) {
+    let errorMsg = '';
+    try {
+      const { body } = await this.client.productProjections().withId({ ID }).get().execute();
+      const result = body;
+      return { data: result, error: errorMsg };
+    } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
@@ -289,30 +303,162 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
-  // async setCustomerBillingAddress(ID: string, address: string) {
-  //   let result = {};
-  //   try {
-  //     const { body } = await this.client
-  //       .customers()
-  //       .withId({ ID })
-  //       .post({
-  //         body: { version, actions: [{ action: 'changeAddress', address: address }] },
-  //       })
-  //       .execute();
 
-  //     result = body;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   return result;
-  // }
-
-  async getProduct(ID: string) {
+  async addCustomerAddress(version: number, data: BaseAddress) {
     let errorMsg = '';
     try {
-      const { body } = await this.client.productProjections().withId({ ID }).get().execute();
-      const result = body;
-      return { data: result, error: errorMsg };
+      const result = await this.client
+        .me()
+        .post({ body: { version: version, actions: [{ action: 'addAddress', address: data }] } })
+        .execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async removeCustomerAddress(version: number, id: string) {
+    let errorMsg = '';
+    try {
+      const result = await this.client
+        .me()
+        .post({ body: { version: version, actions: [{ action: 'removeAddress', addressId: id }] } })
+        .execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async updateCustomerAddress(version: number, id: string, data: BaseAddress) {
+    let errorMsg = '';
+    try {
+      const result = await this.client
+        .me()
+        .post({
+          body: {
+            version: version,
+            actions: [{ action: 'changeAddress', addressId: id, address: data }],
+          },
+        })
+        .execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async setDefaultShippingAddress(version: number, id: string) {
+    let errorMsg = '';
+    try {
+      const result = await this.client
+        .me()
+        .post({
+          body: {
+            version: version,
+            actions: [{ action: 'setDefaultShippingAddress', addressId: id }],
+          },
+        })
+        .execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async setDefaultBillingAddress(version: number, id: string) {
+    let errorMsg = '';
+    try {
+      const result = await this.client
+        .me()
+        .post({
+          body: {
+            version: version,
+            actions: [{ action: 'setDefaultBillingAddress', addressId: id }],
+          },
+        })
+        .execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async addShippingAddressId(version: number, id: string) {
+    let errorMsg = '';
+    try {
+      const result = await this.client
+        .me()
+        .post({
+          body: {
+            version: version,
+            actions: [{ action: 'addShippingAddressId', addressId: id }],
+          },
+        })
+        .execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async removeShippingAddressId(version: number, id: string) {
+    let errorMsg = '';
+    try {
+      const result = await this.client
+        .me()
+        .post({
+          body: {
+            version: version,
+            actions: [{ action: 'removeShippingAddressId', addressId: id }],
+          },
+        })
+        .execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async addBillingAddressId(version: number, id: string) {
+    let errorMsg = '';
+    try {
+      const result = await this.client
+        .me()
+        .post({
+          body: {
+            version: version,
+            actions: [{ action: 'addBillingAddressId', addressId: id }],
+          },
+        })
+        .execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async removeBillingAddressId(version: number, id: string) {
+    let errorMsg = '';
+    try {
+      const result = await this.client
+        .me()
+        .post({
+          body: {
+            version: version,
+            actions: [{ action: 'removeBillingAddressId', addressId: id }],
+          },
+        })
+        .execute();
+      return { data: result.body, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };

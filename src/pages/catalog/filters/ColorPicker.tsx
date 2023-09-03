@@ -36,7 +36,7 @@ export const ColorPicker: React.FC = () => {
   }, [filterColors]);
 
   return (
-    <>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <ColorLensOutlinedIcon sx={{ color: '#87a2ab' }} />
       <Box sx={boxSX}>
         {colors.map((color) => {
@@ -60,6 +60,6 @@ export const ColorPicker: React.FC = () => {
           );
         })}
       </Box>
-    </>
+    </Box>
   );
 };

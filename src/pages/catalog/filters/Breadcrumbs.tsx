@@ -51,7 +51,7 @@ export const BreadCrumbs: React.FC = () => {
   return (
     <Breadcrumbs
       aria-label="breadcrumb"
-      sx={{ ml: 3 }}
+      sx={{ ml: 3, margin: 1 }}
     >
       {path.map((route: { name: string; action: () => void }) => (
         <Link

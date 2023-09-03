@@ -7,6 +7,7 @@ import {
   type CustomerDraft,
   type Customer,
   type MyCustomerChangePassword,
+  type BaseAddress,
 } from '@commercetools/platform-sdk';
 import { type TokenStore } from '@commercetools/sdk-client-v2';
 
@@ -34,6 +35,7 @@ const initialState = {
     name: '',
     errorMassage: '',
   },
+  isLoading: true,
 };
 
 export const createNewCustomer = createAsyncThunk(
@@ -132,6 +134,96 @@ export const UpdatePassword = createAsyncThunk(
   }
 );
 
+export const AddCustomerAddress = createAsyncThunk(
+  'customer/addCustomerAddress',
+  async (data: BaseAddress, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const response = await client.addCustomerAddress(state.customers.customer.version, data);
+    return response;
+  }
+);
+
+export const RemoveCustomerAddress = createAsyncThunk(
+  'customer/removeCustomerAddress',
+  async (id: string, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const response = await client.removeCustomerAddress(state.customers.customer.version, id);
+    return response;
+  }
+);
+
+export const UpdateCustomerAddress = createAsyncThunk(
+  'customer/updateCustomerAddress',
+  async ({ id, data }: { id: string; data: BaseAddress }, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const response = await client.updateCustomerAddress(state.customers.customer.version, id, data);
+    return response;
+  }
+);
+
+export const SetDefaultShippingAddress = createAsyncThunk(
+  'customer/setDefaultShippingAddress',
+  async (id: string, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const response = await client.setDefaultShippingAddress(state.customers.customer.version, id);
+    return response;
+  }
+);
+
+export const SetDefaultBillingAddress = createAsyncThunk(
+  'customer/setDefaultBillingAddress',
+  async (id: string, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const response = await client.setDefaultBillingAddress(state.customers.customer.version, id);
+    return response;
+  }
+);
+
+export const AddShippingAddressId = createAsyncThunk(
+  'customer/addShippingAddressId',
+  async (id: string, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const response = await client.addShippingAddressId(state.customers.customer.version, id);
+    return response;
+  }
+);
+
+export const RemoveShippingAddressId = createAsyncThunk(
+  'customer/removeShippingAddressId',
+  async (id: string, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const response = await client.removeShippingAddressId(state.customers.customer.version, id);
+    return response;
+  }
+);
+
+export const AddBillingAddressId = createAsyncThunk(
+  'customer/addSBillingAddressId',
+  async (id: string, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const response = await client.addBillingAddressId(state.customers.customer.version, id);
+    return response;
+  }
+);
+
+export const RemoveBillingAddressId = createAsyncThunk(
+  'customer/removeBillingAddressId',
+  async (id: string, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const response = await client.removeBillingAddressId(state.customers.customer.version, id);
+    return response;
+  }
+);
+
 const customerSlice = createSlice({
   name: 'customer',
   initialState,
@@ -159,14 +251,24 @@ const customerSlice = createSlice({
         errorMassage: action.payload.message,
       };
     },
+    isLoading: (state, action: PayloadAction<true | false>) => {
+      state.isLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
-      state.customer = action.payload.customer as Customer;
-      state.snackbarInfo = {
-        name: action.payload.customer?.firstName || '',
-        errorMassage: action.payload.errorMassage,
-      };
+      if (action.payload.customer) {
+        state.customer = action.payload.customer;
+        state.snackbarInfo = {
+          name: action.payload.customer?.firstName || '',
+          errorMassage: action.payload.errorMassage,
+        };
+      } else {
+        state.snackbarInfo = {
+          name: '',
+          errorMassage: action.payload.errorMassage,
+        };
+      }
     });
     builder.addCase(SignIn.fulfilled, (state, action) => {
       state.customer = action.payload.customer as Customer;
@@ -177,6 +279,7 @@ const customerSlice = createSlice({
     });
     builder.addCase(SignInByToken.fulfilled, (state, action) => {
       state.customer = action.payload;
+      state.isLoading = false;
     });
     builder.addCase(UpdateLastName.fulfilled, (state, action) => {
       state.customer = action.payload as Customer;
@@ -206,12 +309,39 @@ const customerSlice = createSlice({
         };
       }
     });
+    builder.addCase(AddCustomerAddress.fulfilled, (state, action) => {
+      state.customer = action.payload.data as Customer;
+    });
+    builder.addCase(RemoveCustomerAddress.fulfilled, (state, action) => {
+      state.customer = action.payload.data as Customer;
+    });
+    builder.addCase(UpdateCustomerAddress.fulfilled, (state, action) => {
+      state.customer = action.payload.data as Customer;
+    });
+    builder.addCase(SetDefaultShippingAddress.fulfilled, (state, action) => {
+      state.customer = action.payload.data as Customer;
+    });
+    builder.addCase(SetDefaultBillingAddress.fulfilled, (state, action) => {
+      state.customer = action.payload.data as Customer;
+    });
+    builder.addCase(AddShippingAddressId.fulfilled, (state, action) => {
+      state.customer = action.payload.data as Customer;
+    });
+    builder.addCase(RemoveShippingAddressId.fulfilled, (state, action) => {
+      state.customer = action.payload.data as Customer;
+    });
+    builder.addCase(AddBillingAddressId.fulfilled, (state, action) => {
+      state.customer = action.payload.data as Customer;
+    });
+    builder.addCase(RemoveBillingAddressId.fulfilled, (state, action) => {
+      state.customer = action.payload.data as Customer;
+    });
   },
 });
 
 export const selectCustomer = (state: RootState) => state.customers;
 
-export const { createCustomer, setAuthorization, setApi, signOut, changeSnackbarInfo } =
+export const { createCustomer, setAuthorization, setApi, signOut, changeSnackbarInfo, isLoading } =
   customerSlice.actions;
 
 export default customerSlice.reducer;

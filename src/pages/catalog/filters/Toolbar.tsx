@@ -4,7 +4,7 @@ import { Search } from './Search';
 
 export const Toolbar: React.FC = () => {
   return (
-    <Box sx={{ maxWidth: '500px', display: 'flex' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
       <SortBar />
       <Search />
     </Box>

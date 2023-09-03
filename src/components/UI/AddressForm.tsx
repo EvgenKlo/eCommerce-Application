@@ -4,18 +4,12 @@ import { type BaseAddress } from '@commercetools/platform-sdk';
 import { useEffect, useState } from 'react';
 import { FormValidator } from '@/helpers/formValidator';
 
-const mediaStyleInput = {
-  '@media (max-width: 400px)': {
-    width: '90%',
-  },
-};
-
 const countryList = Object.keys(postalCodeRegexMap);
 
 type Props = {
   address: string;
   getAddress: (address: BaseAddress) => void;
-  id: number;
+  id: number | undefined;
   addressValue: { street: string; city: string; country: string; postalCode: string };
 };
 
@@ -23,7 +17,11 @@ export const AddressForm: React.FC<Props> = (props) => {
   const { address, getAddress, id, addressValue } = props;
 
   const [addressData, setAddressData] = useState({
-    id: id + '',
+    id: id ? id + '' : undefined,
+    streetName: addressValue.street,
+    city: addressValue.city,
+    postalCode: addressValue.postalCode,
+    country: addressValue.country,
   } as BaseAddress);
 
   const [cityError, setCityError] = useState(false);
@@ -42,11 +40,7 @@ export const AddressForm: React.FC<Props> = (props) => {
   const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' });
 
   return (
-    <Grid
-      item
-      xs={12}
-      sm={6}
-    >
+    <Grid item>
       <TextField
         variant="filled"
         required
@@ -55,7 +49,6 @@ export const AddressForm: React.FC<Props> = (props) => {
         name={`${address}Street`}
         label={`${address} Street`}
         id={`${address}Street`}
-        sx={mediaStyleInput}
         size="small"
         value={streetValue}
         onChange={(e) => {
@@ -71,7 +64,6 @@ export const AddressForm: React.FC<Props> = (props) => {
         name={`${address}City`}
         label={`${address} City`}
         id={`${address}City`}
-        sx={mediaStyleInput}
         size="small"
         value={cityValue}
         onChange={(e) => {
@@ -92,7 +84,6 @@ export const AddressForm: React.FC<Props> = (props) => {
         variant="filled"
         fullWidth
         required
-        sx={mediaStyleInput}
       >
         <InputLabel
           data-testid={`${address}Country`}
@@ -132,7 +123,6 @@ export const AddressForm: React.FC<Props> = (props) => {
         name={`${address}PostalCode`}
         label={addressData.country ? `${address} Postal Code` : 'choose a country'}
         id={`${address}PostalCode`}
-        sx={mediaStyleInput}
         size="small"
         value={postalCodeValue}
         onChange={(e) => {

@@ -87,7 +87,7 @@ export const ActiveFilters: React.FC = () => {
   return (
     <div>
       <Stack
-        sx={{ marginInline: 3, marginBottom: 1 }}
+        sx={{ marginInline: 3, marginBottom: 1, flexWrap: 'wrap' }}
         direction="row"
         divider={
           <Divider
@@ -105,6 +105,7 @@ export const ActiveFilters: React.FC = () => {
               sx={{
                 fontSize: '12px',
                 backgroundColor: option == 'price' ? '#d9e0f7' : 'transparent',
+                margin: 0.5,
               }}
               variant="outlined"
               onDelete={result[option].action}

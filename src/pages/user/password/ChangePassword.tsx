@@ -5,7 +5,7 @@ import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import PasswordField from './profileFields/PasswordField';
+import PasswordField from '../../../components/UI/profileFields/PasswordField';
 import { useState } from 'react';
 import { type CustomerDraft } from '@commercetools/platform-sdk';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
