@@ -70,7 +70,7 @@ const AddressesItem: React.FC<{
               sx={{ margin: 2 }}
               type="submit"
             >
-              Update address
+              Save
             </Button>
           </Box>
         </Grid>
@@ -129,7 +129,7 @@ const AddressesItem: React.FC<{
                 setUpdate(true);
               }}
             >
-              Update address
+              Update fields
             </Button>
             <Button
               variant="contained"

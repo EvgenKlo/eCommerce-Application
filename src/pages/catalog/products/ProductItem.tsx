@@ -26,7 +26,9 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
       xs={6}
       sm={6}
       md={4}
-      sx={{ position: 'relative' }}
+      sx={{
+        position: 'relative',
+      }}
     >
       <RouterLink to={`${product.id}`}>
         <DiscountIcon

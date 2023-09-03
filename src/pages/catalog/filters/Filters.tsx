@@ -50,7 +50,8 @@ export const Filters = () => {
         width: '200px',
         borderRadius: 5,
         pt: 1,
-        flexShrink: 0,
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <Typography
@@ -65,7 +66,7 @@ export const Filters = () => {
         variant="outlined"
         size="small"
         startIcon={<RecyclingIcon />}
-        sx={{ '&:focus': { outline: 'none' } }}
+        sx={{ '&:focus': { outline: 'none' }, margin: 'auto' }}
         onClick={() => handleAllCategories()}
       >
         Reset
@@ -90,7 +91,7 @@ export const Filters = () => {
           Filter options
         </Typography>
       </Divider>
-      <Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <PriceChangeIcon sx={{ display: 'block', marginInline: 'auto', color: '#87a2ab' }} />
         <RangeSlider />
       </Box>
