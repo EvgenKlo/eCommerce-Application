@@ -40,8 +40,8 @@ export const Filters = () => {
 
   useEffect(() => {
     if (!categories.length) void loadData();
-    dispatch(getProductsWithFilter());
-  }, [JSON.stringify(filters), JSON.stringify(sort), search]);
+    else dispatch(getProductsWithFilter());
+  }, [JSON.stringify(filters), JSON.stringify(sort)]);
 
   useEffect(() => {
     activeCat ? setSelected(activeCat) : setSelected('');

@@ -27,8 +27,8 @@ export const ActiveFilters: React.FC = () => {
   useEffect(() => {
     setActiveFilter(filter);
 
-    void dispatch(getProductsWithFilter());
-  }, [JSON.stringify(filter), filter]);
+    // void dispatch(getProductsWithFilter());
+  }, [JSON.stringify(filter)]);
 
   const format = (data: Required<FilterProducts>) => {
     const result: filterActiveFormat = {} as filterActiveFormat;
