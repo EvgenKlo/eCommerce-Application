@@ -16,6 +16,7 @@ import {
   UpdateFirstName,
   UpdateEmail,
   UpdateDateOfBirth,
+  isLoading,
 } from '@/store/slices/customerSlice';
 import { DateField } from '@/components/UI/profileFields/DateField';
 import { useNavigate } from 'react-router';
@@ -55,15 +56,15 @@ export const styleTitle = { display: 'block', fontWeight: 'bold', minWidth: '140
 export const UserPage: React.FC = () => {
   const customer = useAppSelector((state) => state.customers.customer);
 
-  const isLoading = useAppSelector((state) => state.customers.isLoading);
+  const isLoadingUser = useAppSelector((state) => state.customers.isLoading);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoading && !customer.id) {
+    if (!isLoadingUser && !customer.id) {
       navigate('/login');
     }
-  }, [isLoading]);
+  }, [isLoadingUser]);
 
   const dispatch = useAppDispatch();
 
@@ -79,7 +80,7 @@ export const UserPage: React.FC = () => {
 
   return (
     <>
-      <Loader isLoading={isLoading} />
+      <Loader isLoading={isLoadingUser} />
       <Box
         sx={{
           ...boxStyle,
@@ -149,14 +150,15 @@ export const UserPage: React.FC = () => {
                         color="info"
                         disabled={!data.firstName}
                         onClick={() => {
-                          data.firstName &&
+                          if (data.firstName) {
+                            dispatch(isLoading(true));
                             void dispatch(
                               UpdateFirstName({
-                                id: customer.id,
                                 firstName: data.firstName,
                                 version: customer.version,
                               })
                             );
+                          }
                           setEditFirstName(false);
                           setData({ ...data, firstName: '' });
                         }}
@@ -230,14 +232,15 @@ export const UserPage: React.FC = () => {
                         color="info"
                         disabled={!data.lastName}
                         onClick={() => {
-                          data.lastName &&
+                          if (data.lastName) {
+                            dispatch(isLoading(true));
                             void dispatch(
                               UpdateLastName({
-                                id: customer.id,
                                 lastName: data.lastName,
                                 version: customer.version,
                               })
                             );
+                          }
                           setEditLastName(false);
                           setData({ ...data, lastName: '' });
                         }}
@@ -309,14 +312,15 @@ export const UserPage: React.FC = () => {
                         color="info"
                         disabled={!data.email}
                         onClick={() => {
-                          data.email &&
+                          if (data.email) {
+                            dispatch(isLoading(true));
                             void dispatch(
                               UpdateEmail({
-                                id: customer.id,
                                 email: data.email,
                                 version: customer.version,
                               })
                             );
+                          }
                           setEditEmail(false);
                           setData({ ...data, email: '' });
                         }}
@@ -387,14 +391,15 @@ export const UserPage: React.FC = () => {
                         color="info"
                         disabled={!data.dateOfBirth}
                         onClick={() => {
-                          data.dateOfBirth &&
+                          if (data.dateOfBirth) {
+                            dispatch(isLoading(true));
                             void dispatch(
                               UpdateDateOfBirth({
-                                id: customer.id,
                                 date: data.dateOfBirth,
                                 version: customer.version,
                               })
                             );
+                          }
                           setEditDateOfBirth(false);
                           setData({ ...data, dateOfBirth: '' });
                         }}

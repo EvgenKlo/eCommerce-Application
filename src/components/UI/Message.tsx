@@ -2,13 +2,13 @@ import { useAppSelector } from '@/hooks/reduxHooks';
 import { Alert, Snackbar } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-const MessageRegLog = () => {
+const Message = () => {
   const snackbarInfo = useAppSelector((state) => state.customers.snackbarInfo);
 
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!!snackbarInfo.name || !!snackbarInfo.errorMassage) {
+    if (!!snackbarInfo.massage || !!snackbarInfo.errorMassage) {
       setOpen(true);
     }
   }, [snackbarInfo]);
@@ -29,12 +29,10 @@ const MessageRegLog = () => {
         severity={snackbarInfo.errorMassage ? 'error' : 'success'}
         sx={{ width: '100%' }}
       >
-        {snackbarInfo.errorMassage
-          ? snackbarInfo.errorMassage
-          : `Successful authorization. Hello ${snackbarInfo.name}`}
+        {snackbarInfo.errorMassage ? snackbarInfo.errorMassage : `${snackbarInfo.massage}`}
       </Alert>
     </Snackbar>
   );
 };
 
-export default MessageRegLog;
+export default Message;

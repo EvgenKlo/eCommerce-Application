@@ -32,7 +32,7 @@ const initialState = {
   id: '',
   customer: {} as Customer,
   snackbarInfo: {
-    name: '',
+    massage: '',
     errorMassage: '',
   },
   isLoading: true,
@@ -67,46 +67,40 @@ export const SignInByToken = createAsyncThunk('customer/signInByToken', async (t
 
 export const UpdateFirstName = createAsyncThunk(
   'customer/updateFirstName',
-  async (
-    { id, firstName, version }: { id: string; firstName: string; version: number },
-    thunkAPI
-  ) => {
+  async ({ firstName, version }: { firstName: string; version: number }, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const API = state.customers.apiInstance;
-    const response = await API.setCustomerFirstName(id, firstName, version);
+    const response = await API.setCustomerFirstName(firstName, version);
     return response;
   }
 );
 
 export const UpdateLastName = createAsyncThunk(
   'customer/updateLastName',
-  async (
-    { id, lastName, version }: { id: string; lastName: string; version: number },
-    thunkAPI
-  ) => {
+  async ({ lastName, version }: { lastName: string; version: number }, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const API = state.customers.apiInstance;
-    const response = await API.setCustomerLastName(id, lastName, version);
+    const response = await API.setCustomerLastName(lastName, version);
     return response;
   }
 );
 
 export const UpdateEmail = createAsyncThunk(
   'customer/updateEmail',
-  async ({ id, email, version }: { id: string; email: string; version: number }, thunkAPI) => {
+  async ({ email, version }: { email: string; version: number }, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const API = state.customers.apiInstance;
-    const response = await API.setCustomerEmail(id, email, version);
+    const response = await API.setCustomerEmail(email, version);
     return response;
   }
 );
 
 export const UpdateDateOfBirth = createAsyncThunk(
   'customer/updateDateOfBirth',
-  async ({ id, date, version }: { id: string; date: string; version: number }, thunkAPI) => {
+  async ({ date, version }: { date: string; version: number }, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const API = state.customers.apiInstance;
-    const response = await API.setCustomerDateOfBirth(id, date, version);
+    const response = await API.setCustomerDateOfBirth(date, version);
     return response;
   }
 );
@@ -247,7 +241,7 @@ const customerSlice = createSlice({
     },
     changeSnackbarInfo: (state, action: PayloadAction<{ name: string; message: string }>) => {
       state.snackbarInfo = {
-        name: action.payload.name || '',
+        massage: action.payload.name || '',
         errorMassage: action.payload.message,
       };
     },
@@ -260,12 +254,12 @@ const customerSlice = createSlice({
       if (action.payload.customer) {
         state.customer = action.payload.customer;
         state.snackbarInfo = {
-          name: action.payload.customer?.firstName || '',
+          massage: `Successful authorization. Hello ${action.payload.customer?.firstName || ''}`,
           errorMassage: action.payload.errorMassage,
         };
       } else {
         state.snackbarInfo = {
-          name: '',
+          massage: '',
           errorMassage: action.payload.errorMassage,
         };
       }
@@ -273,7 +267,7 @@ const customerSlice = createSlice({
     builder.addCase(SignIn.fulfilled, (state, action) => {
       state.customer = action.payload.customer as Customer;
       state.snackbarInfo = {
-        name: action.payload.customer?.firstName || '',
+        massage: `Successful authorization. Hello ${action.payload.customer?.firstName || ''}`,
         errorMassage: action.payload.errorMassage,
       };
     });
@@ -282,59 +276,216 @@ const customerSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(UpdateLastName.fulfilled, (state, action) => {
-      state.customer = action.payload as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Last name changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(UpdateFirstName.fulfilled, (state, action) => {
-      state.customer = action.payload as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'First name changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(UpdateEmail.fulfilled, (state, action) => {
-      state.customer = action.payload as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Email changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(UpdateDateOfBirth.fulfilled, (state, action) => {
-      state.customer = action.payload as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Date of birth changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(UpdatePassword.fulfilled, (state, action) => {
+      state.isLoading = false;
       if (action.payload.data) {
         const token = JSON.parse(localStorage.getItem('tokendata')!) as TokenStore;
         state.customer = action.payload.data;
         state.apiInstance = new API(getApiRoot('token', { token: token.refreshToken }));
         state.snackbarInfo = {
-          name: action.payload.data?.firstName || '',
+          massage: 'Password changed successfully!',
           errorMassage: action.payload.error,
         };
       } else {
         state.snackbarInfo = {
-          name: '',
+          massage: '',
           errorMassage: action.payload.error,
         };
       }
     });
     builder.addCase(AddCustomerAddress.fulfilled, (state, action) => {
-      state.customer = action.payload.data as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Address added successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(RemoveCustomerAddress.fulfilled, (state, action) => {
-      state.customer = action.payload.data as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Address successfully deleted!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(UpdateCustomerAddress.fulfilled, (state, action) => {
-      state.customer = action.payload.data as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Address parameters changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(SetDefaultShippingAddress.fulfilled, (state, action) => {
-      state.customer = action.payload.data as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Address parameters changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(SetDefaultBillingAddress.fulfilled, (state, action) => {
-      state.customer = action.payload.data as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Address parameters changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(AddShippingAddressId.fulfilled, (state, action) => {
-      state.customer = action.payload.data as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Address parameters changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(RemoveShippingAddressId.fulfilled, (state, action) => {
-      state.customer = action.payload.data as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Address parameters changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(AddBillingAddressId.fulfilled, (state, action) => {
-      state.customer = action.payload.data as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Address parameters changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
     builder.addCase(RemoveBillingAddressId.fulfilled, (state, action) => {
-      state.customer = action.payload.data as Customer;
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.customer = action.payload.data;
+        state.snackbarInfo = {
+          massage: 'Address parameters changed successfully!',
+          errorMassage: action.payload.error,
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
+        };
+      }
     });
   },
 });
