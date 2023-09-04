@@ -36,7 +36,7 @@ export const CatalogPage: React.FC = () => {
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           <Filters />
         </Box>
-        <Box>
+        <Box width="100%">
           <Toolbar />
           <ProductList />
         </Box>

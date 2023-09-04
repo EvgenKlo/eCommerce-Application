@@ -13,7 +13,6 @@ const ProductList = () => {
         container
         spacing={{ xs: 2, md: 3 }}
         padding={2}
-        height="100%"
       >
         {products.length
           ? products.map((product) => (
