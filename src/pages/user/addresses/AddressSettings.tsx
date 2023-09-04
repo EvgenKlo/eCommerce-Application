@@ -7,6 +7,7 @@ import {
   RemoveShippingAddressId,
   SetDefaultBillingAddress,
   SetDefaultShippingAddress,
+  isLoading,
 } from '@/store/slices/customerSlice';
 import { type BaseAddress } from '@commercetools/platform-sdk';
 import { FormControlLabel, Grid } from '@mui/material';
@@ -40,6 +41,7 @@ export const AddressSettings: React.FC<{
         control={
           <IOSSwitch
             onChange={() => {
+              dispatch(isLoading(true));
               void dispatch(SetDefaultBillingAddress(address.id as string));
             }}
             sx={{ m: 1 }}
@@ -53,6 +55,7 @@ export const AddressSettings: React.FC<{
         control={
           <IOSSwitch
             onChange={() => {
+              dispatch(isLoading(true));
               void dispatch(SetDefaultShippingAddress(address.id as string));
             }}
             sx={{ m: 1 }}
@@ -66,6 +69,7 @@ export const AddressSettings: React.FC<{
         control={
           <IOSSwitch
             onChange={() => {
+              dispatch(isLoading(true));
               if (billingAddress) {
                 void dispatch(RemoveBillingAddressId(address.id as string));
               } else {
@@ -82,6 +86,7 @@ export const AddressSettings: React.FC<{
         control={
           <IOSSwitch
             onChange={() => {
+              dispatch(isLoading(true));
               if (shippingAddress) {
                 void dispatch(RemoveShippingAddressId(address.id as string));
               } else {

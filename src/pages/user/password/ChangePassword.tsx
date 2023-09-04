@@ -9,7 +9,7 @@ import PasswordField from '../../../components/UI/profileFields/PasswordField';
 import { useState } from 'react';
 import { type CustomerDraft } from '@commercetools/platform-sdk';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { UpdatePassword, changeSnackbarInfo } from '@/store/slices/customerSlice';
+import { UpdatePassword, changeSnackbarInfo, isLoading } from '@/store/slices/customerSlice';
 
 const VerticalLinearStepper: React.FC<{
   setEditPassword: React.Dispatch<React.SetStateAction<boolean>>;
@@ -76,7 +76,7 @@ const VerticalLinearStepper: React.FC<{
       next: (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (data.password && data.password === requestData.newPassword) {
-          console.log(requestData);
+          dispatch(isLoading(true));
           void dispatch(UpdatePassword(requestData));
           setData({ ...data, password: '' });
           setEditPassword(false);

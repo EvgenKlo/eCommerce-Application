@@ -221,76 +221,68 @@ export class API {
     }
     return result;
   }
-  async setCustomerFirstName(ID: string, firstName: string, version = 1) {
-    let result = {};
+  async setCustomerFirstName(firstName: string, version: number) {
+    let errorMsg = '';
     try {
-      const { body } = await this.client
-        .customers()
-        .withId({ ID })
+      const result = await this.client
+        .me()
         .post({
           body: { version, actions: [{ action: 'setFirstName', firstName: firstName }] },
         })
         .execute();
-
-      result = body;
+      return { data: result.body, error: errorMsg };
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
     }
-    return result;
   }
 
-  async setCustomerLastName(ID: string, lastName: string, version = 1) {
-    let result = {};
+  async setCustomerLastName(lastName: string, version: number) {
+    let errorMsg = '';
     try {
-      const { body } = await this.client
-        .customers()
-        .withId({ ID })
+      const result = await this.client
+        .me()
         .post({
           body: { version, actions: [{ action: 'setLastName', lastName: lastName }] },
         })
         .execute();
-
-      result = body;
+      return { data: result.body, error: errorMsg };
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
     }
-    return result;
   }
 
-  async setCustomerEmail(ID: string, email: string, version = 1) {
-    let result = {};
+  async setCustomerEmail(email: string, version = 1) {
+    let errorMsg = '';
     try {
-      const { body } = await this.client
-        .customers()
-        .withId({ ID })
+      const result = await this.client
+        .me()
         .post({
           body: { version, actions: [{ action: 'changeEmail', email: email }] },
         })
         .execute();
-
-      result = body;
+      return { data: result.body, error: errorMsg };
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
     }
-    return result;
   }
 
-  async setCustomerDateOfBirth(ID: string, date: string, version = 1) {
-    let result = {};
+  async setCustomerDateOfBirth(date: string, version = 1) {
+    let errorMsg = '';
     try {
-      const { body } = await this.client
-        .customers()
-        .withId({ ID })
+      const result = await this.client
+        .me()
         .post({
           body: { version, actions: [{ action: 'setDateOfBirth', dateOfBirth: date }] },
         })
         .execute();
-
-      result = body;
+      return { data: result.body, error: errorMsg };
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
     }
-    return result;
   }
 
   async changeCustomerPassword(data: MyCustomerChangePassword) {
