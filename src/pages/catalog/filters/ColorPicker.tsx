@@ -32,7 +32,7 @@ export const ColorPicker: React.FC = () => {
   useEffect(() => {
     if (!filterColors?.length) setSelected([]);
 
-    void dispatch(getProductsWithFilter());
+    // void dispatch(getProductsWithFilter());
   }, [filterColors]);
 
   return (

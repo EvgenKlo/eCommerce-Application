@@ -46,7 +46,7 @@ export const GenderPicker: React.FC = () => {
     else {
       setChecked([...filterGenders]);
     }
-    void dispatch(getProductsWithFilter());
+    // void dispatch(getProductsWithFilter());
   }, [filterGenders]);
 
   const handleShow = () => setCollapsed((state) => !state);

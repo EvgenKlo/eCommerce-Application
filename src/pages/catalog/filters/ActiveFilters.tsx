@@ -71,7 +71,7 @@ export const ActiveFilters: React.FC = () => {
 
         case 'gender':
           if (data[filterOption].length)
-            result.brand = {
+            result.gender = {
               value: data[filterOption].join(','),
               action: () => dispatch(setFilterGender({ genders: [] })),
             };

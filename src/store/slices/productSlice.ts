@@ -177,9 +177,9 @@ const productSlice = createSlice({
     });
 
     builder.addCase(getProducts.fulfilled, (state, action) => {
-      state.products = action.payload?.results
-        ? action.payload.results
-        : ([] as ProductProjection[]);
+      // state.products = action.payload?.results
+      //   ? action.payload.results
+      //   : ([] as ProductProjection[]);
       productSlice.caseReducers.deriveAttributes(state, {
         payload: {
           facets: action.payload?.facets as FacetResults,
