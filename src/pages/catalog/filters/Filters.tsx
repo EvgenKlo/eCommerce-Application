@@ -20,6 +20,7 @@ export const Filters = () => {
   const activeCat = useAppSelector((state) => state.products.filters.catId);
   const filters = useAppSelector((state) => state.products.filters);
   const sort = useAppSelector((state) => state.products.sort);
+  const search = useAppSelector((state) => state.products.search);
 
   const dispatch = useAppDispatch();
 
@@ -40,7 +41,7 @@ export const Filters = () => {
   useEffect(() => {
     if (!categories.length) void loadData();
     else void dispatch(getProductsWithFilter());
-  }, [JSON.stringify(filters), JSON.stringify(sort)]);
+  }, [JSON.stringify(filters), JSON.stringify(sort), search]);
 
   useEffect(() => {
     activeCat ? setSelected(activeCat) : setSelected('');
