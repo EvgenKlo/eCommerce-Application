@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { getProductsWithFilter, setSortingOptions } from '@/store/slices/productSlice';
+import { setSortingOptions } from '@/store/slices/productSlice';
 import { SortOptions } from '@/types/Enums';
 import FilterListIcon from '@mui/icons-material/FilterList';
 

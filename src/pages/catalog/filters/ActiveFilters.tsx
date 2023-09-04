@@ -8,7 +8,6 @@ import {
   setFilterSize,
   setFilterManufacturer,
   setFilterGender,
-  getProductsWithFilter,
   setSearch,
 } from '@/store/slices/productSlice';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';

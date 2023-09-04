@@ -19,7 +19,6 @@ export const Filters = () => {
   const categories = useAppSelector((state) => state.products.categories);
   const activeCat = useAppSelector((state) => state.products.filters.catId);
   const filters = useAppSelector((state) => state.products.filters);
-  const search = useAppSelector((state) => state.products.search);
   const sort = useAppSelector((state) => state.products.sort);
 
   const dispatch = useAppDispatch();
@@ -40,7 +39,7 @@ export const Filters = () => {
 
   useEffect(() => {
     if (!categories.length) void loadData();
-    else dispatch(getProductsWithFilter());
+    else void dispatch(getProductsWithFilter());
   }, [JSON.stringify(filters), JSON.stringify(sort)]);
 
   useEffect(() => {

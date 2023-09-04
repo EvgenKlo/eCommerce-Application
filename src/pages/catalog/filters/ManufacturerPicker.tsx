@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { setFilterManufacturer, getProductsWithFilter } from '@/store/slices/productSlice';
+import { setFilterManufacturer } from '@/store/slices/productSlice';
 
 const boxSX = {
   display: 'flex',
