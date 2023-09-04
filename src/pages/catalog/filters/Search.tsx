@@ -18,7 +18,6 @@ export const Search: React.FC = () => {
   useEffect(() => {
     if (!stateSearch) {
       setSearchText('');
-      void dispatch(getProductsWithFilter());
     }
   }, [stateSearch]);
 

@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { setFilterGender, getProductsWithFilter } from '@/store/slices/productSlice';
+import { setFilterGender } from '@/store/slices/productSlice';
 
 const boxSX = {
   display: 'flex',
@@ -46,7 +46,6 @@ export const GenderPicker: React.FC = () => {
     else {
       setChecked([...filterGenders]);
     }
-    void dispatch(getProductsWithFilter());
   }, [filterGenders]);
 
   const handleShow = () => setCollapsed((state) => !state);

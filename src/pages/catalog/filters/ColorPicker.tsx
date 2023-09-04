@@ -3,7 +3,7 @@ import { Box, Fade, IconButton } from '@mui/material';
 import { Fingerprint, ColorLensOutlined as ColorLensOutlinedIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
-import { setFilterColors, getProductsWithFilter } from '@/store/slices/productSlice';
+import { setFilterColors } from '@/store/slices/productSlice';
 
 const boxSX = {
   display: 'flex',
@@ -31,8 +31,6 @@ export const ColorPicker: React.FC = () => {
 
   useEffect(() => {
     if (!filterColors?.length) setSelected([]);
-
-    void dispatch(getProductsWithFilter());
   }, [filterColors]);
 
   return (

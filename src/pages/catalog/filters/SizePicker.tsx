@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { setFilterSize, getProductsWithFilter } from '@/store/slices/productSlice';
+import { setFilterSize } from '@/store/slices/productSlice';
 
 const boxSX = {
   display: 'flex',
@@ -52,8 +52,6 @@ export const SizePicker: React.FC = () => {
     else {
       setChecked([...filterSizes]);
     }
-
-    void dispatch(getProductsWithFilter());
   }, [filterSizes]);
 
   const handleShow = () => setCollapsed((state) => !state);

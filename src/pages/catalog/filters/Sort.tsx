@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { getProductsWithFilter, setSortingOptions } from '@/store/slices/productSlice';
+import { setSortingOptions } from '@/store/slices/productSlice';
 import { SortOptions } from '@/types/Enums';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
@@ -28,7 +28,6 @@ export const SortBar: React.FC = () => {
 
   useEffect(() => {
     void dispatch(setSortingOptions({ direction: sortDirection, prop: sort }));
-    void dispatch(getProductsWithFilter());
   }, [sort, sortDirection]);
   return (
     <Box sx={{ display: 'flex' }}>

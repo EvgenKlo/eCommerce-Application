@@ -8,7 +8,6 @@ import {
   setFilterSize,
   setFilterManufacturer,
   setFilterGender,
-  getProductsWithFilter,
   setSearch,
 } from '@/store/slices/productSlice';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -26,9 +25,7 @@ export const ActiveFilters: React.FC = () => {
 
   useEffect(() => {
     setActiveFilter(filter);
-
-    void dispatch(getProductsWithFilter());
-  }, [JSON.stringify(filter), filter]);
+  }, [JSON.stringify(filter)]);
 
   const format = (data: Required<FilterProducts>) => {
     const result: filterActiveFormat = {} as filterActiveFormat;
@@ -71,7 +68,7 @@ export const ActiveFilters: React.FC = () => {
 
         case 'gender':
           if (data[filterOption].length)
-            result.brand = {
+            result.gender = {
               value: data[filterOption].join(','),
               action: () => dispatch(setFilterGender({ genders: [] })),
             };
