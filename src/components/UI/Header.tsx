@@ -22,6 +22,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { signOut } from '@/store/slices/customerSlice';
 import { logoutProps } from '@/types/components';
+import { handleMouseDown } from '@/helpers/handleMouseDown';
 
 const styleLinks = {
   color: 'background.default',
@@ -48,9 +49,6 @@ const signLinks = [
 
 export const Header: React.FC<logoutProps> = (props) => {
   const { logout } = props;
-  const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
 
   const location = useLocation();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -230,36 +228,40 @@ export const Header: React.FC<logoutProps> = (props) => {
             {authorized && (
               <>
                 <Tooltip title="Profile">
-                  <IconButton onMouseDown={handleMouseDown}>
-                    <PersonIcon
-                      sx={{
-                        color: 'white',
-                        '&:hover': {
-                          color: 'info.main',
-                          transition: 'color 0.3s ease-in-out',
-                        },
-                      }}
-                    />
-                  </IconButton>
+                  <RouterLink to={'/profile'}>
+                    <IconButton onMouseDown={handleMouseDown}>
+                      <PersonIcon
+                        sx={{
+                          color: location.pathname === '/profile' ? 'info.main' : 'white',
+                          '&:hover': {
+                            color: 'info.main',
+                            transition: 'color 0.3s ease-in-out',
+                          },
+                        }}
+                      />
+                    </IconButton>
+                  </RouterLink>
                 </Tooltip>
                 <Tooltip title="Exit">
-                  <IconButton
-                    onMouseDown={handleMouseDown}
-                    color="secondary"
-                    onClick={handleExit}
-                  >
-                    <LogoutIcon
-                      sx={{
-                        '&:hover': {
-                          color: 'red',
-                          transition: 'color 0.3s ease-in-out',
-                        },
-                        '@media (max-width: 400px)': {
-                          padding: '0px',
-                        },
-                      }}
-                    />
-                  </IconButton>
+                  <RouterLink to={'/'}>
+                    <IconButton
+                      onMouseDown={handleMouseDown}
+                      color="secondary"
+                      onClick={handleExit}
+                    >
+                      <LogoutIcon
+                        sx={{
+                          '&:hover': {
+                            color: 'red',
+                            transition: 'color 0.3s ease-in-out',
+                          },
+                          '@media (max-width: 400px)': {
+                            padding: '0px',
+                          },
+                        }}
+                      />
+                    </IconButton>
+                  </RouterLink>
                 </Tooltip>
               </>
             )}

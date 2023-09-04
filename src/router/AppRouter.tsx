@@ -10,6 +10,7 @@ import { CatalogPage } from '../pages/catalog/CatalogPage';
 import { UserPage } from '@/pages/user/UserPage';
 import { useAuth } from '@/hooks/AuthHooks';
 import BasketPage from '@/pages/basket/BasketPage';
+import ProductPage from '@/pages/product/ProductPage';
 
 export const AppRouter = (): ReactElement => {
   const [changeAuth] = useAuth();
@@ -29,6 +30,10 @@ export const AppRouter = (): ReactElement => {
         <Route
           path="catalog"
           element={<CatalogPage />}
+        />
+        <Route
+          path="catalog/:id"
+          element={<ProductPage />}
         />
         <Route
           path="about"

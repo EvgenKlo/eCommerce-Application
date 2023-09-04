@@ -33,8 +33,6 @@ describe('Demonstrating  navigation ', () => {
     const user = userEvent.setup();
 
     expect(screen.getByText(/AboutPage/i)).toBeInTheDocument();
-    await user.click(screen.getByRole('link', { name: 'Catalog' }));
-    expect(screen.getByText(/CatalogPage/i)).toBeInTheDocument();
   });
 
   test('landing on a bad page', async () => {

@@ -1,48 +1,46 @@
 import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { postalCodeRegexMap } from '@/helpers/postalCode';
-
 import { type BaseAddress } from '@commercetools/platform-sdk';
 import { useEffect, useState } from 'react';
 import { FormValidator } from '@/helpers/formValidator';
-
-const mediaStyleInput = {
-  '@media (max-width: 400px)': {
-    width: '90%',
-  },
-};
 
 const countryList = Object.keys(postalCodeRegexMap);
 
 type Props = {
   address: string;
   getAddress: (address: BaseAddress) => void;
-  id: number;
+  id: number | undefined;
+  addressValue: { street: string; city: string; country: string; postalCode: string };
 };
 
 export const AddressForm: React.FC<Props> = (props) => {
-  const { address, getAddress, id } = props;
+  const { address, getAddress, id, addressValue } = props;
 
   const [addressData, setAddressData] = useState({
-    id: id + '',
+    id: id ? id + '' : undefined,
+    streetName: addressValue.street,
+    city: addressValue.city,
+    postalCode: addressValue.postalCode,
+    country: addressValue.country,
   } as BaseAddress);
 
   const [cityError, setCityError] = useState(false);
 
   const [postalCodeError, setPostalCodeError] = useState(false);
 
+  const [streetValue, setStreetValue] = useState(addressValue.street);
+  const [cityValue, setCityValue] = useState(addressValue.city);
+  const [countryValue, setCountryValue] = useState(addressValue.country);
+  const [postalCodeValue, setPostalCodeValue] = useState(addressValue.postalCode);
+
   useEffect(() => {
     getAddress(addressData);
-    // eslint-disable-next-line
   }, [addressData]);
 
   const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' });
 
   return (
-    <Grid
-      item
-      xs={12}
-      sm={6}
-    >
+    <Grid item>
       <TextField
         variant="filled"
         required
@@ -51,9 +49,10 @@ export const AddressForm: React.FC<Props> = (props) => {
         name={`${address}Street`}
         label={`${address} Street`}
         id={`${address}Street`}
-        sx={mediaStyleInput}
         size="small"
+        value={streetValue}
         onChange={(e) => {
+          setStreetValue(e.target.value);
           setAddressData({ ...addressData, streetName: e.target.value });
         }}
       />
@@ -65,9 +64,10 @@ export const AddressForm: React.FC<Props> = (props) => {
         name={`${address}City`}
         label={`${address} City`}
         id={`${address}City`}
-        sx={mediaStyleInput}
         size="small"
+        value={cityValue}
         onChange={(e) => {
+          setCityValue(e.target.value);
           if (FormValidator.nameValidator(e.target.value)) {
             setAddressData({ ...addressData, city: '' });
             setCityError(true);
@@ -84,7 +84,6 @@ export const AddressForm: React.FC<Props> = (props) => {
         variant="filled"
         fullWidth
         required
-        sx={mediaStyleInput}
       >
         <InputLabel
           data-testid={`${address}Country`}
@@ -95,8 +94,11 @@ export const AddressForm: React.FC<Props> = (props) => {
         <Select
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
-          value={addressData.country || ''}
-          onChange={(e) => setAddressData({ ...addressData, country: e.target.value })}
+          value={countryValue}
+          onChange={(e) => {
+            setCountryValue(e.target.value);
+            setAddressData({ ...addressData, country: e.target.value });
+          }}
         >
           <MenuItem value="">
             <em>None</em>
@@ -121,9 +123,10 @@ export const AddressForm: React.FC<Props> = (props) => {
         name={`${address}PostalCode`}
         label={addressData.country ? `${address} Postal Code` : 'choose a country'}
         id={`${address}PostalCode`}
-        sx={mediaStyleInput}
         size="small"
+        value={postalCodeValue}
         onChange={(e) => {
+          setPostalCodeValue(e.target.value);
           if (e.target.value) {
             if (FormValidator.postalCodeValidator(e.target.value, addressData.country)) {
               setAddressData({ ...addressData, postalCode: e.target.value });

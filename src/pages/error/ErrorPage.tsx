@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import NotFoundImage from '../../assets/not-found/not-found-cat.svg';
-import { Typography, Card, CardMedia, Grid, Box, Button } from '@mui/material';
-
+// import NotFoundImage from '../../assets/not-found/not-found-cat.svg';
+import { Typography, Grid, Box, Button } from '@mui/material';
+import { CatSvg } from '@/components/UI/CatSvg';
 export const ErrorPage: React.FC = () => {
   return (
     <Box alignItems="center">
@@ -28,13 +28,7 @@ export const ErrorPage: React.FC = () => {
           xs={6}
           sm={3}
         >
-          <Card>
-            <CardMedia
-              component="img"
-              image={NotFoundImage}
-              alt="page-not-found-cat"
-            />
-          </Card>
+          <CatSvg />
         </Grid>
       </Grid>
       <Button
