@@ -51,7 +51,6 @@ export const ManufacturerPicker: React.FC = () => {
     else {
       setChecked([...filterManufacturers]);
     }
-    // void dispatch(getProductsWithFilter());
   }, [filterManufacturers]);
 
   const handleShow = () => setCollapsed((state) => !state);
