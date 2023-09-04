@@ -39,7 +39,6 @@ export class API {
       const result = body.results;
       return { data: result, error: errorMsg };
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
@@ -59,12 +58,9 @@ export class API {
           },
         })
         .execute();
-      console.log('CAT', respsone.body);
       const result = respsone;
       return { data: result.body.results, error: errorMsg };
     } catch (error) {
-      console.log('error', error);
-      console.log(error);
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
@@ -88,8 +84,6 @@ export class API {
       const result = respsone;
       return { data: result.body.results, error: errorMsg };
     } catch (error) {
-      console.log('error', error);
-      console.log(error);
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
@@ -107,12 +101,9 @@ export class API {
           },
         })
         .execute();
-      console.log('SEARCH', respsone.body);
       const result = respsone;
       return { data: result.body.results, error: errorMsg };
     } catch (error) {
-      console.log('error', error);
-      console.log(error);
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
@@ -139,7 +130,6 @@ export class API {
         .execute();
       return { data: body, error: errorMsg };
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
@@ -174,7 +164,6 @@ export class API {
       const result = await this.client.customers().post({ body: customer }).execute();
       return { data: result.body, error: errorMsg };
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
@@ -185,7 +174,6 @@ export class API {
       const result = await this.client.me().login().post({ body: credentials }).execute();
       return { data: result.body, error: errorMsg };
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
