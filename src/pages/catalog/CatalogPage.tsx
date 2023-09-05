@@ -8,7 +8,7 @@ import { BreadCrumbs } from './filters/Breadcrumbs';
 import { Filters } from './filters/Filters';
 import { useState } from 'react';
 import { FilterModalWindow } from './filters/FilterModalWindow';
-import { Pagination } from './filters/pagination';
+import { Pagination } from './filters/Pagination';
 
 export const CatalogPage: React.FC = () => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
