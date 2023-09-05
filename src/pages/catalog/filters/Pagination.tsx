@@ -12,6 +12,7 @@ export const Pagination: React.FC = () => {
   const handleChange = (_: React.ChangeEvent<unknown>, page: number): void => {
     void dispatch(setCurrentPage({ page }));
   };
+
   return (
     <MuiPagination
       count={pageTotal}

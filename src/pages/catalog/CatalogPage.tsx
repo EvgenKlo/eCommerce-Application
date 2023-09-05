@@ -8,6 +8,7 @@ import { BreadCrumbs } from './filters/Breadcrumbs';
 import { Filters } from './filters/Filters';
 import { useState } from 'react';
 import { FilterModalWindow } from './filters/FilterModalWindow';
+import { Pagination } from './filters/pagination';
 
 export const CatalogPage: React.FC = () => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
@@ -36,9 +37,13 @@ export const CatalogPage: React.FC = () => {
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           <Filters />
         </Box>
-        <Box width="100%">
+        <Box
+          width="100%"
+          sx={{ display: 'flex', flexDirection: 'column' }}
+        >
           <Toolbar />
           <ProductList />
+          <Pagination />
         </Box>
       </Container>
     </Container>
