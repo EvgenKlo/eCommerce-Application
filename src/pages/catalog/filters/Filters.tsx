@@ -12,6 +12,7 @@ import {
   getProducts,
   getProductsWithFilter,
   resetFilter,
+  setCurrentPage,
 } from '@/store/slices/productSlice';
 import { useEffect, useState } from 'react';
 
@@ -43,6 +44,10 @@ export const Filters = () => {
     if (!categories.length) void loadData();
     else void dispatch(getProductsWithFilter());
   }, [JSON.stringify(filters), JSON.stringify(sort), search, page]);
+
+  useEffect(() => {
+    void dispatch(setCurrentPage({ page: 1 }));
+  }, [JSON.stringify(filters)]);
 
   useEffect(() => {
     activeCat ? setSelected(activeCat) : setSelected('');
