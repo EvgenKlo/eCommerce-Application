@@ -162,6 +162,7 @@ const productSlice = createSlice({
       newFilterState.price = { ...initialState.filters.price };
       newFilterState.price.upper = state.maxPrice;
       state.filters = newFilterState;
+      state.currentPage = 1;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
