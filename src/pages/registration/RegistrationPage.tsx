@@ -64,8 +64,6 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
   }, [customer]);
 
   const getAddress = (address: BaseAddress) => {
-    console.log(data);
-
     addAddressToCustomer(address);
   };
 
