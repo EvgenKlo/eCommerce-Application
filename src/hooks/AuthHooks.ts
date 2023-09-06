@@ -3,6 +3,7 @@ import { getApiRoot } from '@/api/lib/Client';
 import { API } from '@/api/API';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { setAuthorization, setApi, SignInByToken, isLoading } from '@/store/slices/customerSlice';
+// import { getActiveCart } from '@/store/slices/cartSlice';
 import { type TokenStore } from '@commercetools/sdk-client-v2';
 
 export const useAuth = () => {
@@ -25,6 +26,7 @@ export const useAuth = () => {
     } else {
       dispatch(isLoading(false));
     }
+    // dispatch(getActiveCart());
   }, [auth]);
   return [changeAuth];
 };
