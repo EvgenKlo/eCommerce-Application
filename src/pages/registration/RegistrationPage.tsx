@@ -139,7 +139,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <FirstNameField
                 data={data}
                 setData={setData}
-                initialValue={customer.firstName || ''}
+                initialValue={''}
               />
             </Grid>
             <Grid
@@ -150,7 +150,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <LastNameField
                 data={data}
                 setData={setData}
-                initialValue={customer.lastName || ''}
+                initialValue={''}
               />
             </Grid>
 
@@ -161,7 +161,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <EmailField
                 data={data}
                 setData={setData}
-                initialValue={customer.email || ''}
+                initialValue={''}
               />
             </Grid>
             <Grid
