@@ -177,12 +177,13 @@ const productSlice = createSlice({
     });
 
     builder.addCase(getProducts.fulfilled, (state, action) => {
-      productSlice.caseReducers.deriveAttributes(state, {
-        payload: {
-          facets: action.payload?.facets as FacetResults,
-        },
-        type: 'products/filters',
-      });
+      if (action.payload)
+        productSlice.caseReducers.deriveAttributes(state, {
+          payload: {
+            facets: action.payload?.facets,
+          },
+          type: 'products/filters',
+        });
     });
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.product = action.payload.data ? action.payload.data : ({} as ProductProjection);
