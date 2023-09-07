@@ -6,7 +6,7 @@ import {
   type Cart,
   type CartAddLineItemAction,
 } from '@commercetools/platform-sdk';
-
+import type { PayloadAction } from '@reduxjs/toolkit';
 const initialState = {
   cart: {} as Cart,
 };
@@ -16,11 +16,11 @@ export const getActiveCart = createAsyncThunk('carts/getActiveCart', async (_, t
   const client = state.customers.apiInstance;
   const result = await client.getActiveCart();
   if (!result.data) {
-    await thunkAPI.dispatch(createCart());
+    // await thunkAPI.dispatch(createCart());
+    thunkAPI.rejectWithValue('no cart');
   } else {
-    // await thunkAPI.dispatch(addProductToCart());
+    return result;
   }
-  return result;
 });
 export const createCart = createAsyncThunk('carts/createCart', async (_, thunkAPI) => {
   const state: RootState = thunkAPI.getState() as RootState;
@@ -29,7 +29,7 @@ export const createCart = createAsyncThunk('carts/createCart', async (_, thunkAP
   const result = await client.createCart(cartDraft);
   return result;
 });
-export const addProductToCart = createAsyncThunk('carts/addProduct', async (_, thunkAPI) => {
+export const addProductToCart = createAsyncThunk('carts/addProductToCart', async (_, thunkAPI) => {
   const state: RootState = thunkAPI.getState() as RootState;
   const client = state.customers.apiInstance;
   const { version, id } = state.carts.cart;
@@ -47,12 +47,23 @@ const cartSlice = createSlice({
   name: 'carts',
   initialState,
   reducers: {
-    // getCart: (state, action: PayloadAction<{ page: number }>) => {
-    //   // state.currentPage = action.payload.page;
-    // },
+    setCart: (state, action: PayloadAction<{ cart: Cart }>) => {
+      state.cart = action.payload.cart;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getActiveCart.fulfilled, (state, action) => {
+      // state.isLoading = false;
+      if (action.payload.data) {
+        state.cart = action.payload.data.body;
+      } else {
+        // state.snackbarInfo = {
+        //   massage: '',
+        //   errorMassage: action.payload.error,
+        // };
+      }
+    });
+    builder.addCase(createCart.fulfilled, (state, action) => {
       // state.isLoading = false;
       if (action.payload.data) {
         state.cart = action.payload.data.body;

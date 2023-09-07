@@ -54,13 +54,18 @@ export const createNewCustomer = createAsyncThunk(
     return { customer: response.data?.customer, errorMassage: response.error || '' };
   }
 );
-export const SignIn = createAsyncThunk('customer/signIn', async (credentials: Credentials) => {
-  const { email, password } = credentials;
-  const passClient = new API(getApiRoot('password', { email, password }));
-  const response = await passClient.signIn(credentials);
-  credentials.setLoading(false);
-  return { customer: response.data?.customer, errorMassage: response.error || '' };
-});
+export const SignIn = createAsyncThunk(
+  'customer/signIn',
+  async (credentials: Credentials, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const { email, password } = credentials;
+    await state.customers.apiInstance.signIn(credentials);
+    const passClient = new API(getApiRoot('password', { email, password }));
+    const response = await passClient.signIn(credentials);
+    credentials.setLoading(false);
+    return { customer: response.data?.customer, errorMassage: response.error || '' };
+  }
+);
 
 export const SignInByToken = createAsyncThunk('customer/signInByToken', async (token: string) => {
   const tokenAPI = new API(getApiRoot('token', { token }));
