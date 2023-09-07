@@ -1,10 +1,21 @@
-import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Grid,
+  Typography,
+} from '@mui/material';
 import { type ProductProjection } from '@commercetools/platform-sdk';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import { Link as RouterLink } from 'react-router-dom';
 import DiscountIcon from '@mui/icons-material/Discount';
+import { addProductToCart } from '@/store/slices/cartSlice';
+import { useAppDispatch } from '@/hooks/reduxHooks';
 
 const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
+  const dispatch = useAppDispatch();
   const imageOrPriceNumber = 0;
   const language = 'en';
 
@@ -116,6 +127,7 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
               </Grid>
             </CardContent>
           </CardActionArea>
+          <Button onClick={() => dispatch(addProductToCart())}> Add to Cart</Button>
         </Card>
       </RouterLink>
     </Grid>

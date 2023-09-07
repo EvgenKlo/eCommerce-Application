@@ -18,7 +18,7 @@ export const getActiveCart = createAsyncThunk('carts/getActiveCart', async (_, t
   if (!result.data) {
     await thunkAPI.dispatch(createCart());
   } else {
-    await thunkAPI.dispatch(addProductToCart());
+    // await thunkAPI.dispatch(addProductToCart());
   }
   return result;
 });
@@ -61,6 +61,11 @@ const cartSlice = createSlice({
         //   massage: '',
         //   errorMassage: action.payload.error,
         // };
+      }
+    });
+    builder.addCase(addProductToCart.fulfilled, (state, action) => {
+      if (action.payload.data) {
+        state.cart = action.payload.data.body;
       }
     });
   },
