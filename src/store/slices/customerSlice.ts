@@ -43,10 +43,13 @@ export const createNewCustomer = createAsyncThunk(
   async (data: signUp, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const response = await state.customers.apiInstance.createCustomer(data.data);
-    const passClient = new API(
-      getApiRoot('password', { email: data.data.email, password: data.data.password as string })
-    );
-    await passClient.signIn({ email: data.data.email, password: data.data.password as string });
+    if (response.data) {
+      const passClient = new API(
+        getApiRoot('password', { email: data.data.email, password: data.data.password as string })
+      );
+      await passClient.signIn({ email: data.data.email, password: data.data.password as string });
+    }
+
     data.setLoading(false);
     return { customer: response.data?.customer, errorMassage: response.error || '' };
   }
