@@ -10,6 +10,7 @@ import {
   type BaseAddress,
 } from '@commercetools/platform-sdk';
 import { type TokenStore } from '@commercetools/sdk-client-v2';
+import { ClientType } from '@/types/Enums';
 
 export interface Credentials {
   email: string;
@@ -25,7 +26,7 @@ export interface createCustomer extends Credentials {
   id?: string;
 }
 const initialState = {
-  apiInstance: new API(getApiRoot('anonimous')),
+  apiInstance: new API(getApiRoot(ClientType.anonymous)),
   authorized: false,
   email: '',
   password: '',
@@ -43,24 +44,30 @@ export const createNewCustomer = createAsyncThunk(
   async (data: signUp, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const response = await state.customers.apiInstance.createCustomer(data.data);
-    const passClient = new API(
-      getApiRoot('password', { email: data.data.email, password: data.data.password as string })
-    );
-    await passClient.signIn({ email: data.data.email, password: data.data.password as string });
+    if (response.data) {
+      const passClient = new API(
+        getApiRoot(ClientType.password, {
+          email: data.data.email,
+          password: data.data.password as string,
+        })
+      );
+      await passClient.signIn({ email: data.data.email, password: data.data.password as string });
+    }
+
     data.setLoading(false);
     return { customer: response.data?.customer, errorMassage: response.error || '' };
   }
 );
 export const SignIn = createAsyncThunk('customer/signIn', async (credentials: Credentials) => {
   const { email, password } = credentials;
-  const passClient = new API(getApiRoot('password', { email, password }));
+  const passClient = new API(getApiRoot(ClientType.password, { email, password }));
   const response = await passClient.signIn(credentials);
   credentials.setLoading(false);
   return { customer: response.data?.customer, errorMassage: response.error || '' };
 });
 
 export const SignInByToken = createAsyncThunk('customer/signInByToken', async (token: string) => {
-  const tokenAPI = new API(getApiRoot('token', { token }));
+  const tokenAPI = new API(getApiRoot(ClientType.token, { token }));
   const response = await tokenAPI.signInByToken();
   return response;
 });
@@ -114,7 +121,7 @@ export const UpdatePassword = createAsyncThunk(
     if (response.data) {
       localStorage.removeItem('tokendata');
       const passClient = new API(
-        getApiRoot('password', {
+        getApiRoot(ClientType.password, {
           email: state.customers.customer.email,
           password: data.newPassword,
         })
@@ -233,9 +240,8 @@ const customerSlice = createSlice({
       state.apiInstance = action.payload;
     },
     signOut: (state) => {
-      const anonClient = new API(getApiRoot('anonimous'));
+      const anonClient = new API(getApiRoot(ClientType.anonymous));
       state.apiInstance = anonClient;
-      localStorage.removeItem('tokendata');
       state.authorized = false;
       state.customer = {} as Customer;
     },
@@ -340,7 +346,7 @@ const customerSlice = createSlice({
       if (action.payload.data) {
         const token = JSON.parse(localStorage.getItem('tokendata')!) as TokenStore;
         state.customer = action.payload.data;
-        state.apiInstance = new API(getApiRoot('token', { token: token.refreshToken }));
+        state.apiInstance = new API(getApiRoot(ClientType.token, { token: token.refreshToken }));
         state.snackbarInfo = {
           massage: 'Password changed successfully!',
           errorMassage: action.payload.error,

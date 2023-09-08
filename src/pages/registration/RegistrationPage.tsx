@@ -40,7 +40,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
 
   const [isLoading, setLoading] = useState(false);
 
-  const [data, setData] = useState({} as CustomerDraft);
+  const [data, setData] = useState({ shippingAddresses: [0] } as CustomerDraft);
 
   const [showBillingAddress, setShowBillingAddress] = useState(false);
 
@@ -139,7 +139,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <FirstNameField
                 data={data}
                 setData={setData}
-                initialValue={customer.firstName || ''}
+                initialValue={''}
               />
             </Grid>
             <Grid
@@ -150,7 +150,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <LastNameField
                 data={data}
                 setData={setData}
-                initialValue={customer.lastName || ''}
+                initialValue={''}
               />
             </Grid>
 
@@ -161,7 +161,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
               <EmailField
                 data={data}
                 setData={setData}
-                initialValue={customer.email || ''}
+                initialValue={''}
               />
             </Grid>
             <Grid
@@ -219,6 +219,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                           ...data,
                           defaultShippingAddress: undefined,
                           defaultBillingAddress: undefined,
+                          shippingAddresses: [0],
                         });
                       }
                     }}
@@ -243,6 +244,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                   setData({
                     ...data,
                     defaultBillingAddress: undefined,
+                    billingAddresses: [1],
                   });
                 }}
               >
@@ -264,6 +266,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                         setData({
                           ...data,
                           defaultShippingAddress: undefined,
+                          shippingAddresses: [0],
                         });
                       }
                     }}
@@ -285,7 +288,12 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                 id={data.addresses ? data.addresses.length + 1 : 1}
                 address={'billing'}
                 getAddress={getAddress}
-                addressValue={{ street: '', city: '', country: '', postalCode: '' }}
+                addressValue={{
+                  street: '',
+                  city: '',
+                  country: '',
+                  postalCode: '',
+                }}
               />
 
               <FormControlLabel
@@ -301,6 +309,7 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
                         setData({
                           ...data,
                           defaultBillingAddress: undefined,
+                          billingAddresses: [1],
                         });
                       }
                     }}
