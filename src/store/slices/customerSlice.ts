@@ -59,7 +59,7 @@ export const SignIn = createAsyncThunk(
   async (credentials: Credentials, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const { email, password } = credentials;
-    await state.customers.apiInstance.signIn(credentials);
+    await state.customers.apiInstance.signInWithCartMerge(credentials);
     const passClient = new API(getApiRoot('password', { email, password }));
     const response = await passClient.signIn(credentials);
     credentials.setLoading(false);
