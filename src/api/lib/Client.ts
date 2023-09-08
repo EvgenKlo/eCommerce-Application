@@ -8,7 +8,7 @@ import {
   type RefreshAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { type clientType } from '@/types/apiClient';
+import { clientType } from '@/types/apiClient';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 const PROJECT_KEY = import.meta.env.VITE_PROJECT_KEY as string;
@@ -45,7 +45,7 @@ export const getApiRoot = (
   params: { token?: string; email?: string; password?: string } = {}
 ): ByProjectKeyRequestBuilder => {
   switch (type) {
-    case 'anonimous': {
+    case clientType.anonymous: {
       const options: AnonymousAuthMiddlewareOptions = {
         host: AUTH_URL,
         projectKey: PROJECT_KEY,
@@ -65,7 +65,7 @@ export const getApiRoot = (
         projectKey: PROJECT_KEY,
       });
     }
-    case 'password': {
+    case clientType.password: {
       const options: PasswordAuthMiddlewareOptions = {
         host: AUTH_URL,
         projectKey: PROJECT_KEY,
@@ -97,7 +97,7 @@ export const getApiRoot = (
         projectKey: PROJECT_KEY,
       });
     }
-    case 'token': {
+    case clientType.token: {
       const options: RefreshAuthMiddlewareOptions = {
         host: AUTH_URL,
         projectKey: PROJECT_KEY,
