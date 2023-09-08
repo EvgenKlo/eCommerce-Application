@@ -31,6 +31,11 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
     product.masterVariant.prices &&
     product.masterVariant.prices[imageOrPriceNumber].value.currencyCode;
 
+  const handleAddToCart: React.MouseEventHandler<HTMLButtonElement> = (event): void => {
+    event.stopPropagation();
+    void dispatch(addProductToCart(product.id));
+  };
+
   return (
     <Grid
       item
@@ -129,9 +134,14 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
               </Grid>
             </CardContent>
           </CardActionArea>
-          <Button onClick={() => dispatch(addProductToCart())}> Add to Cart</Button>
         </Card>
       </RouterLink>
+      <Button
+        onClick={handleAddToCart}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        Add to Cart
+      </Button>
     </Grid>
   );
 };
