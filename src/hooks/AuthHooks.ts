@@ -4,6 +4,7 @@ import { API } from '@/api/API';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { setAuthorization, setApi, SignInByToken, isLoading } from '@/store/slices/customerSlice';
 import { type TokenStore } from '@commercetools/sdk-client-v2';
+import { ClientType } from '@/types/Enums';
 
 export const useAuth = () => {
   const [auth, setAuth] = useState(false);
@@ -17,7 +18,7 @@ export const useAuth = () => {
     if (localStorage.getItem('tokendata')) {
       dispatch(isLoading(true));
       const tokenLS = JSON.parse(localStorage.getItem('tokendata')!) as TokenStore;
-      const apiClientType = getApiRoot('token', { token: tokenLS.refreshToken });
+      const apiClientType = getApiRoot(ClientType.token, { token: tokenLS.refreshToken });
       const apiClient = new API(apiClientType);
       void dispatch(setApi(apiClient));
       void dispatch(SignInByToken(tokenLS.refreshToken!));
