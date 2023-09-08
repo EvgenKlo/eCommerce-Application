@@ -89,7 +89,6 @@ export class API {
         })
         .execute();
       const result = respsone;
-      console.log(result);
 
       return { data: result, error: errorMsg };
     } catch (error) {
