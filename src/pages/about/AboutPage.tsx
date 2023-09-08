@@ -4,10 +4,12 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LidaImg from '/src/assets/photo/Lida.jpg';
 import OlegImg from '/src/assets/photo/Oleg.jpg';
 import ZhenyaImg from '/src/assets/photo/Zhenya.jpg';
+import { Container } from '@mui/system';
 
 const linkStyles = {
   textDecoration: 'none',
   fontWeight: 'normal',
+  fontSize: '15px',
   '&:hover': {
     transition: 'color 0.3s ease-in-out',
     color: 'secondary.main',
@@ -45,7 +47,7 @@ const cardsData: CardData[] = [
     title: 'Oleg',
     city: 'Moscow',
     description:
-      'The most experienced member of our team is determined and an enterprising person with a sharp mind and excellent memory. He is always ready to take on the most difficult and new tasks. His resourcefulness and persistence make a significant contribution to our work.',
+      'The most experienced member of our team is determined and an enterprising person with a sharp mind. He is always ready to take on the most difficult and new tasks. His resourcefulness and persistence make a significant contribution to our work.',
     git: 'fasty86',
   },
 
@@ -64,11 +66,11 @@ export const AboutPage: React.FC = () => {
     {
       name: 'KISS',
       title: 'Do not complicate, but explain',
-      description: 'We always discuss and explain our ideas to each other.',
+      description: 'We always discuss and explain our ideas.',
     },
     {
       name: 'DRY',
-      title: 'Do not repeat, but complement each other',
+      title: 'Do not repeat, but complement',
       description: 'We complement each other like a puzzle.',
     },
     {
@@ -79,42 +81,59 @@ export const AboutPage: React.FC = () => {
   ];
 
   return (
-    <>
+    <Container>
       <Typography
-        variant="h4"
-        style={{ display: 'block', margin: '10px' }}
+        variant="h5"
+        sx={{
+          fontSize: '20px',
+          fontWeight: 'bold',
+          display: 'block',
+          margin: '10px',
+          marginTop: '20px',
+          '@media (max-width: 600px)': { fontSize: '15px' },
+        }}
       >
-        OUR TEAM
+        OUR TEAM - &quot;KISS DRY YAGINI&quot;
       </Typography>
       <Box
         display="flex"
         flexDirection={{ xs: 'column', md: 'row', xl: 'row' }}
         justifyContent="center"
         alignItems="center"
-        gap={3}
-        p={5}
+        sx={{
+          gap: 3,
+          p: 5,
+          '@media (max-width: 600px)': {
+            gap: 1,
+            p: 1,
+          },
+        }}
         flexWrap="wrap"
       >
         {teamCards.map((card, index) => (
           <Card
             key={index}
             sx={{
-              width: window.innerWidth < 500 ? '300px' : '460px',
-              height: window.innerWidth < 500 ? 'auto' : '150px',
+              width: '310px',
+              height: '115px',
+              '@media (max-width: 600px)': {
+                width: '260px',
+                height: '85px',
+              },
               boxShadow: '9px 6px 35px 11px rgba(34, 60, 80, 0.22)',
               backgroundColor: '#FFF0F5',
-              borderRadius: '10%',
+              borderRadius: '23%',
             }}
           >
             <CardContent>
               <Typography
-                variant="h5"
                 sx={{
                   fontWeight: 'bold',
                   color: 'secondary.dark',
-                  margin: '15px',
-                  '@media (max-width: 500px)': {
+                  margin: '5px',
+                  '@media (max-width: 600px)': {
                     fontSize: '16px',
+                    margin: '0',
                   },
                 }}
               >
@@ -123,8 +142,9 @@ export const AboutPage: React.FC = () => {
               <Typography
                 variant="h6"
                 sx={{
-                  color: 'primary.dark',
-                  '@media (max-width: 500px)': {
+                  fontSize: '17px',
+                  color: 'black',
+                  '@media (max-width: 600px)': {
                     fontSize: '13px',
                   },
                 }}
@@ -134,8 +154,8 @@ export const AboutPage: React.FC = () => {
               <Typography
                 variant="body2"
                 sx={{
-                  color: 'primary.dark',
-                  '@media (max-width: 500px)': {
+                  color: '#666666',
+                  '@media (max-width: 600px)': {
                     fontSize: '10px',
                   },
                 }}
@@ -155,7 +175,7 @@ export const AboutPage: React.FC = () => {
         p={2}
         flexWrap="wrap"
         sx={{
-          gap: 20,
+          gap: 12,
           '@media (max-width: 600px)': {
             gap: 5,
           },
@@ -168,37 +188,38 @@ export const AboutPage: React.FC = () => {
           <Card
             key={index}
             sx={{
-              width: window.innerWidth < 500 ? '300px' : '300px',
-              height: window.innerWidth < 500 ? 'auto' : '600px',
-              boxShadow: '-14px -13px 22px -4px rgba(34, 60, 80, 0.29)',
+              width: '250px',
+              height: '600px',
+              '@media (max-width: 600px)': {
+                width: '250px',
+                height: 'auto',
+              },
+              boxShadow: '0px 1px 33px 13px rgba(0, 0, 0, 0.22)',
               backgroundColor: 'rgba(0, 0, 0, 0.04)',
               color: 'primary.dark',
               fontWeight: 'bold',
             }}
           >
             <img
-              width="300px"
-              height="300px"
+              width="250px"
+              height="250px"
               src={card.image}
               alt={card.title}
             />
             <CardContent>
-              <Typography
-                variant="h5"
-                sx={{ fontWeight: 'bold' }}
-              >
+              <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>
                 {card.title}
                 <Typography
-                  variant="h6"
                   color="secondary.dark"
                   marginBottom={'15px'}
+                  sx={{ fontSize: '16px' }}
                 >
                   {card.city}
                 </Typography>
               </Typography>
               <Typography
-                variant="body2"
-                color="black"
+                sx={{ fontSize: '13px' }}
+                color="#666666"
               >
                 {card.description}
               </Typography>
@@ -206,7 +227,7 @@ export const AboutPage: React.FC = () => {
                 sx={boxStyle}
                 key={card.git}
               >
-                <GitHubIcon style={{ margin: '0 8', color: 'black', width: '15px' }} />
+                <GitHubIcon style={{ margin: '0 8', color: 'black', width: '14px' }} />
                 <Link
                   sx={linkStyles}
                   href={`https://github.com/${card.git}`}
@@ -220,6 +241,6 @@ export const AboutPage: React.FC = () => {
           </Card>
         ))}
       </Box>
-    </>
+    </Container>
   );
 };
