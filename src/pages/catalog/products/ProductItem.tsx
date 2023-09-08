@@ -42,7 +42,9 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
             display: discountPrice ? 'block' : 'none',
           }}
         />
-        <Card sx={{ '&:hover': { boxShadow: 10 } }}>
+        <Card
+          sx={{ transition: 'all 0.3s', '&:hover': { boxShadow: 10, transform: 'scale(1.05)' } }}
+        >
           <CardActionArea onMouseDown={handleMouseDown}>
             <CardMedia
               component="img"
