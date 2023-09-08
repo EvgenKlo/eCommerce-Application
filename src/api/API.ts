@@ -183,8 +183,24 @@ export class API {
   async signIn(credentials: { email: string; password: string }): returnType<CustomerSignInResult> {
     let errorMsg = '';
     try {
+      const { ...data } = { ...credentials };
+      console.log('SignIn', data);
+
+      const result = await this.client.me().login().post({ body: data }).execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  async signInWithCartMerge(credentials: {
+    email: string;
+    password: string;
+  }): returnType<CustomerSignInResult> {
+    let errorMsg = '';
+    try {
       const { ...data } = { ...credentials, activeCartSignInMode: 'MergeWithExistingCustomerCart' };
-      console.log(data);
+      console.log('SignIn with cart merge!', data);
 
       const result = await this.client.me().login().post({ body: data }).execute();
       return { data: result.body, error: errorMsg };
