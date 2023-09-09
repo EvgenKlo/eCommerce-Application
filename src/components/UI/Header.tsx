@@ -69,9 +69,13 @@ export const Header: React.FC<logoutProps> = (props) => {
     localStorage.removeItem('tokendata');
   };
 
+  const quantityProductsInCart = useAppSelector((state) =>
+    state.carts.cart.lineItems ? state.carts.cart.lineItems.length : 0
+  );
+
   return (
     <AppBar
-      position="absolute"
+      position="fixed"
       sx={{ width: '100%' }}
     >
       <Container>
@@ -209,7 +213,7 @@ export const Header: React.FC<logoutProps> = (props) => {
                 <IconButton
                   onMouseDown={handleMouseDown}
                   sx={{
-                    color: 'background.default',
+                    color: location.pathname === '/basket' ? 'info.main' : 'white',
                     '&:hover': {
                       color: 'info.main',
                       transition: 'color 0.3s ease-in-out',
@@ -219,7 +223,11 @@ export const Header: React.FC<logoutProps> = (props) => {
                     },
                   }}
                 >
-                  <Badge>
+                  <Badge
+                    badgeContent={quantityProductsInCart}
+                    max={99}
+                    color="secondary"
+                  >
                     <ShoppingBasketIcon />
                   </Badge>
                 </IconButton>

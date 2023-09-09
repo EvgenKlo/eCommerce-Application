@@ -9,7 +9,7 @@ import { ErrorPage } from '@/pages/error/ErrorPage';
 import { CatalogPage } from '../pages/catalog/CatalogPage';
 import { UserPage } from '@/pages/user/UserPage';
 import { useAuth } from '@/hooks/AuthHooks';
-import BasketPage from '@/pages/basket/BasketPage';
+import { BasketPage } from '@/pages/basket/BasketPage';
 import ProductPage from '@/pages/product/ProductPage';
 
 export const AppRouter = (): ReactElement => {
