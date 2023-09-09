@@ -13,6 +13,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import DiscountIcon from '@mui/icons-material/Discount';
 import { addProductToCart } from '@/store/slices/cartSlice';
 import { useAppDispatch } from '@/hooks/reduxHooks';
+import Price from '@/components/UI/Price';
 
 const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
   const dispatch = useAppDispatch();
@@ -89,49 +90,11 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
                   ? `${product.description[language].slice(0, 40)}...`
                   : 'No description'}
               </Typography>
-              <Grid
-                container
-                xl={12}
-                spacing={{ xs: 1 }}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                {discountPrice && (
-                  <Grid item>
-                    <Typography
-                      variant="body2"
-                      color="secondary.dark"
-                      fontSize="1.5rem"
-                      fontWeight={700}
-                      sx={{ color: 'secondary.dark', fontSize: '1.5rem', fontWeight: 700 }}
-                    >
-                      {new Intl.NumberFormat('en-EN', {
-                        style: 'currency',
-                        currency: currencyCode,
-                      }).format(discountPrice)}
-                    </Typography>
-                  </Grid>
-                )}
-                <Grid item>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      textDecoration: discountPrice && 'line-through',
-                      color: discountPrice ? 'text.disabled' : 'secondary.dark',
-                      fontSize: discountPrice ? '1rem' : '1.5rem',
-                      fontWeight: discountPrice ? 400 : 700,
-                    }}
-                  >
-                    {price &&
-                      new Intl.NumberFormat('en-EN', {
-                        style: 'currency',
-                        currency: currencyCode,
-                      }).format(price)}
-                  </Typography>
-                </Grid>
-              </Grid>
+              <Price
+                price={price}
+                discountPrice={discountPrice}
+                currencyCode={currencyCode}
+              />
             </CardContent>
           </CardActionArea>
         </Card>
