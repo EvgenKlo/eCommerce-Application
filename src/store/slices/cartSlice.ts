@@ -62,6 +62,17 @@ export const changeProductQuantityInCart = createAsyncThunk(
     return result;
   }
 );
+export const clearCart = createAsyncThunk(
+  'carts/clearCart',
+  async (actions: CartChangeLineItemQuantityAction[], thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const { version, id } = state.carts.cart;
+    const cartDraft: CartUpdate = { version, actions: actions };
+    const result = await client.updateCart(id, cartDraft);
+    return result;
+  }
+);
 
 const cartSlice = createSlice({
   name: 'carts',
@@ -104,11 +115,14 @@ const cartSlice = createSlice({
         state.cart = action.payload.data.body;
       }
     });
+    builder.addCase(clearCart.fulfilled, (state, action) => {
+      if (action.payload.data) {
+        state.cart = action.payload.data.body;
+      }
+    });
   },
 });
 
 export const selectCarts = (state: RootState) => state.carts;
-
-// export const {} = cartSlice.actions;
 
 export default cartSlice.reducer;

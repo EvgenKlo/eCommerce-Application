@@ -10,6 +10,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 import { ProductModalWindow } from './ProductModalWindow';
 import DiscountIcon from '@mui/icons-material/Discount';
 import { Link } from 'react-router-dom';
+import AddDelProductToCart from '@/components/UI/AddDelProductToCart';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -196,10 +197,16 @@ const ProductPage = () => {
             item
             sx={{ display: 'flex', justifyContent: 'end' }}
           >
-            <Link to={'/catalog'}>
-              <Button variant="contained">Go to Catalog</Button>
-            </Link>
+            <AddDelProductToCart id={product.id} />
           </Grid>
+          <Link to={'/catalog'}>
+            <Button
+              variant="contained"
+              sx={{ marginTop: 1 }}
+            >
+              Go to Catalog
+            </Button>
+          </Link>
         </Grid>
       </Grid>
       <ProductModalWindow

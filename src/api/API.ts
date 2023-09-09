@@ -480,8 +480,6 @@ export class API {
     try {
       const response = await this.client.me().activeCart().get().execute();
       const result = response;
-      console.log('ActiveCart', response);
-
       return { data: result, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
@@ -511,8 +509,6 @@ export class API {
         .post({ body: cartUpdate })
         .execute();
       const result = response;
-      console.log('AddItemToCart', response);
-
       return { data: result, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
