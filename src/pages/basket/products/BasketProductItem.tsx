@@ -1,4 +1,6 @@
 import Price from '@/components/UI/Price';
+import { useAppDispatch } from '@/hooks/reduxHooks';
+import { changeProductQuantityInCart } from '@/store/slices/cartSlice';
 import { type LineItem } from '@commercetools/platform-sdk';
 import { Box, Button, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 
@@ -12,6 +14,12 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
     product.variant.prices && product.variant.prices[0].discounted?.value.centAmount;
 
   const currencyCode = product.variant.prices && product.variant.prices[0].value.currencyCode;
+
+  const dispatch = useAppDispatch();
+
+  const handleAddToCart = (quantity: number): void => {
+    void dispatch(changeProductQuantityInCart({ productId: product.id, quantity }));
+  };
 
   return (
     <Grid
@@ -72,7 +80,10 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
             Quantity in cart:
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-            <Button variant="contained">
+            <Button
+              variant="contained"
+              onClick={() => handleAddToCart(product.quantity - 1)}
+            >
               <Typography fontSize={20}>-</Typography>
             </Button>
             <Typography
@@ -81,7 +92,10 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
             >
               {product.quantity}
             </Typography>
-            <Button variant="contained">
+            <Button
+              variant="contained"
+              onClick={() => handleAddToCart(product.quantity + 1)}
+            >
               <Typography fontSize={20}>+</Typography>
             </Button>
           </Box>
@@ -98,6 +112,14 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
               }).format(product.totalPrice.centAmount)}
             </span>
           </Typography>
+        </CardContent>
+        <CardContent>
+          <Button
+            variant="contained"
+            onClick={() => handleAddToCart(0)}
+          >
+            Delete product
+          </Button>
         </CardContent>
       </Card>
     </Grid>

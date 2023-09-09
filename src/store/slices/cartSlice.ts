@@ -5,6 +5,7 @@ import {
   type CartDraft,
   type Cart,
   type CartAddLineItemAction,
+  type CartChangeLineItemQuantityAction,
 } from '@commercetools/platform-sdk';
 import type { PayloadAction } from '@reduxjs/toolkit';
 const initialState = {
@@ -37,9 +38,24 @@ export const addProductToCart = createAsyncThunk(
     const { version, id } = state.carts.cart;
     const addItemAction: CartAddLineItemAction = {
       action: 'addLineItem',
-      // productId: 'e811f8ff-8769-4275-964d-527c6b819d12',
       productId,
       quantity: 1,
+    };
+    const cartDraft: CartUpdate = { version, actions: [addItemAction] };
+    const result = await client.updateCart(id, cartDraft);
+    return result;
+  }
+);
+export const changeProductQuantityInCart = createAsyncThunk(
+  'carts/changeProductQuantityInCart',
+  async ({ productId, quantity }: { productId: string; quantity: number }, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const { version, id } = state.carts.cart;
+    const addItemAction: CartChangeLineItemQuantityAction = {
+      action: 'changeLineItemQuantity',
+      lineItemId: productId,
+      quantity,
     };
     const cartDraft: CartUpdate = { version, actions: [addItemAction] };
     const result = await client.updateCart(id, cartDraft);
@@ -58,7 +74,7 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getActiveCart.fulfilled, (state, action) => {
       // state.isLoading = false;
-      if (action.payload.data) {
+      if (action.payload?.data) {
         state.cart = action.payload.data.body;
       } else {
         // state.snackbarInfo = {
@@ -79,6 +95,11 @@ const cartSlice = createSlice({
       }
     });
     builder.addCase(addProductToCart.fulfilled, (state, action) => {
+      if (action.payload.data) {
+        state.cart = action.payload.data.body;
+      }
+    });
+    builder.addCase(changeProductQuantityInCart.fulfilled, (state, action) => {
       if (action.payload.data) {
         state.cart = action.payload.data.body;
       }
