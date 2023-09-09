@@ -65,7 +65,13 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
-  async getProductsWithFilter(filter: string[], sort: string, search: string = '') {
+  async getProductsWithFilter(
+    filter: string[],
+    sort: string,
+    search: string = '',
+    limit: number = 12,
+    offset: number = 0
+  ) {
     let errorMsg = '';
     try {
       const respsone = await this.client
@@ -76,13 +82,15 @@ export class API {
             'text.en': search,
             fuzzy: true,
             sort,
-            limit: API.limit,
+            limit,
+            offset,
             'filter.query': filter,
           },
         })
         .execute();
       const result = respsone;
-      return { data: result.body.results, error: errorMsg };
+
+      return { data: result, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
@@ -117,7 +125,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
-            limit: API.limit,
+            limit: 0,
             facet: [
               'variants.attributes.color.en',
               'variants.attributes.size.en',
@@ -128,6 +136,7 @@ export class API {
           },
         })
         .execute();
+
       return { data: body, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;

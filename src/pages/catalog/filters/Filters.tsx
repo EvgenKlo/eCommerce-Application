@@ -12,6 +12,7 @@ import {
   getProducts,
   getProductsWithFilter,
   resetFilter,
+  setCurrentPage,
 } from '@/store/slices/productSlice';
 import { useEffect, useState } from 'react';
 
@@ -21,6 +22,7 @@ export const Filters = () => {
   const filters = useAppSelector((state) => state.products.filters);
   const sort = useAppSelector((state) => state.products.sort);
   const search = useAppSelector((state) => state.products.search);
+  const page = useAppSelector((state) => state.products.currentPage);
 
   const dispatch = useAppDispatch();
 
@@ -41,7 +43,11 @@ export const Filters = () => {
   useEffect(() => {
     if (!categories.length) void loadData();
     else void dispatch(getProductsWithFilter());
-  }, [JSON.stringify(filters), JSON.stringify(sort), search]);
+  }, [JSON.stringify(filters), JSON.stringify(sort), search, page]);
+
+  useEffect(() => {
+    void dispatch(setCurrentPage({ page: 1 }));
+  }, [JSON.stringify(filters)]);
 
   useEffect(() => {
     activeCat ? setSelected(activeCat) : setSelected('');
