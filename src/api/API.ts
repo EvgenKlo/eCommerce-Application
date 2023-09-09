@@ -71,7 +71,7 @@ export class API {
     filter: string[],
     sort: string,
     search: string = '',
-    limit: number = 10,
+    limit: number = 12,
     offset: number = 0
   ) {
     let errorMsg = '';
@@ -91,7 +91,6 @@ export class API {
         })
         .execute();
       const result = respsone;
-      console.log(result);
 
       return { data: result, error: errorMsg };
     } catch (error) {

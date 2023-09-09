@@ -66,6 +66,7 @@ export const Header: React.FC<logoutProps> = (props) => {
   const handleExit = () => {
     dispatch(signOut());
     logout(false);
+    localStorage.removeItem('tokendata');
   };
 
   return (

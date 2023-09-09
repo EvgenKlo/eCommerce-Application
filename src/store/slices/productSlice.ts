@@ -29,7 +29,7 @@ const initialState: InitialState = {
   },
   search: '',
   total: 0,
-  limit: 10,
+  limit: 12,
   currentPage: 1,
   count: 0,
 };
