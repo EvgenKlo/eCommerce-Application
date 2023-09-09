@@ -183,7 +183,6 @@ export class API {
     let errorMsg = '';
     try {
       const { ...data } = { ...credentials };
-      console.log('SignIn', data);
 
       const result = await this.client.me().login().post({ body: data }).execute();
       return { data: result.body, error: errorMsg };
@@ -199,8 +198,6 @@ export class API {
     let errorMsg = '';
     try {
       const { ...data } = { ...credentials, activeCartSignInMode: 'MergeWithExistingCustomerCart' };
-      console.log('SignIn with cart merge!', data);
-
       const result = await this.client.me().login().post({ body: data }).execute();
       return { data: result.body, error: errorMsg };
     } catch (error) {
@@ -220,25 +217,6 @@ export class API {
     return result;
   }
 
-  // async createCart() {
-  //   let result = {};
-  //   try {
-  //     const { body } = await this.client
-  //       .me()
-  //       .carts()
-  //       .post({
-  //         body: {
-  //           currency: 'EUR',
-  //         },
-  //       })
-  //       .execute();
-
-  //     result = body;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   return result;
-  // }
   async setCustomerFirstName(firstName: string, version: number) {
     let errorMsg = '';
     try {
@@ -480,7 +458,6 @@ export class API {
     try {
       const response = await this.client.me().activeCart().get().execute();
       const result = response;
-      console.log('ActiveCart', response);
 
       return { data: result, error: errorMsg };
     } catch (error) {
@@ -494,7 +471,6 @@ export class API {
     try {
       const response = await this.client.me().carts().post({ body: cart }).execute();
       const result = response;
-      console.log('CreatedCart', response);
 
       return { data: result, error: errorMsg };
     } catch (error) {
@@ -511,7 +487,6 @@ export class API {
         .post({ body: cartUpdate })
         .execute();
       const result = response;
-      console.log('AddItemToCart', response);
 
       return { data: result, error: errorMsg };
     } catch (error) {
@@ -519,17 +494,4 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
-  // async getClientInfo() {
-  //   let errorMsg = '';
-  //   try {
-  //     const response = await this.client.get().clientRequest
-  //     const result = response;
-  //     console.log('Cart', response);
-
-  //     return { data: result, error: errorMsg };
-  //   } catch (error) {
-  //     if (error instanceof Error) errorMsg = error.message;
-  //     return { data: undefined, error: errorMsg };
-  //   }
-  // }
 }
