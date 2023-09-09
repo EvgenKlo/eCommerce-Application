@@ -43,7 +43,9 @@ export const createNewCustomer = createAsyncThunk(
   'customer/createNew',
   async (data: signUp, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
-    const response = await state.customers.apiInstance.createCustomer(data.data);
+    const anonymousId = state.carts.cart.anonymousId;
+    const { ...draft } = { ...data.data, anonymousId };
+    const response = await state.customers.apiInstance.createCustomer(draft);
     if (response.data) {
       const passClient = new API(
         getApiRoot(ClientType.password, {
