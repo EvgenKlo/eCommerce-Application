@@ -43,7 +43,9 @@ export const createNewCustomer = createAsyncThunk(
   'customer/createNew',
   async (data: signUp, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
-    const response = await state.customers.apiInstance.createCustomer(data.data);
+    const anonymousId = state.carts.cart.anonymousId;
+    const { ...draft } = { ...data.data, anonymousId };
+    const response = await state.customers.apiInstance.createCustomer(draft);
     if (response.data) {
       const passClient = new API(
         getApiRoot(ClientType.password, {
@@ -58,13 +60,18 @@ export const createNewCustomer = createAsyncThunk(
     return { customer: response.data?.customer, errorMassage: response.error || '' };
   }
 );
-export const SignIn = createAsyncThunk('customer/signIn', async (credentials: Credentials) => {
-  const { email, password } = credentials;
-  const passClient = new API(getApiRoot(ClientType.password, { email, password }));
-  const response = await passClient.signIn(credentials);
-  credentials.setLoading(false);
-  return { customer: response.data?.customer, errorMassage: response.error || '' };
-});
+export const SignIn = createAsyncThunk(
+  'customer/signIn',
+  async (credentials: Credentials, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const { email, password } = credentials;
+    await state.customers.apiInstance.signInWithCartMerge(credentials);
+    const passClient = new API(getApiRoot(ClientType.password, { email, password }));
+    const response = await passClient.signIn(credentials);
+    credentials.setLoading(false);
+    return { customer: response.data?.customer, errorMassage: response.error || '' };
+  }
+);
 
 export const SignInByToken = createAsyncThunk('customer/signInByToken', async (token: string) => {
   const tokenAPI = new API(getApiRoot(ClientType.token, { token }));

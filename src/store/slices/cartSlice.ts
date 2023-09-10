@@ -21,7 +21,6 @@ export const getActiveCart = createAsyncThunk('carts/getActiveCart', async (_, t
   const client = state.customers.apiInstance;
   const result = await client.getActiveCart();
   if (!result.data) {
-    // await thunkAPI.dispatch(createCart());
     thunkAPI.rejectWithValue('no cart');
   } else {
     return result;
@@ -88,25 +87,13 @@ const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getActiveCart.fulfilled, (state, action) => {
-      // state.isLoading = false;
-      if (action.payload?.data) {
+      if (action.payload) {
         state.cart = action.payload.data.body;
-      } else {
-        // state.snackbarInfo = {
-        //   massage: '',
-        //   errorMassage: action.payload.error,
-        // };
       }
     });
     builder.addCase(createCart.fulfilled, (state, action) => {
-      // state.isLoading = false;
       if (action.payload.data) {
         state.cart = action.payload.data.body;
-      } else {
-        // state.snackbarInfo = {
-        //   massage: '',
-        //   errorMassage: action.payload.error,
-        // };
       }
     });
     builder.addCase(addProductToCart.fulfilled, (state, action) => {
