@@ -48,6 +48,7 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-evenly',
+            margin: 'auto',
           }}
         >
           <Typography
@@ -71,6 +72,7 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
             />
           </Box>
         </CardContent>
+
         <CardContent>
           <Typography
             gutterBottom
