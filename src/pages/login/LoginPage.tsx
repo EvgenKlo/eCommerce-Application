@@ -32,14 +32,10 @@ export const LoginPage: React.FC<loginProps> = (props) => {
 
   useEffect(() => {
     setLoading(false);
-    try {
-      if ('id' in customer) {
-        setFormsValue({ email: '', password: '' });
-        handleLogin(true);
-        navigate('/');
-      }
-    } catch (error) {
-      console.log(error);
+    if (customer && Object.keys(customer).length) {
+      setFormsValue({ email: '', password: '' });
+      handleLogin(true);
+      navigate('/');
     }
   }, [customer]);
 
