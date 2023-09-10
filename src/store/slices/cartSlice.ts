@@ -10,6 +10,10 @@ import {
 import type { PayloadAction } from '@reduxjs/toolkit';
 const initialState = {
   cart: {} as Cart,
+  snackbarInfo: {
+    massage: '',
+    errorMassage: '',
+  },
 };
 
 export const getActiveCart = createAsyncThunk('carts/getActiveCart', async (_, thunkAPI) => {
@@ -108,16 +112,39 @@ const cartSlice = createSlice({
     builder.addCase(addProductToCart.fulfilled, (state, action) => {
       if (action.payload.data) {
         state.cart = action.payload.data.body;
+        state.snackbarInfo = { massage: 'Product added to cart', errorMassage: '' };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: 'Unsuccessful attempt to change cart. Try again!',
+        };
       }
     });
     builder.addCase(changeProductQuantityInCart.fulfilled, (state, action) => {
       if (action.payload.data) {
+        console.log(action.payload.data);
+
         state.cart = action.payload.data.body;
+        state.snackbarInfo = {
+          massage: 'The number of items in the car has been successfully changed',
+          errorMassage: '',
+        };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: 'Unsuccessful attempt to change cart. Try again!',
+        };
       }
     });
     builder.addCase(clearCart.fulfilled, (state, action) => {
       if (action.payload.data) {
         state.cart = action.payload.data.body;
+        state.snackbarInfo = { massage: 'Cart is empty', errorMassage: '' };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: 'Unsuccessful attempt to change cart. Try again!',
+        };
       }
     });
   },
