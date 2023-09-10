@@ -14,6 +14,7 @@ const initialState = {
     massage: '',
     errorMassage: '',
   },
+  isLoading: false,
 };
 
 export const getActiveCart = createAsyncThunk('carts/getActiveCart', async (_, thunkAPI) => {
@@ -84,6 +85,9 @@ const cartSlice = createSlice({
     setCart: (state, action: PayloadAction<{ cart: Cart }>) => {
       state.cart = action.payload.cart;
     },
+    setLoader: (state) => {
+      state.isLoading = true;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getActiveCart.fulfilled, (state, action) => {
@@ -97,6 +101,7 @@ const cartSlice = createSlice({
       }
     });
     builder.addCase(addProductToCart.fulfilled, (state, action) => {
+      state.isLoading = false;
       if (action.payload.data) {
         state.cart = action.payload.data.body;
         state.snackbarInfo = { massage: 'Product added to cart', errorMassage: '' };
@@ -108,6 +113,7 @@ const cartSlice = createSlice({
       }
     });
     builder.addCase(changeProductQuantityInCart.fulfilled, (state, action) => {
+      state.isLoading = false;
       if (action.payload.result.data) {
         state.cart = action.payload.result.data.body;
         state.snackbarInfo = {
@@ -125,6 +131,7 @@ const cartSlice = createSlice({
       }
     });
     builder.addCase(clearCart.fulfilled, (state, action) => {
+      state.isLoading = false;
       if (action.payload.data) {
         state.cart = action.payload.data.body;
         state.snackbarInfo = { massage: 'Cart is empty', errorMassage: '' };
@@ -139,5 +146,7 @@ const cartSlice = createSlice({
 });
 
 export const selectCarts = (state: RootState) => state.carts;
+
+export const { setLoader } = cartSlice.actions;
 
 export default cartSlice.reducer;

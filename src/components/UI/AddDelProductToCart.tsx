@@ -1,6 +1,6 @@
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { addProductToCart, changeProductQuantityInCart } from '@/store/slices/cartSlice';
+import { addProductToCart, changeProductQuantityInCart, setLoader } from '@/store/slices/cartSlice';
 import { Button } from '@mui/material';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -9,6 +9,7 @@ const AddDelProductToCart: React.FC<{ id: string }> = ({ id }) => {
   const dispatch = useAppDispatch();
 
   const handleAddToCart = () => {
+    dispatch(setLoader());
     void dispatch(addProductToCart(id));
   };
 
@@ -17,6 +18,7 @@ const AddDelProductToCart: React.FC<{ id: string }> = ({ id }) => {
   const idCartProduct = cart.lineItems.find((item) => item.productId === id);
 
   const removeFromCart = () => {
+    dispatch(setLoader());
     idCartProduct &&
       void dispatch(changeProductQuantityInCart({ productId: idCartProduct.id, quantity: 0 }));
   };

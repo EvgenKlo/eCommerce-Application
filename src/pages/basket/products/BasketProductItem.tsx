@@ -1,6 +1,6 @@
 import Price from '@/components/UI/Price';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { changeProductQuantityInCart } from '@/store/slices/cartSlice';
+import { changeProductQuantityInCart, setLoader } from '@/store/slices/cartSlice';
 import { type LineItem } from '@commercetools/platform-sdk';
 import { Box, Button, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 
@@ -18,6 +18,7 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
   const dispatch = useAppDispatch();
 
   const handleAddToCart = (quantity: number): void => {
+    dispatch(setLoader());
     void dispatch(changeProductQuantityInCart({ productId: product.id, quantity }));
   };
 

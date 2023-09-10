@@ -2,7 +2,7 @@ import { Box, Button, Modal, Typography } from '@mui/material';
 import WarningIcon from '@mui/icons-material/Warning';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { clearCart } from '@/store/slices/cartSlice';
+import { clearCart, setLoader } from '@/store/slices/cartSlice';
 import { type CartChangeLineItemQuantityAction } from '@commercetools/platform-sdk';
 
 const style = {
@@ -37,6 +37,7 @@ const ClearModal: React.FC<{
         quantity: 0,
       };
     });
+    dispatch(setLoader());
     void dispatch(clearCart(actions as CartChangeLineItemQuantityAction[]));
     setOpen(false);
   };
