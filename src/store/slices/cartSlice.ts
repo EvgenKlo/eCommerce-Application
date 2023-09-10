@@ -63,7 +63,7 @@ export const changeProductQuantityInCart = createAsyncThunk(
     };
     const cartDraft: CartUpdate = { version, actions: [addItemAction] };
     const result = await client.updateCart(id, cartDraft);
-    return result;
+    return { result, quantity };
   }
 );
 export const clearCart = createAsyncThunk(
@@ -121,12 +121,13 @@ const cartSlice = createSlice({
       }
     });
     builder.addCase(changeProductQuantityInCart.fulfilled, (state, action) => {
-      if (action.payload.data) {
-        console.log(action.payload.data);
-
-        state.cart = action.payload.data.body;
+      if (action.payload.result.data) {
+        state.cart = action.payload.result.data.body;
         state.snackbarInfo = {
-          massage: 'The number of items in the car has been successfully changed',
+          massage:
+            action.payload.quantity > 0
+              ? 'The number of items in the car has been successfully changed'
+              : 'Product removed to cart',
           errorMassage: '',
         };
       } else {
