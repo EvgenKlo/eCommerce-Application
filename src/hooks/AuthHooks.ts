@@ -27,8 +27,8 @@ export const useAuth = () => {
     } else {
       dispatch(isLoading(false));
     }
-    void dispatch(getActiveCart()).catch(() => {
-      void dispatch(createCart());
+    void dispatch(getActiveCart()).then((data) => {
+      !data.payload && void dispatch(createCart());
     });
   }, [auth]);
   return [changeAuth];
