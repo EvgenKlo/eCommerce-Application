@@ -183,8 +183,6 @@ export class API {
     let errorMsg = '';
     try {
       const { ...data } = { ...credentials };
-      console.log('SignIn', data);
-
       const result = await this.client.me().login().post({ body: data }).execute();
       return { data: result.body, error: errorMsg };
     } catch (error) {
