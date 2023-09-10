@@ -15,7 +15,9 @@ const AddDelProductToCart: React.FC<{ id: string }> = ({ id }) => {
 
   const cart = useAppSelector((state) => state.carts.cart);
 
-  const idCartProduct = cart.lineItems.find((item) => item.productId === id);
+  const idCartProduct = cart.lineItems
+    ? cart.lineItems.find((item) => item.productId === id)
+    : false;
 
   const removeFromCart = () => {
     dispatch(setLoader());
