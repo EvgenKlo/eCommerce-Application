@@ -83,7 +83,9 @@ export const clearCart = createAsyncThunk(
 
 export const getDiscountList = createAsyncThunk('carts/getDiscountList', async (_, thunkAPI) => {
   const state: RootState = thunkAPI.getState() as RootState;
+
   const client = state.customers.apiInstance;
+  await client.createDiscountCode();
   const result = await client.getDiscountCodes();
   return result;
 });

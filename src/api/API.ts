@@ -505,4 +505,17 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
+  async createDiscountCode() {
+    let errorMsg = '';
+    try {
+      const response = await this.client.discountCodes().get().execute();
+      const result = response;
+      console.log('disc', result);
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
 }
