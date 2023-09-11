@@ -47,12 +47,12 @@ export const MainPage: React.FC = () => {
           {discounts.map((discount) => {
             return (
               <Tooltip
-                title={discount.name.en}
+                title={discount.name!.en}
                 key={discount.id}
                 sx={{ '&:hover': { cursor: 'cursor' } }}
               >
                 <Chip
-                  label={discount.key}
+                  label={discount.code}
                   color="secondary"
                 />
               </Tooltip>

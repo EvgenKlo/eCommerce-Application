@@ -6,8 +6,8 @@ import {
   type Cart,
   type CartAddLineItemAction,
   type CartChangeLineItemQuantityAction,
-  type CartDiscount,
   type CartAddDiscountCodeAction,
+  type DiscountCode,
 } from '@commercetools/platform-sdk';
 import type { PayloadAction } from '@reduxjs/toolkit';
 const initialState = {
@@ -17,7 +17,7 @@ const initialState = {
     errorMassage: '',
   },
   isLoading: false,
-  discounts: [] as CartDiscount[],
+  discounts: [] as DiscountCode[],
 };
 
 export const getActiveCart = createAsyncThunk('carts/getActiveCart', async (_, thunkAPI) => {
@@ -85,7 +85,6 @@ export const getDiscountList = createAsyncThunk('carts/getDiscountList', async (
   const state: RootState = thunkAPI.getState() as RootState;
 
   const client = state.customers.apiInstance;
-  await client.createDiscountCode();
   const result = await client.getDiscountCodes();
   return result;
 });
