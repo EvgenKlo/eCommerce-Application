@@ -53,13 +53,9 @@ export const RegistrationPage: React.FC<loginProps> = (props) => {
   };
 
   useEffect(() => {
-    try {
-      if ('id' in customer) {
-        handleLogin(true);
-        navigate('/');
-      }
-    } catch (error) {
-      console.log(error);
+    if (customer && Object.keys(customer).length) {
+      handleLogin(true);
+      navigate('/');
     }
   }, [customer]);
 
