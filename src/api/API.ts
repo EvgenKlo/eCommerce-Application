@@ -494,4 +494,15 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
+  async getDiscountCodes() {
+    let errorMsg = '';
+    try {
+      const response = await this.client.cartDiscounts().get().execute();
+      const result = response;
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
 }
