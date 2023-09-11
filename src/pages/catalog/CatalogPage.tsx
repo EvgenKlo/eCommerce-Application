@@ -13,6 +13,8 @@ import { Pagination } from './filters/Pagination';
 export const CatalogPage: React.FC = () => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
 
+  const isCartLoading = useAppSelector((state) => state.carts.isLoading);
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -20,6 +22,7 @@ export const CatalogPage: React.FC = () => {
   return (
     <Container>
       <Loader isLoading={isLoading} />
+      <Loader isLoading={isCartLoading} />
       <Button
         sx={{ display: { xs: 'flex', sm: 'none' } }}
         onClick={handleOpen}
