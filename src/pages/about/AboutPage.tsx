@@ -1,10 +1,50 @@
 import React from 'react';
-import { Box, Typography, CardContent, Card, Link } from '@mui/material';
+import { Container } from '@mui/system';
+import {
+  Box,
+  Typography,
+  CardContent,
+  Card,
+  Link,
+  Fab,
+  AccordionDetails,
+  Accordion,
+  AccordionSummary,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import SchoolIcon from '@mui/icons-material/School';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LidaImg from '/src/assets/photo/Lida.jpg';
 import OlegImg from '/src/assets/photo/Oleg.jpg';
 import ZhenyaImg from '/src/assets/photo/Zhenya.jpg';
-import { Container } from '@mui/system';
+import LogoSvg from '/src/assets/svg/logo-rss.svg';
+
+const biographyStyles = { fontSize: '13px', marginTop: '15px', color: '#666666' };
+const iconStyles = { fontSize: '12px', marginRight: '3px' };
+const gitIconStyle = { margin: '0 3', color: 'black', width: '14px' };
+const psevdoButtonStyle = {
+  transition: 'all 0.3s',
+  '&:hover': {
+    boxShadow: 10,
+    transform: 'scale(1.02)',
+    borderColor: '#72b691',
+    backgroundColor: '#acffd1',
+  },
+  borderWidth: 1,
+  borderStyle: 'solid',
+  borderColor: '#72b691',
+  cursor: 'default',
+  textTransform: 'lowercase',
+  fontSize: '16px',
+};
+const boxStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  alignContent: 'center',
+  justifyContent: 'center',
+};
 
 const linkStyles = {
   textDecoration: 'none',
@@ -16,80 +56,110 @@ const linkStyles = {
   },
 };
 
-const boxStyle = {
-  padding: '8px',
-  display: 'flex',
-  alignItems: 'center',
-  alignContent: 'center',
-  justifyContent: 'center',
-  margin: '15px',
-};
+interface TeamName {
+  name: string;
+  title: string;
+  description: string;
+}
+
+const teamName: TeamName[] = [
+  {
+    name: 'KISS ',
+    title: 'Do not complicate, but explain',
+    description: 'We always discuss and explain our ideas.',
+  },
+  {
+    name: 'DRY',
+    title: 'Do not repeat, but complement',
+    description: 'We complement each other like a puzzle.',
+  },
+  {
+    name: 'YAGINI',
+    title: 'Do not rush, just follow the plan',
+    description: 'We follow the plan to move forward.',
+  },
+];
+
 interface CardData {
   image: string;
-  title: string;
+  name: string;
   city: string;
+  role: string;
   description: string;
+  education: string;
+  job: string;
+  hobby: string;
   git: string;
 }
 
 const cardsData: CardData[] = [
   {
     image: `${ZhenyaImg}`,
-    title: 'Zhenya',
+    name: 'Zhenya',
     city: 'Yekaterinburg',
+    role: 'Team Lead & Frontend Developer',
     description:
-      'Our team leader is a real captain. He is a responsible and attentive person who is always able to delve into the details to ensure the successful completion of the project. His attentiveness and determination help the team in the most difficult situations.',
+      'Team leader is a real captain. He is a responsible and attentive person who is always able to delve into the details to ensure the successful completion of the project. His attentiveness and determination help the team in the most difficult situations.',
+    education:
+      'Graduated from the Russian State Pedagogical University and has a higher education in the field of maintenance and operation of road transport',
+    job: 'Currently work at the Lexus center in Yekaterinburg.',
+    hobby: 'Loves cycling, mountain and cross-country skiing, bouldering and filming.',
     git: 'EvgenKlo',
   },
 
   {
     image: `${OlegImg}`,
-    title: 'Oleg',
+    name: 'Oleg',
     city: 'Moscow',
+    role: 'Frontend Developer',
     description:
-      'The most experienced member of our team is determined and an enterprising person with a sharp mind. He is always ready to take on the most difficult and new tasks. His resourcefulness and persistence make a significant contribution to our work.',
+      'The most experienced member of team is determined and an enterprising person with a sharp mind. He is always ready to take on the most difficult and new tasks. His resourcefulness and persistence make a significant contribution to our work.',
+    education:
+      'Graduated from the National Research Nuclear University MEPhI with a degree in Applied Mathematics.',
+    job: 'Сurrently working as a consultant for SAP BW/BI/ BW4 Hana',
+    hobby: 'Loves reading science fiction, cycling, Formula 1, hiking and rafting.',
     git: 'fasty86',
   },
 
   {
     image: `${LidaImg}`,
-    title: 'Lida',
+    name: 'Lida',
     city: 'Nizhny Novgorod',
+    role: 'Frontend Developer',
     description:
-      'Our tireless worker is an amazing girl who takes care of all the routine work and design. She is not only hardworking and diligent, but also capable of performing several tasks at the same time. Her multitasking and creative approach make our project more vibrant and unique.',
+      'Tireless worker is an amazing girl who takes care of all the routine work and design. She is not only hardworking and diligent, but also capable of performing several tasks at the same time. Her multitasking and creative approach make our project more vibrant and unique.',
+    education: 'She has a pharmaceutical education and a higher one in economics',
+    job: 'Currently devoting all free time to learning front-end development in Rolling Scopes School',
+    hobby: 'Loves traveling,bike rides, snowboarding, photography and coffee.',
     git: 'lidasharova',
   },
 ];
 
+const teamMethods = [
+  'Assignment of responsibilities',
+  'Joint decision making',
+  'Daily meetings',
+  'Active discussion and idea exchange',
+  'Shared code review of completed tasks',
+  'Immediate collective problem solving',
+];
+
 export const AboutPage: React.FC = () => {
-  const teamCards = [
-    {
-      name: 'KISS',
-      title: 'Do not complicate, but explain',
-      description: 'We always discuss and explain our ideas.',
-    },
-    {
-      name: 'DRY',
-      title: 'Do not repeat, but complement',
-      description: 'We complement each other like a puzzle.',
-    },
-    {
-      name: 'YAGINI',
-      title: 'Do not rush, just follow the plan',
-      description: 'We follow the plan to move forward.',
-    },
-  ];
+  const [expanded, setExpanded] = React.useState<string | false>(false);
+
+  const handleChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   return (
     <Container>
       <Typography
         variant="h5"
         sx={{
-          fontSize: '20px',
+          fontSize: '22px',
           fontWeight: 'bold',
           display: 'block',
-          margin: '10px',
-          marginTop: '20px',
+          marginTop: 5,
           '@media (max-width: 600px)': { fontSize: '15px' },
         }}
       >
@@ -101,8 +171,9 @@ export const AboutPage: React.FC = () => {
         justifyContent="center"
         alignItems="center"
         sx={{
-          gap: 3,
-          p: 5,
+          marginBottom: 5,
+          gap: 2,
+          p: 3,
           '@media (max-width: 600px)': {
             gap: 1,
             p: 1,
@@ -110,60 +181,57 @@ export const AboutPage: React.FC = () => {
         }}
         flexWrap="wrap"
       >
-        {teamCards.map((card, index) => (
-          <Card
+        {teamName.map((item, index) => (
+          <Accordion
             key={index}
+            expanded={expanded === `panel${index}`}
+            onChange={handleChange(`panel${index}`)}
             sx={{
-              width: '310px',
-              height: '115px',
-              '@media (max-width: 600px)': {
-                width: '260px',
-                height: '85px',
+              backgroundColor: '#eed4e2',
+              width: '400px',
+              boxShadow: '5px 1px 10px 3px rgba(0, 0, 0, 0.22)',
+              '@media (max-width: 500px)': {
+                width: '80%',
               },
-              boxShadow: '9px 6px 35px 11px rgba(34, 60, 80, 0.22)',
-              backgroundColor: '#FFF0F5',
-              borderRadius: '23%',
+              transition: 'all 0.4s',
+              '&:hover': { boxShadow: 10 },
+              borderWidth: 1,
+              borderStyle: 'solid',
+              borderColor: '#f2dce8',
             }}
           >
-            <CardContent>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls={`panel${index}bh-content`}
+              id={`panel${index}bh-header`}
+              sx={{
+                backgroundColor: '#FFF0F8',
+                width: '400px',
+                boxShadow: '2px 4px 5px 2px rgba(0, 0, 0, 0.03)',
+                borderWidth: 1,
+                borderStyle: 'solid',
+                borderColor: '#f2dce8',
+                '@media (max-width: 500px)': {
+                  width: '100%',
+                },
+              }}
+            >
               <Typography
                 sx={{
+                  width: '33%',
+                  flexShrink: 0,
                   fontWeight: 'bold',
                   color: 'secondary.dark',
-                  margin: '5px',
-                  '@media (max-width: 600px)': {
-                    fontSize: '16px',
-                    margin: '0',
-                  },
                 }}
               >
-                {card.name}
+                {item.name}
               </Typography>
-              <Typography
-                variant="h6"
-                sx={{
-                  fontSize: '17px',
-                  color: 'black',
-                  '@media (max-width: 600px)': {
-                    fontSize: '13px',
-                  },
-                }}
-              >
-                {card.title}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{
-                  color: '#666666',
-                  '@media (max-width: 600px)': {
-                    fontSize: '10px',
-                  },
-                }}
-              >
-                {card.description}
-              </Typography>
-            </CardContent>
-          </Card>
+              <Typography sx={{ color: 'text.secondary' }}>{item.title}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{item.description}</Typography>
+            </AccordionDetails>
+          </Accordion>
         ))}
       </Box>
 
@@ -172,7 +240,6 @@ export const AboutPage: React.FC = () => {
         flexDirection={{ xs: 'column', md: 'row', xl: 'row' }}
         justifyContent="center"
         alignItems="center"
-        p={2}
         flexWrap="wrap"
         sx={{
           gap: 12,
@@ -188,46 +255,77 @@ export const AboutPage: React.FC = () => {
           <Card
             key={index}
             sx={{
-              width: '250px',
-              height: '600px',
+              width: '300px',
+              height: 'auto',
               '@media (max-width: 600px)': {
-                width: '250px',
+                width: '300px',
                 height: 'auto',
               },
               boxShadow: '0px 1px 33px 13px rgba(0, 0, 0, 0.22)',
               backgroundColor: 'rgba(0, 0, 0, 0.04)',
               color: 'primary.dark',
               fontWeight: 'bold',
+              transition: 'all 0.5s',
+              '&:hover': { boxShadow: 10, transform: 'scale(1.03)' },
+              cursor: 'default',
             }}
           >
             <img
-              width="250px"
-              height="250px"
+              width="300px"
+              height="300px"
               src={card.image}
-              alt={card.title}
+              alt={card.name}
             />
-            <CardContent>
-              <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>
-                {card.title}
-                <Typography
-                  color="secondary.dark"
-                  marginBottom={'15px'}
-                  sx={{ fontSize: '16px' }}
-                >
-                  {card.city}
-                </Typography>
+            <CardContent sx={{ bgcolor: 'white', textAlign: 'left' }}>
+              <Typography sx={{ fontWeight: 'bold', fontSize: '19px', textAlign: 'center' }}>
+                {card.name}
+              </Typography>
+              <Typography
+                color="secondary.dark"
+                sx={{ fontSize: '16px', textAlign: 'center' }}
+              >
+                {card.city}
+              </Typography>
+              <Typography
+                sx={{ fontSize: '12px', textAlign: 'center' }}
+                marginBottom={'15px'}
+                color="black"
+              >
+                {card.role}
               </Typography>
               <Typography
                 sx={{ fontSize: '13px' }}
-                color="#666666"
+                color="primary.dark"
               >
                 {card.description}
               </Typography>
+
               <Box
-                sx={boxStyle}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Typography sx={biographyStyles}>
+                  <SchoolIcon sx={iconStyles}></SchoolIcon>
+                  {card.education}
+                </Typography>
+
+                <Typography sx={biographyStyles}>
+                  <EngineeringIcon sx={iconStyles}></EngineeringIcon>
+                  {card.job}
+                </Typography>
+                <Typography sx={biographyStyles}>
+                  <FavoriteBorderIcon sx={iconStyles}></FavoriteBorderIcon>
+                  {card.hobby}
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{ ...boxStyles, marginTop: '20px' }}
                 key={card.git}
               >
-                <GitHubIcon style={{ margin: '0 8', color: 'black', width: '14px' }} />
+                <GitHubIcon style={gitIconStyle} />
                 <Link
                   sx={linkStyles}
                   href={`https://github.com/${card.git}`}
@@ -240,6 +338,81 @@ export const AboutPage: React.FC = () => {
             </CardContent>
           </Card>
         ))}
+      </Box>
+
+      <Typography
+        variant="h5"
+        color="dark"
+        sx={{
+          fontSize: '27px',
+          fontWeight: 'bold',
+          display: 'block',
+          marginBottom: '10px',
+          marginTop: '70px',
+          '@media (max-width: 600px)': { fontSize: '15px' },
+        }}
+      >
+        Our effective collaboration methods:
+      </Typography>
+
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', md: 'row', xl: 'row' }}
+        justifyContent="center"
+        alignItems="center"
+        p={1}
+        flexWrap="wrap"
+        sx={{
+          gap: 2,
+          '@media (max-width: 600px)': {
+            gap: 1,
+          },
+          '@media (max-width: 900px)': {
+            gap: 2,
+          },
+        }}
+      >
+        {teamMethods.map((method, index) => (
+          <Fab
+            variant="extended"
+            size="large"
+            color="info"
+            key={index}
+            sx={psevdoButtonStyle}
+          >
+            {method}
+          </Fab>
+        ))}
+      </Box>
+      <Box
+        marginTop={10}
+        marginBottom={2}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Link
+          href={`https://rs.school/js/`}
+          target="_blank"
+          rel="noopener"
+        >
+          <Box
+            sx={{
+              backgroundColor: 'white',
+              boxShadow: '4px 4px 18px 0px rgba(253, 254, 255, 0.2)',
+              backgroundImage: `url(${LogoSvg})`,
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              width: '123px',
+              height: '45px',
+              transition: 'all 0.4s',
+              '&:hover': {
+                transform: 'scale(1.2)',
+              },
+            }}
+          ></Box>
+        </Link>
       </Box>
     </Container>
   );
