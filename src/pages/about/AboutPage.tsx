@@ -113,7 +113,7 @@ const cardsData: CardData[] = [
     city: 'Moscow',
     role: 'Frontend Developer',
     description:
-      'The most experienced member of team is determined and an enterprising person with a sharp mind. He is always ready to take on the most difficult and new tasks. His resourcefulness and persistence make a significant contribution to our work.',
+      'The most experienced member of the team is a determined and enterprising person with a sharp mind and excellent memory. He is always ready to take on the most difficult and new tasks. His resourcefulness and perseverance make a significant contribution to our work.',
     education:
       'Graduated from the National Research Nuclear University MEPhI with a degree in Applied Mathematics.',
     job: 'Сurrently working as a consultant for SAP BW/BI/ BW4 Hana',
@@ -242,12 +242,12 @@ export const AboutPage: React.FC = () => {
         alignItems="center"
         flexWrap="wrap"
         sx={{
-          gap: 12,
+          gap: 5,
           '@media (max-width: 600px)': {
-            gap: 5,
+            gap: 4,
           },
           '@media (max-width: 900px)': {
-            gap: 7,
+            gap: 5,
           },
         }}
       >
@@ -256,13 +256,13 @@ export const AboutPage: React.FC = () => {
             key={index}
             sx={{
               width: '300px',
-              height: 'auto',
+              height: '790px',
+              backgroundColor: 'white',
               '@media (max-width: 600px)': {
                 width: '300px',
                 height: 'auto',
               },
               boxShadow: '0px 1px 33px 13px rgba(0, 0, 0, 0.22)',
-              backgroundColor: 'rgba(0, 0, 0, 0.04)',
               color: 'primary.dark',
               fontWeight: 'bold',
               transition: 'all 0.5s',
@@ -276,7 +276,7 @@ export const AboutPage: React.FC = () => {
               src={card.image}
               alt={card.name}
             />
-            <CardContent sx={{ bgcolor: 'white', textAlign: 'left' }}>
+            <CardContent sx={{ backgroundColor: 'white', textAlign: 'left' }}>
               <Typography sx={{ fontWeight: 'bold', fontSize: '19px', textAlign: 'center' }}>
                 {card.name}
               </Typography>
