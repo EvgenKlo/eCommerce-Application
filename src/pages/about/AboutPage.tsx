@@ -95,7 +95,7 @@ interface CardData {
 const cardsData: CardData[] = [
   {
     image: `${ZhenyaImg}`,
-    name: 'Zhenya',
+    name: 'Evgeniy',
     city: 'Yekaterinburg',
     role: 'Team Lead & Frontend Developer',
     description:
@@ -123,7 +123,7 @@ const cardsData: CardData[] = [
 
   {
     image: `${LidaImg}`,
-    name: 'Lida',
+    name: 'Lidiia',
     city: 'Nizhny Novgorod',
     role: 'Frontend Developer',
     description:
