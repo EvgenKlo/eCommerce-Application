@@ -3,7 +3,11 @@ import WarningIcon from '@mui/icons-material/Warning';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { clearCart, setLoader } from '@/store/slices/cartSlice';
-import { type CartChangeLineItemQuantityAction } from '@commercetools/platform-sdk';
+import {
+  Cart,
+  CartRemoveDiscountCodeAction,
+  type CartChangeLineItemQuantityAction,
+} from '@commercetools/platform-sdk';
 
 const style = {
   position: 'absolute',
@@ -18,6 +22,17 @@ const style = {
   boxSizing: 'border-box',
   display: 'flex',
 };
+const clearDiscounts = (cart: Cart): CartRemoveDiscountCodeAction[] => {
+  const actions: CartRemoveDiscountCodeAction[] = cart.discountCodes.map(
+    ({ discountCode }): CartRemoveDiscountCodeAction => {
+      return {
+        action: 'removeDiscountCode',
+        discountCode,
+      };
+    }
+  );
+  return actions;
+};
 
 const ClearModal: React.FC<{
   open: false | true;
@@ -30,7 +45,7 @@ const ClearModal: React.FC<{
   const dispatch = useAppDispatch();
 
   const clearBasket = () => {
-    const actions = cart.lineItems.map((item) => {
+    const actions = cart.lineItems.map((item): CartChangeLineItemQuantityAction => {
       return {
         action: 'changeLineItemQuantity',
         lineItemId: item.id,
@@ -38,7 +53,7 @@ const ClearModal: React.FC<{
       };
     });
     dispatch(setLoader());
-    void dispatch(clearCart(actions as CartChangeLineItemQuantityAction[]));
+    void dispatch(clearCart([...actions, ...clearDiscounts(cart)]));
     setOpen(false);
   };
 
