@@ -8,6 +8,8 @@ import {
   type CartChangeLineItemQuantityAction,
   type CartAddDiscountCodeAction,
   type DiscountCode,
+  type CartRemoveDiscountCodeAction,
+  type CartUpdateAction,
 } from '@commercetools/platform-sdk';
 import type { PayloadAction } from '@reduxjs/toolkit';
 const initialState = {
@@ -71,7 +73,7 @@ export const changeProductQuantityInCart = createAsyncThunk(
 );
 export const clearCart = createAsyncThunk(
   'carts/clearCart',
-  async (actions: CartChangeLineItemQuantityAction[], thunkAPI) => {
+  async (actions: CartUpdateAction[], thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const client = state.customers.apiInstance;
     const { version, id } = state.carts.cart;
@@ -93,6 +95,17 @@ export const applyDiscount = createAsyncThunk(
   'carts/applyDiscount',
   async (code: string, thunkAPI) => {
     const actions: CartAddDiscountCodeAction[] = [{ action: 'addDiscountCode', code }];
+    const state: RootState = thunkAPI.getState() as RootState;
+    const client = state.customers.apiInstance;
+    const { version, id } = state.carts.cart;
+    const cartDraft: CartUpdate = { version, actions: actions };
+    const result = await client.updateCart(id, cartDraft);
+    return result;
+  }
+);
+export const removeDiscount = createAsyncThunk(
+  'carts/removeDiscount',
+  async (actions: CartRemoveDiscountCodeAction[], thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState;
     const client = state.customers.apiInstance;
     const { version, id } = state.carts.cart;
@@ -184,7 +197,19 @@ const cartSlice = createSlice({
       } else {
         state.snackbarInfo = {
           massage: '',
-          errorMassage: 'Unsuccessful attempt to change cart. Try again!',
+          errorMassage: action.payload.error,
+        };
+      }
+    });
+    builder.addCase(removeDiscount.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.cart = action.payload.data.body;
+        state.snackbarInfo = { massage: 'Discount removed', errorMassage: '' };
+      } else {
+        state.snackbarInfo = {
+          massage: '',
+          errorMassage: action.payload.error,
         };
       }
     });
