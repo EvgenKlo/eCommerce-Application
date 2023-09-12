@@ -47,7 +47,7 @@ export const MainPage: React.FC = () => {
           {discounts.map((discount) => {
             return (
               <Tooltip
-                title={discount.name!.en}
+                title={discount.description!.en}
                 key={discount.id}
                 sx={{ '&:hover': { cursor: 'cursor' } }}
               >
