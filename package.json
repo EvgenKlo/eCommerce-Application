@@ -22,12 +22,12 @@
     "coverage": "npx vitest --coverage"
   },
   "lint-staged": {
-    "*.ts": [
+    "*.{js,ts,jsx,tsx}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write --config .prettierrc"
     ],
     "*.css": [
-      "prettier --write -config .prettierrc"
+      "prettier --write --config .prettierrc"
     ],
     "**/*.scss": [
       "stylelint --fix"
