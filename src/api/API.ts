@@ -497,22 +497,8 @@ export class API {
   async getDiscountCodes() {
     let errorMsg = '';
     try {
-      // const response = await this.client.cartDiscounts().get().execute();
       const response = await this.client.discountCodes().get().execute();
       const result = response;
-      return { data: result, error: errorMsg };
-    } catch (error) {
-      if (error instanceof Error) errorMsg = error.message;
-      return { data: undefined, error: errorMsg };
-    }
-  }
-  async createDiscountCode() {
-    let errorMsg = '';
-    try {
-      const response = await this.client.discountCodes().get().execute();
-      const result = response;
-      console.log('disc', result);
-
       return { data: result, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
