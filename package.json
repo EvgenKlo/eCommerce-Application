@@ -24,10 +24,10 @@
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
       "eslint --fix",
-      "prettier --write -config .prettierrc"
+      "prettier --write --config .prettierrc"
     ],
     "*.css": [
-      "prettier --write -config .prettierrc"
+      "prettier --write --config .prettierrc"
     ],
     "**/*.scss": [
       "stylelint --fix"
