@@ -20,6 +20,7 @@ import LidaImg from '/src/assets/photo/Lida.jpg';
 import OlegImg from '/src/assets/photo/Oleg.jpg';
 import ZhenyaImg from '/src/assets/photo/Zhenya.jpg';
 import LogoSvg from '/src/assets/svg/logo-rss.svg';
+import { handleMouseDown } from '@/helpers/handleMouseDown';
 
 const biographyStyles = { fontSize: '13px', marginTop: '15px', color: '#666666' };
 const iconStyles = { fontSize: '12px', marginRight: '3px' };
@@ -74,7 +75,7 @@ const teamName: TeamName[] = [
     description: 'We complement each other like a puzzle.',
   },
   {
-    name: 'YAGINI',
+    name: 'YAGNI',
     title: 'Do not rush, just follow the plan',
     description: 'We follow the plan to move forward.',
   },
@@ -101,8 +102,8 @@ const cardsData: CardData[] = [
     description:
       'Team leader is a real captain. He is a responsible and attentive person who is always able to delve into the details to ensure the successful completion of the project. His attentiveness and determination help the team in the most difficult situations.',
     education:
-      'Graduated from the Russian State Pedagogical University and has a higher education in the field of maintenance and operation of road transport',
-    job: 'Currently work at the Lexus center in Yekaterinburg.',
+      'Graduated from the Russian State Vocational Pedagogical University and has a higher education in the field of maintenance and operation of road transport',
+    job: 'Currently work at the Lexus center Yekaterinburg.',
     hobby: 'Loves cycling, mountain and cross-country skiing, bouldering and filming.',
     git: 'EvgenKlo',
   },
@@ -139,7 +140,7 @@ const teamMethods = [
   'Assignment of responsibilities',
   'Joint decision making',
   'Daily meetings',
-  'Active discussion and idea exchange',
+  'Active discussion and exchange of idea',
   'Shared code review of completed tasks',
   'Immediate collective problem solving',
 ];
@@ -163,7 +164,7 @@ export const AboutPage: React.FC = () => {
           '@media (max-width: 600px)': { fontSize: '15px' },
         }}
       >
-        OUR TEAM - &quot;KISS DRY YAGINI&quot;
+        OUR TEAM - &quot;KISS DRY YAGNI&quot;
       </Typography>
       <Box
         display="flex"
@@ -379,6 +380,11 @@ export const AboutPage: React.FC = () => {
             color="info"
             key={index}
             sx={psevdoButtonStyle}
+            disableRipple={true}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              handleMouseDown(e);
+            }}
           >
             {method}
           </Fab>
