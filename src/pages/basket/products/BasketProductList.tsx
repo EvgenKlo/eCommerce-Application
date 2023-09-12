@@ -6,6 +6,15 @@ import { useState } from 'react';
 
 import ClearModal from '@/components/UI/basket/ClearModal';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
+import { type Cart } from '@commercetools/platform-sdk';
+
+const calcTotalPrice = (cart: Cart): number => {
+  return cart.lineItems.reduce(
+    (accumulator: number, item): number =>
+      (accumulator += item.price.value.centAmount * item.quantity),
+    0
+  );
+};
 
 const BasketProductList = () => {
   const [open, setOpen] = useState(false);
@@ -38,12 +47,28 @@ const BasketProductList = () => {
             sx={{ margin: 'auto', paddingTop: '20px' }}
           >
             Total cost:{' '}
-            <span>
+            <span style={{ paddingRight: '15px' }}>
               {new Intl.NumberFormat('en-EN', {
                 style: 'currency',
                 currency: cart.totalPrice.currencyCode,
               }).format(cart.totalPrice.centAmount)}
             </span>
+            {!!cart.discountCodes.length && (
+              <span
+                style={{
+                  color: '#c3c3c1',
+                  textDecoration: 'line-through',
+                  // textDecorationColor: 'red',
+                }}
+              >
+                (
+                {new Intl.NumberFormat('en-EN', {
+                  style: 'currency',
+                  currency: cart.totalPrice.currencyCode,
+                }).format(calcTotalPrice(cart))}
+                )
+              </span>
+            )}
           </Typography>
           <Button
             variant="contained"
