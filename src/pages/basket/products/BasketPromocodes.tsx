@@ -1,22 +1,15 @@
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { useAppDispatch } from '@/hooks/reduxHooks';
 import { applyDiscount, setLoader } from '@/store/slices/cartSlice';
-import { type DiscountCode } from '@commercetools/platform-sdk';
+
 import { Button, Divider, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
 
-const getCodeId = (code: string, promos: DiscountCode[]): string | undefined => {
-  const discountItem = promos.find(({ code }) => code == code);
-  return discountItem!.id;
-};
 const BasketPromocodes: React.FC = () => {
-  const discounts = useAppSelector((state) => state.carts.discounts);
   const dispatch = useAppDispatch();
   const [code, setCode] = useState('');
 
   const handleAddPromo = (): void => {
     dispatch(setLoader());
-    // const id = getCodeId(code, discounts);
-    // if (id) void dispatch(applyDiscount(id));
     void dispatch(applyDiscount(code));
   };
 
