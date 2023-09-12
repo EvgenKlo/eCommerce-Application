@@ -69,6 +69,7 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
             <Price
               price={price}
               discountPrice={discountPrice}
+              // discountPrice={product.discountedPricePerQuantity[0].discountedPrice.value.centAmount}
               currencyCode={currencyCode}
             />
           </Box>
