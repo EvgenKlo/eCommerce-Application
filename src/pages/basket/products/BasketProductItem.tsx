@@ -10,8 +10,13 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
 
   const price = product.variant.prices && product.variant.prices[0].value.centAmount;
 
-  const discountPrice =
-    product.variant.prices && product.variant.prices[0].discounted?.value.centAmount;
+  const discountPrice = product.discountedPricePerQuantity.length
+    ? product.discountedPricePerQuantity[0].discountedPrice.value.centAmount
+    : product.variant.prices
+    ? product.variant.prices[0].discounted?.value.centAmount
+    : undefined;
+  // const discountPrice =
+  //   product.variant.prices && product.variant.prices[0].discounted?.value.centAmount;
 
   const currencyCode = product.variant.prices && product.variant.prices[0].value.currencyCode;
 
