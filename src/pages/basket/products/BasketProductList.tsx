@@ -11,7 +11,8 @@ import { type Cart } from '@commercetools/platform-sdk';
 const calcTotalPrice = (cart: Cart): number => {
   return cart.lineItems.reduce(
     (accumulator: number, item): number =>
-      (accumulator += item.price.value.centAmount * item.quantity),
+      (accumulator +=
+        (item.price.value.centAmount / 10 ** cart.totalPrice.fractionDigits) * item.quantity),
     0
   );
 };
@@ -51,7 +52,7 @@ const BasketProductList = () => {
               {new Intl.NumberFormat('en-EN', {
                 style: 'currency',
                 currency: cart.totalPrice.currencyCode,
-              }).format(cart.totalPrice.centAmount)}
+              }).format(cart.totalPrice.centAmount / 10 ** cart.totalPrice.fractionDigits)}
             </span>
             {!!cart.discountCodes.length && (
               <span
