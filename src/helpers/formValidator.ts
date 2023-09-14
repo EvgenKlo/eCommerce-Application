@@ -47,4 +47,10 @@ export class FormValidator {
 
     return regExp.test(postalCode);
   }
+
+  static cityValidator(city: string) {
+    const regExp = /^[a-zA-Zа-яА-ЯёЁ]+(?:[ ]?[a-zA-Zа-яА-ЯёЁ]+)*$/;
+
+    return regExp.test(city);
+  }
 }

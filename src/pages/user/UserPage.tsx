@@ -112,7 +112,7 @@ export const UserPage: React.FC = () => {
       <Box style={{ ...boxStyle, padding: '60px' }}>
         <Paper
           elevation={6}
-          style={{ padding: '20px', background: '#FFF0F5' }}
+          style={{ padding: '20px', background: '#FFF0F5', maxWidth: '730px' }}
         >
           <Typography
             variant="h4"
