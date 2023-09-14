@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import { handleMouseDown } from '@/helpers/handleMouseDown';
 
 const boxStyle = {
   marginBottom: 1,
@@ -83,6 +84,10 @@ export const PagesButtons: React.FC = () => {
                     m: 0,
                     mt: 0.5,
                     '&:hover': { color: 'secondary.main' },
+                  }}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    handleMouseDown(e);
                   }}
                 >
                   {page.icon}
