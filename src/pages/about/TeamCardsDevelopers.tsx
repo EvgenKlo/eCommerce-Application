@@ -11,14 +11,29 @@ const biographyStyles = { fontSize: '13px', marginTop: '15px', color: '#666666' 
 const iconStyles = { fontSize: '12px', marginRight: '3px' };
 const gitIconStyle = { margin: '0 3', color: 'black', width: '14px' };
 
-const boxStyles = {
+const boxStyle = {
   display: 'flex',
   alignItems: 'center',
   alignContent: 'center',
   justifyContent: 'center',
 };
+const cardStyle = {
+  width: '300px',
+  height: '790px',
+  backgroundColor: 'white',
+  '@media (max-width: 600px)': {
+    width: '300px',
+    height: 'auto',
+  },
+  boxShadow: '0px 1px 33px 13px rgba(0, 0, 0, 0.22)',
+  color: 'primary.dark',
+  fontWeight: 'bold',
+  transition: 'all 0.5s',
+  '&:hover': { boxShadow: 10, transform: 'scale(1.03)' },
+  cursor: 'default',
+};
 
-const linkStyles = {
+const linkStyle = {
   textDecoration: 'none',
   fontWeight: 'normal',
   fontSize: '15px',
@@ -104,21 +119,7 @@ export const TeamCardsDevelopers: React.FC = () => {
         {cardsData.map((card, index) => (
           <Card
             key={index}
-            sx={{
-              width: '300px',
-              height: '790px',
-              backgroundColor: 'white',
-              '@media (max-width: 600px)': {
-                width: '300px',
-                height: 'auto',
-              },
-              boxShadow: '0px 1px 33px 13px rgba(0, 0, 0, 0.22)',
-              color: 'primary.dark',
-              fontWeight: 'bold',
-              transition: 'all 0.5s',
-              '&:hover': { boxShadow: 10, transform: 'scale(1.03)' },
-              cursor: 'default',
-            }}
+            sx={cardStyle}
           >
             <img
               width="300px"
@@ -172,12 +173,12 @@ export const TeamCardsDevelopers: React.FC = () => {
               </Box>
 
               <Box
-                sx={{ ...boxStyles, marginTop: '20px' }}
+                sx={{ ...boxStyle, marginTop: '20px' }}
                 key={card.git}
               >
                 <GitHubIcon style={gitIconStyle} />
                 <Link
-                  sx={linkStyles}
+                  sx={linkStyle}
                   href={`https://github.com/${card.git}`}
                   target="_blank"
                   rel="noopener"
