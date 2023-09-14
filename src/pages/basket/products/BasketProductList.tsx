@@ -3,18 +3,19 @@ import { Button, Grid, Stack, Typography } from '@mui/material';
 import BasketProductItem from './BasketProductItem';
 import BasketPromocodes from './BasketPromocodes';
 import { useState } from 'react';
-
 import ClearModal from '@/components/UI/basket/ClearModal';
 import { handleMouseDown } from '@/helpers/handleMouseDown';
 import { type Cart } from '@commercetools/platform-sdk';
 
 const calcTotalPrice = (cart: Cart): number => {
-  return cart.lineItems.reduce(
-    (accumulator: number, item): number =>
-      (accumulator +=
-        (item.price.value.centAmount / 10 ** cart.totalPrice.fractionDigits) * item.quantity),
-    0
-  );
+  return cart.lineItems.reduce((accumulator: number, item): number => {
+    const price = item.price.value.centAmount;
+    return (accumulator += (price / 10 ** cart.totalPrice.fractionDigits) * item.quantity);
+  }, 0);
+};
+const isDiscounted = (cart: Cart): boolean => {
+  if (!!cart.discountCodes.length) return true;
+  return cart.lineItems.some((item): boolean => !!item.price.discounted == true);
 };
 
 const BasketProductList = () => {
@@ -54,12 +55,11 @@ const BasketProductList = () => {
                 currency: cart.totalPrice.currencyCode,
               }).format(cart.totalPrice.centAmount / 10 ** cart.totalPrice.fractionDigits)}
             </span>
-            {!!cart.discountCodes.length && (
+            {isDiscounted(cart) && (
               <span
                 style={{
                   color: '#c3c3c1',
                   textDecoration: 'line-through',
-                  // textDecorationColor: 'red',
                 }}
               >
                 (
