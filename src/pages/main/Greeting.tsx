@@ -13,9 +13,9 @@ export const Greeting: React.FC = () => {
   return (
     <>
       {customer ? (
-        <Typography sx={styleTitle}>Welcome {customer.firstName} to our pet store!</Typography>
+        <Typography sx={styleTitle}>Welcome {customer.firstName} to PetJoy store!</Typography>
       ) : (
-        <Typography sx={styleTitle}>Welcome to our pet store!</Typography>
+        <Typography sx={styleTitle}>Welcome to PetJoy store!</Typography>
       )}
     </>
   );

@@ -10,9 +10,9 @@ const FullWidthImage: React.FC<FullWidthImageProps> = ({ src, alt }) => {
   return (
     <ImageListItem
       sx={{
-        marginBottom: '25px',
-        '@media (max-width: 900px)': { marginBottom: '10px' },
-        '@media (max-width: 600px)': { marginBottom: '8px' },
+        marginBottom: '30px',
+        '@media (max-width: 900px)': { marginBottom: '20px' },
+        '@media (max-width: 600px)': { marginBottom: '10px' },
       }}
     >
       <img
