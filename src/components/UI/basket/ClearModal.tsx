@@ -4,8 +4,8 @@ import { handleMouseDown } from '@/helpers/handleMouseDown';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { clearCart, setLoader } from '@/store/slices/cartSlice';
 import {
-  Cart,
-  CartRemoveDiscountCodeAction,
+  type Cart,
+  type CartRemoveDiscountCodeAction,
   type CartChangeLineItemQuantityAction,
 } from '@commercetools/platform-sdk';
 
