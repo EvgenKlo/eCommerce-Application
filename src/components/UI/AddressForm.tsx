@@ -69,11 +69,11 @@ export const AddressForm: React.FC<Props> = (props) => {
         onChange={(e) => {
           setCityValue(e.target.value);
           if (FormValidator.cityValidator(e.target.value)) {
-            setAddressData({ ...addressData, city: '' });
-            setCityError(true);
-          } else {
             setAddressData({ ...addressData, city: e.target.value });
             setCityError(false);
+          } else {
+            setAddressData({ ...addressData, city: '' });
+            setCityError(true);
           }
         }}
         error={cityError}
