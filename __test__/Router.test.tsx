@@ -20,7 +20,7 @@ describe('Demonstrating  navigation ', () => {
 
     expect(screen.getByText(/Hello/i)).toBeInTheDocument();
     await user.click(screen.getByRole('link', { name: 'About' }));
-    expect(screen.getByText(/AboutPage/i)).toBeInTheDocument();
+    expect(screen.getByText(/OUR TEAM - "KISS DRY YAGNI"/i)).toBeInTheDocument();
   });
   test('from about to catalog', async () => {
     render(
@@ -32,7 +32,7 @@ describe('Demonstrating  navigation ', () => {
     );
     const user = userEvent.setup();
 
-    expect(screen.getByText(/AboutPage/i)).toBeInTheDocument();
+    expect(screen.getByText(/OUR TEAM - "KISS DRY YAGNI"/i)).toBeInTheDocument();
   });
 
   test('landing on a bad page', async () => {
