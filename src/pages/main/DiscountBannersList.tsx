@@ -1,4 +1,4 @@
-import { Typography, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import FullWidthImage from './FullWidthImage';
 import bannerCode10Perсent from '/src/assets/banners/banner-code1.png';
 import bannerCode10Euro from '/src/assets/banners/banner-code2.png';
@@ -17,17 +17,6 @@ const banners = [
 export const DiscountBannersList: React.FC = () => {
   return (
     <>
-      <Typography
-        variant="h5"
-        sx={{
-          mb: '25px',
-          fontSize: '27px',
-          '@media (max-width: 900px)': { marginBottom: '15px', fontSize: '25px' },
-          '@media (max-width: 600px)': { marginBottom: '10px', fontSize: '20px' },
-        }}
-      >
-        Our offers and discounts:
-      </Typography>
       <Box>
         {banners.map((banner) => (
           <FullWidthImage
