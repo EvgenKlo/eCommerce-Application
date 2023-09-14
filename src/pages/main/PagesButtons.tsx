@@ -8,7 +8,7 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 
 const boxStyle = {
-  marginBottom: 5,
+  marginBottom: 1,
   gap: 5,
   p: 3,
   '@media (max-width: 600px)': {
@@ -84,8 +84,6 @@ export const PagesButtons: React.FC = () => {
                     mt: 0.5,
                     '&:hover': { color: 'secondary.main' },
                   }}
-                  component={Link}
-                  to={`/${page.url}`}
                 >
                   {page.icon}
                 </IconButton>
