@@ -32,6 +32,7 @@ const initialState: InitialState = {
   limit: 12,
   currentPage: 1,
   count: 0,
+  digits: 2,
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
@@ -195,13 +196,18 @@ const productSlice = createSlice({
     });
 
     builder.addCase(getProducts.fulfilled, (state, action) => {
-      if (action.payload)
+      if (action.payload) {
         productSlice.caseReducers.deriveAttributes(state, {
           payload: {
             facets: action.payload?.facets,
           },
           type: 'products/filters',
         });
+
+        state.digits = action.payload.results[0].masterVariant.prices
+          ? action.payload.results[0].masterVariant.prices[0].value.fractionDigits
+          : 2;
+      }
     });
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.product = action.payload.data ? action.payload.data : ({} as ProductProjection);
