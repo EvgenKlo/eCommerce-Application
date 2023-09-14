@@ -32,7 +32,7 @@ const initialState: InitialState = {
   limit: 12,
   currentPage: 1,
   count: 0,
-  digits: 2,
+  digits: 0,
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
@@ -206,7 +206,7 @@ const productSlice = createSlice({
 
         state.digits = action.payload.results[0].masterVariant.prices
           ? action.payload.results[0].masterVariant.prices[0].value.fractionDigits
-          : 2;
+          : 0;
       }
     });
     builder.addCase(getProduct.fulfilled, (state, action) => {
