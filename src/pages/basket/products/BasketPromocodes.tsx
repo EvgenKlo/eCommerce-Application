@@ -1,11 +1,14 @@
-import { useAppDispatch } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { applyDiscount, setLoader } from '@/store/slices/cartSlice';
 
-import { Button, Divider, Stack, TextField } from '@mui/material';
+import { Button, Chip, Divider, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
+import { type Cart } from '@commercetools/platform-sdk';
 
 const BasketPromocodes: React.FC = () => {
   const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.carts.cart);
+  const discounts = useAppSelector((state) => state.carts.discounts);
   const [code, setCode] = useState('');
 
   const handleAddPromo = (): void => {
@@ -14,34 +17,51 @@ const BasketPromocodes: React.FC = () => {
   };
 
   return (
-    <Stack
-      direction="row"
-      divider={
-        <Divider
-          orientation="vertical"
-          flexItem
-        />
-      }
-      spacing={2}
-      useFlexGap
-      sx={{ justifyContent: 'center', maxHeight: '100px', mt: 2 }}
-    >
-      <TextField
-        helperText="Please enter promocode"
-        id="promocode"
-        label="Promocode"
-        value={code}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setCode(event.target.value);
-        }}
-      />
-      <Button
-        variant="outlined"
-        size="small"
-        onClick={() => handleAddPromo()}
+    <Stack direction="column">
+      <Stack
+        direction="row"
+        divider={
+          <Divider
+            orientation="vertical"
+            flexItem
+          />
+        }
+        spacing={2}
+        useFlexGap
+        sx={{ justifyContent: 'center', maxHeight: '100px', mt: 2 }}
       >
-        apply promocode
-      </Button>
+        <TextField
+          id="promocode"
+          label="Promocode"
+          value={code}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setCode(event.target.value);
+          }}
+        />
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => handleAddPromo()}
+        >
+          apply promocode
+        </Button>
+      </Stack>
+      {!!cart.discountCodes && (
+        <Stack
+          sx={{ mt: 1, gap: 1, justifyContent: 'center' }}
+          direction="row"
+          useFlexGap
+        >
+          <Typography sx={{ pt: 0.5 }}>Applied: </Typography>
+          {cart.discountCodes.map((code) => (
+            <Chip
+              label={discounts.find((discount) => discount.id == code.discountCode.id)?.code}
+              key={code.discountCode.id}
+              color="secondary"
+            />
+          ))}
+        </Stack>
+      )}
     </Stack>
   );
 };
