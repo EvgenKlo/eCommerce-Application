@@ -3,7 +3,6 @@ import { applyDiscount, setLoader } from '@/store/slices/cartSlice';
 
 import { Button, Chip, Divider, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
-import { type Cart } from '@commercetools/platform-sdk';
 
 const BasketPromocodes: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +45,7 @@ const BasketPromocodes: React.FC = () => {
           apply promocode
         </Button>
       </Stack>
-      {!!cart.discountCodes && (
+      {!!cart.discountCodes.length && (
         <Stack
           sx={{ mt: 1, gap: 1, justifyContent: 'center' }}
           direction="row"

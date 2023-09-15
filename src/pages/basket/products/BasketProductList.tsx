@@ -9,15 +9,14 @@ import { type Cart } from '@commercetools/platform-sdk';
 
 const calcTotalPrice = (cart: Cart): number => {
   return cart.lineItems.reduce((accumulator: number, item): number => {
-    const price = !!item.price.discounted
+    const price = item.price.discounted
       ? item.price.discounted.value.centAmount
       : item.price.value.centAmount;
     return (accumulator += (price / 10 ** cart.totalPrice.fractionDigits) * item.quantity);
   }, 0);
 };
 const isDiscounted = (cart: Cart): boolean => {
-  if (!!cart.discountCodes.length) return true;
-  // return cart.lineItems.some((item): boolean => !!item.price.discounted == true);
+  if (cart.discountCodes.length) return true;
   return false;
 };
 
@@ -65,12 +64,10 @@ const BasketProductList = () => {
                   textDecoration: 'line-through',
                 }}
               >
-                (
                 {new Intl.NumberFormat('en-EN', {
                   style: 'currency',
                   currency: cart.totalPrice.currencyCode,
                 }).format(calcTotalPrice(cart))}
-                )
               </span>
             )}
           </Typography>

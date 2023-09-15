@@ -8,19 +8,13 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
   const productImage = product.variant.images && product.variant.images[0].url;
   const productName = product.name.en;
 
-  const price = !!product.price.discounted
+  const price = product.price.discounted
     ? product.price.discounted.value.centAmount
     : product.variant.prices && product.variant.prices[0].value.centAmount;
 
-  // const discountPrice = product.discountedPricePerQuantity.length
-  //   ? product.discountedPricePerQuantity[0].discountedPrice.value.centAmount
-  //   : product.variant.prices
-  //   ? product.variant.prices[0].discounted?.value.centAmount
-  //   : undefined;
   const discountPrice = product.discountedPricePerQuantity.length
     ? product.discountedPricePerQuantity[0].discountedPrice.value.centAmount
     : undefined;
-  //   product.variant.prices && product.variant.prices[0].discounted?.value.centAmount;
 
   const currencyCode = product.variant.prices && product.variant.prices[0].value.currencyCode;
 
@@ -80,7 +74,6 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
             <Price
               price={price}
               discountPrice={discountPrice}
-              // discountPrice={product.discountedPricePerQuantity[0].discountedPrice.value.centAmount}
               currencyCode={currencyCode}
               fractionDigits={fractionDigits}
             />
