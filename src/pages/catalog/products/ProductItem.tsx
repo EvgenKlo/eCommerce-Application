@@ -21,6 +21,10 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
     product.masterVariant.prices &&
     product.masterVariant.prices[imageOrPriceNumber].value.currencyCode;
 
+  const fractionDigits =
+    product.masterVariant.prices &&
+    product.masterVariant.prices[imageOrPriceNumber].value.fractionDigits;
+
   return (
     <Grid
       item
@@ -77,6 +81,7 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
               price={price}
               discountPrice={discountPrice}
               currencyCode={currencyCode}
+              fractionDigits={fractionDigits}
             />
             <AddDelProductToCart id={product.id} />
           </CardContent>
