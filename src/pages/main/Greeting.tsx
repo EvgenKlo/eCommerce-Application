@@ -12,11 +12,9 @@ export const Greeting: React.FC = () => {
   const customer = useAppSelector((state) => state.customers.customer);
   return (
     <>
-      {customer ? (
-        <Typography sx={styleTitle}>Welcome {customer.firstName} to PetJoy store!</Typography>
-      ) : (
-        <Typography sx={styleTitle}>Welcome to PetJoy store!</Typography>
-      )}
+      <Typography sx={styleTitle}>
+        Welcome {customer ? customer.firstName : ''} to PetJoy store!
+      </Typography>
     </>
   );
 };

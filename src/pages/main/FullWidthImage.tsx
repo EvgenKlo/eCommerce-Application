@@ -1,9 +1,9 @@
 import { ImageListItem } from '@mui/material';
 
-interface FullWidthImageProps {
+type FullWidthImageProps = {
   src: string;
   alt: string;
-}
+};
 
 const FullWidthImage: React.FC<FullWidthImageProps> = ({ src, alt }) => {
   return (

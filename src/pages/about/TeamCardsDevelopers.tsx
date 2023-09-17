@@ -17,6 +17,7 @@ const boxStyle = {
   alignContent: 'center',
   justifyContent: 'center',
 };
+
 const cardStyle = {
   width: '300px',
   height: '790px',

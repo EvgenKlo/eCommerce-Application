@@ -8,12 +8,17 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
   const productImage = product.variant.images && product.variant.images[0].url;
   const productName = product.name.en;
 
-  const price = product.variant.prices && product.variant.prices[0].value.centAmount;
+  const price = product.price.discounted
+    ? product.price.discounted.value.centAmount
+    : product.variant.prices && product.variant.prices[0].value.centAmount;
 
-  const discountPrice =
-    product.variant.prices && product.variant.prices[0].discounted?.value.centAmount;
+  const discountPrice = product.discountedPricePerQuantity.length
+    ? product.discountedPricePerQuantity[0].discountedPrice.value.centAmount
+    : undefined;
 
   const currencyCode = product.variant.prices && product.variant.prices[0].value.currencyCode;
+
+  const fractionDigits = product.variant.prices && product.variant.prices[0].value.fractionDigits;
 
   const dispatch = useAppDispatch();
 
@@ -69,8 +74,8 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
             <Price
               price={price}
               discountPrice={discountPrice}
-              // discountPrice={product.discountedPricePerQuantity[0].discountedPrice.value.centAmount}
               currencyCode={currencyCode}
+              fractionDigits={fractionDigits}
             />
           </Box>
         </CardContent>
@@ -113,7 +118,7 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
               {new Intl.NumberFormat('en-EN', {
                 style: 'currency',
                 currency: product.totalPrice.currencyCode,
-              }).format(product.totalPrice.centAmount)}
+              }).format(product.totalPrice.centAmount / 10 ** (fractionDigits || 0))}
             </span>
           </Typography>
         </CardContent>
