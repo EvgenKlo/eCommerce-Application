@@ -127,7 +127,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
-            limit: 0,
+            limit: 1,
             facet: [
               'variants.attributes.color.en',
               'variants.attributes.size.en',
@@ -488,6 +488,17 @@ export class API {
         .execute();
       const result = response;
 
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  async getDiscountCodes() {
+    let errorMsg = '';
+    try {
+      const response = await this.client.discountCodes().get().execute();
+      const result = response;
       return { data: result, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;

@@ -16,6 +16,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 export const ActiveFilters: React.FC = () => {
   const filter = useAppSelector((state) => state.products.filters);
   const search = useAppSelector((state) => state.products.search);
+  const digits = useAppSelector((state) => state.products.digits);
 
   const [activeFilter, setActiveFilter] = useState(filter);
 
@@ -34,7 +35,9 @@ export const ActiveFilters: React.FC = () => {
       switch (filterOption) {
         case 'price':
           result.price = {
-            value: `from ${data[filterOption].lower} to ${data[filterOption].upper}`,
+            value: `from ${data[filterOption].lower / 10 ** digits} to ${
+              data[filterOption].upper / 10 ** digits
+            }`,
             action: () => dispatch(setPrice({ range: [0, maxPrice], operand: '=' })),
           };
 
