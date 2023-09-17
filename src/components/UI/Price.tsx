@@ -4,7 +4,8 @@ const Price: React.FC<{
   price: number | undefined;
   discountPrice: number | undefined;
   currencyCode: string | undefined;
-}> = ({ price, discountPrice, currencyCode }) => {
+  fractionDigits: number | undefined;
+}> = ({ price, discountPrice, currencyCode, fractionDigits }) => {
   return (
     <Box
       sx={{
@@ -20,7 +21,7 @@ const Price: React.FC<{
           {new Intl.NumberFormat('en-EN', {
             style: 'currency',
             currency: currencyCode,
-          }).format(discountPrice)}
+          }).format(discountPrice / 10 ** (fractionDigits || 0))}
         </Typography>
       )}
       <Typography
@@ -37,7 +38,7 @@ const Price: React.FC<{
           new Intl.NumberFormat('en-EN', {
             style: 'currency',
             currency: currencyCode,
-          }).format(price)}
+          }).format(price / 10 ** (fractionDigits || 0))}
       </Typography>
     </Box>
   );

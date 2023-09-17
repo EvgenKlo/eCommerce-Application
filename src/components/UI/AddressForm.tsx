@@ -68,16 +68,20 @@ export const AddressForm: React.FC<Props> = (props) => {
         value={cityValue}
         onChange={(e) => {
           setCityValue(e.target.value);
-          if (FormValidator.nameValidator(e.target.value)) {
-            setAddressData({ ...addressData, city: '' });
-            setCityError(true);
-          } else {
+          if (FormValidator.cityValidator(e.target.value)) {
             setAddressData({ ...addressData, city: e.target.value });
             setCityError(false);
+          } else {
+            setAddressData({ ...addressData, city: '' });
+            setCityError(true);
           }
         }}
         error={cityError}
-        helperText={cityError ? 'this field must not contain special characters or numbers' : null}
+        helperText={
+          cityError
+            ? 'this field must not contain special characters or numbers and must not begin or end with a space'
+            : null
+        }
       />
 
       <FormControl

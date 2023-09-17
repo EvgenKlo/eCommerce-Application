@@ -22,6 +22,7 @@ export const RangeSlider: React.FC = () => {
   const price = useAppSelector((state) => state.products.filters.price);
   const [currPrice, setCurrPrice] = useState([price.lower, price.upper]);
   const maxPrice = useAppSelector((state) => state.products.maxPrice);
+  const digits = useAppSelector((state) => state.products.digits);
 
   const dispatch = useAppDispatch();
 
@@ -47,7 +48,9 @@ export const RangeSlider: React.FC = () => {
       size="small"
       marks
       track="inverted"
-      max={maxPrice}
+      max={+maxPrice}
+      scale={(value) => value / 10 ** digits}
+      step={10 ** digits}
     />
   );
 };

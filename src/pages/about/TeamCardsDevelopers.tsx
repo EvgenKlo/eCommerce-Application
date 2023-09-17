@@ -17,6 +17,7 @@ const boxStyle = {
   alignContent: 'center',
   justifyContent: 'center',
 };
+
 const cardStyle = {
   width: '300px',
   height: '790px',
@@ -118,7 +119,7 @@ export const TeamCardsDevelopers: React.FC = () => {
       >
         {cardsData.map((card, index) => (
           <Card
-            key={index}
+            key={index
             sx={cardStyle}
           >
             <img

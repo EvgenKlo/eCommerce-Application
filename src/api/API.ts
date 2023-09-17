@@ -127,7 +127,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
-            limit: 0,
+            limit: 1,
             facet: [
               'variants.attributes.color.en',
               'variants.attributes.size.en',
