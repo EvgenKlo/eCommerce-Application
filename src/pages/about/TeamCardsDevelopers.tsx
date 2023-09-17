@@ -116,9 +116,9 @@ export const TeamCardsDevelopers: React.FC = () => {
           },
         }}
       >
-        {cardsData.map((card, index) => (
+        {cardsData.map((card) => (
           <Card
-            key={index}
+            key={card.name}
             sx={cardStyle}
           >
             <img

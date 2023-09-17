@@ -48,14 +48,14 @@ export const PagesButtons: React.FC = () => {
         sx={boxStyle}
         flexWrap="wrap"
       >
-        {pages.map((page, index) => (
+        {pages.map((page) => (
           <Link
             to={`/${page.url}`}
-            key={index}
+            key={page.name}
             style={{ textDecoration: 'none' }}
           >
             <Card
-              key={index}
+              key={page.name}
               sx={{
                 width: '80px',
                 height: '80px',
@@ -77,7 +77,7 @@ export const PagesButtons: React.FC = () => {
               <CardContent sx={{ pb: 0, pt: 0.6, m: 0 }}>
                 <IconButton
                   disableRipple={true}
-                  key={index}
+                  key={page.name}
                   sx={{
                     bgcolor: '#FFF0F8',
                     p: 0,

@@ -62,4 +62,5 @@ export type InitialState = {
   limit: number;
   currentPage: number;
   count: number;
+  productsForSlider: ProductProjection[];
 };

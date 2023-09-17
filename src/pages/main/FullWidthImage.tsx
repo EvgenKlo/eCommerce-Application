@@ -1,4 +1,3 @@
-import React from 'react';
 import { ImageListItem } from '@mui/material';
 
 interface FullWidthImageProps {
