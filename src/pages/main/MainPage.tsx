@@ -20,15 +20,12 @@ export const MainPage: React.FC = () => {
   useEffect(() => {
     !products.length && void dispatch(getProductsForSlider());
   }, []);
-  console.log(products);
 
   const sliders = products.map((product) => ({
     id: product.id,
     name: product.name.en,
     url: product.masterVariant.images?.[0]?.url || '',
   }));
-
-  console.log(sliders);
 
   return (
     <Container>

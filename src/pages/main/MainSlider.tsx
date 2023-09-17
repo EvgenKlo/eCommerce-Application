@@ -1,20 +1,18 @@
-// import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { objectSliderInfo } from './MainPage';
 import { Link as RouterLink } from 'react-router-dom';
 
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/effect-coverflow';
-import 'swiper/css/pagination';
+import 'swiper/scss';
+import 'swiper/scss/effect-coverflow';
+import 'swiper/scss/navigation';
 
-import { EffectCoverflow, Autoplay } from 'swiper/modules';
+import { EffectCoverflow, Autoplay, Navigation } from 'swiper/modules';
 export const MainSlider: React.FC<{ sliders: objectSliderInfo[] }> = ({ sliders }) => {
-  console.log(sliders);
   return (
     <>
       <Swiper
-        spaceBetween={50}
+        spaceBetween={20}
+        navigation={true}
         centeredSlides={true}
         effect={'coverflow'}
         grabCursor={true}
@@ -27,19 +25,14 @@ export const MainSlider: React.FC<{ sliders: objectSliderInfo[] }> = ({ sliders 
           slideShadows: true,
         }}
         autoplay={{
-          delay: 2500,
+          delay: 2200,
           disableOnInteraction: false,
         }}
-        // pagination={true}
-        modules={[EffectCoverflow, Autoplay]}
-        className="mySwiper"
+        modules={[EffectCoverflow, Autoplay, Navigation]}
         loop={true}
       >
         {sliders.map((slider) => (
-          <SwiperSlide
-            key={slider.id}
-            onClick={() => {}}
-          >
+          <SwiperSlide key={slider.id}>
             <RouterLink
               to={`catalog/${slider.id}`}
               key={slider.id}
