@@ -12,6 +12,7 @@ export const MainSlider: React.FC<{ sliders: objectSliderInfo[] }> = ({ sliders 
     <>
       <Swiper
         spaceBetween={20}
+        speed={1200}
         navigation={true}
         centeredSlides={true}
         effect={'coverflow'}
