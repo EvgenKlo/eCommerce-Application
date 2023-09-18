@@ -22,12 +22,12 @@
     "coverage": "npx vitest --coverage"
   },
   "lint-staged": {
-    "*.ts": [
+    "*.{js,ts,jsx,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
     "*.css": [
-      "prettier --write -config .prettierrc"
+      "prettier --write"
     ],
     "**/*.scss": [
       "stylelint --fix"
@@ -55,7 +55,8 @@
     "react-image-gallery": "^1.3.0",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.14.1",
-    "rollup-plugin-node-polyfills": "^0.2.1"
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "swiper": "^10.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",

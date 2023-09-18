@@ -28,6 +28,12 @@ const initialState: InitialState = {
     prop: SortOptions.price,
   },
   search: '',
+  total: 0,
+  limit: 12,
+  currentPage: 1,
+  count: 0,
+  digits: 0,
+  productsForSlider: [],
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
@@ -45,6 +51,17 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
   return response.data;
 });
 
+export const getProductsForSlider = createAsyncThunk(
+  'products/getProductsForSlider',
+  async (_, thunkAPI) => {
+    thunkAPI.dispatch(setLoading(true));
+    const state: RootState = thunkAPI.getState() as RootState;
+    const passClient = state.customers.apiInstance;
+    const response = await passClient.getProductsForSlider();
+    return response.data;
+  }
+);
+
 export const getProductsByCat = createAsyncThunk(
   'products/getProductsByCat',
   async (catId: string, thunkAPI) => {
@@ -61,12 +78,13 @@ export const getProductsWithFilter = createAsyncThunk(
     thunkAPI.dispatch(setLoading(true));
     const state: RootState = thunkAPI.getState() as RootState;
     const passClient = state.customers.apiInstance;
-
     const filter = buildQueryFilter(state.products.filters);
     const sort = `${state.products.sort.prop} ${state.products.sort.direction}`;
     const search = state.products.search;
-    const response = await passClient.getProductsWithFilter(filter, sort, search);
-    return response.data;
+    const limit = state.products.limit;
+    const offset = (state.products.currentPage - 1) * limit;
+    const response = await passClient.getProductsWithFilter(filter, sort, search, limit, offset);
+    return response;
   }
 );
 export const getProductsbySearch = createAsyncThunk(
@@ -157,6 +175,7 @@ const productSlice = createSlice({
       newFilterState.price = { ...initialState.filters.price };
       newFilterState.price.upper = state.maxPrice;
       state.filters = newFilterState;
+      state.currentPage = 1;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
@@ -166,6 +185,18 @@ const productSlice = createSlice({
     },
     setSearch: (state, action: PayloadAction<typeof state.search>) => {
       state.search = action.payload;
+    },
+    setTotal: (state, action: PayloadAction<{ total: number }>) => {
+      state.total = action.payload.total;
+    },
+    setCount: (state, action: PayloadAction<{ count: number }>) => {
+      state.count = action.payload.count;
+    },
+    setLimit: (state, action: PayloadAction<{ limit: number }>) => {
+      state.limit = action.payload.limit;
+    },
+    setCurrentPage: (state, action: PayloadAction<{ page: number }>) => {
+      state.currentPage = action.payload.page;
     },
   },
   extraReducers: (builder) => {
@@ -177,13 +208,18 @@ const productSlice = createSlice({
     });
 
     builder.addCase(getProducts.fulfilled, (state, action) => {
-      if (action.payload)
+      if (action.payload) {
         productSlice.caseReducers.deriveAttributes(state, {
           payload: {
             facets: action.payload?.facets,
           },
           type: 'products/filters',
         });
+
+        state.digits = action.payload.results[0].masterVariant.prices
+          ? action.payload.results[0].masterVariant.prices[0].value.fractionDigits
+          : 0;
+      }
     });
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.product = action.payload.data ? action.payload.data : ({} as ProductProjection);
@@ -195,12 +231,25 @@ const productSlice = createSlice({
       productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
     builder.addCase(getProductsWithFilter.fulfilled, (state, action) => {
-      state.products = action.payload ? action.payload : ([] as ProductProjection[]);
+      state.products = action.payload.data?.body.results
+        ? action.payload.data?.body.results
+        : ([] as ProductProjection[]);
+
+      productSlice.caseReducers.setTotal(state, {
+        payload: { total: action.payload.data?.body.total as number },
+        type: 'products/total',
+      });
       productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
     builder.addCase(getProductsbySearch.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
       productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
+    });
+
+    builder.addCase(getProductsForSlider.fulfilled, (state, action) => {
+      state.productsForSlider = action.payload
+        ? action.payload.results
+        : ([] as ProductProjection[]);
     });
   },
 });
@@ -219,6 +268,8 @@ export const {
   setLoading,
   setSortingOptions,
   setSearch,
+  setLimit,
+  setCurrentPage,
 } = productSlice.actions;
 
 export default productSlice.reducer;

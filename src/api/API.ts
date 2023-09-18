@@ -5,6 +5,8 @@ import {
   CustomerDraft,
   MyCustomerChangePassword,
   BaseAddress,
+  CartUpdate,
+  CartDraft,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { type returnType } from '@/types/apiClient';
@@ -65,7 +67,13 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
-  async getProductsWithFilter(filter: string[], sort: string, search: string = '') {
+  async getProductsWithFilter(
+    filter: string[],
+    sort: string,
+    search: string = '',
+    limit: number = 12,
+    offset: number = 0
+  ) {
     let errorMsg = '';
     try {
       const respsone = await this.client
@@ -76,13 +84,15 @@ export class API {
             'text.en': search,
             fuzzy: true,
             sort,
-            limit: API.limit,
+            limit,
+            offset,
             'filter.query': filter,
           },
         })
         .execute();
       const result = respsone;
-      return { data: result.body.results, error: errorMsg };
+
+      return { data: result, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
@@ -117,7 +127,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
-            limit: API.limit,
+            limit: 1,
             facet: [
               'variants.attributes.color.en',
               'variants.attributes.size.en',
@@ -128,6 +138,18 @@ export class API {
           },
         })
         .execute();
+
+      return { data: body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async getProductsForSlider() {
+    let errorMsg = '';
+    try {
+      const { body } = await this.client.productProjections().get().execute();
       return { data: body, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
@@ -171,7 +193,23 @@ export class API {
   async signIn(credentials: { email: string; password: string }): returnType<CustomerSignInResult> {
     let errorMsg = '';
     try {
-      const result = await this.client.me().login().post({ body: credentials }).execute();
+      const { ...data } = { ...credentials };
+
+      const result = await this.client.me().login().post({ body: data }).execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  async signInWithCartMerge(credentials: {
+    email: string;
+    password: string;
+  }): returnType<CustomerSignInResult> {
+    let errorMsg = '';
+    try {
+      const { ...data } = { ...credentials, activeCartSignInMode: 'MergeWithExistingCustomerCart' };
+      const result = await this.client.me().login().post({ body: data }).execute();
       return { data: result.body, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
@@ -190,25 +228,6 @@ export class API {
     return result;
   }
 
-  async createCart() {
-    let result = {};
-    try {
-      const { body } = await this.client
-        .me()
-        .carts()
-        .post({
-          body: {
-            currency: 'EUR',
-          },
-        })
-        .execute();
-
-      result = body;
-    } catch (error) {
-      console.log(error);
-    }
-    return result;
-  }
   async setCustomerFirstName(firstName: string, version: number) {
     let errorMsg = '';
     try {
@@ -439,6 +458,59 @@ export class API {
         })
         .execute();
       return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async getActiveCart() {
+    let errorMsg = '';
+    try {
+      const response = await this.client.me().activeCart().get().execute();
+      const result = response;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async createCart(cart: CartDraft) {
+    let errorMsg = '';
+    try {
+      const response = await this.client.me().carts().post({ body: cart }).execute();
+      const result = response;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  async updateCart(ID: string, cartUpdate: CartUpdate) {
+    let errorMsg = '';
+    try {
+      const response = await this.client
+        .carts()
+        .withId({ ID })
+        .post({ body: cartUpdate })
+        .execute();
+      const result = response;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  async getDiscountCodes() {
+    let errorMsg = '';
+    try {
+      const response = await this.client.discountCodes().get().execute();
+      const result = response;
+      return { data: result, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };

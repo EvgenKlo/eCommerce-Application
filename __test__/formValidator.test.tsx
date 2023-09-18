@@ -47,3 +47,10 @@ test('postal code validator', () => {
   expect(FormValidator.postalCodeValidator('M5H 2N2', 'CA')).toBe(true);
   expect(FormValidator.postalCodeValidator('12345', 'CA')).toBe(false);
 });
+
+test('city validator', () => {
+  expect(FormValidator.cityValidator('Nizhny Novgorod')).toBe(true);
+  expect(FormValidator.cityValidator('Ekaterinburg1')).toBe(false);
+  expect(FormValidator.cityValidator('Moscow')).toBe(true);
+  expect(FormValidator.cityValidator('Moscow ')).toBe(false);
+});

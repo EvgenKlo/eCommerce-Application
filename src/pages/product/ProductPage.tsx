@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/hooks/reduxHooks';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { type ProductProjection } from '@commercetools/platform-sdk';
 import { useEffect, useState } from 'react';
 import { Loader } from '@/components/UI/Loader';
@@ -9,7 +9,7 @@ import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { ProductModalWindow } from './ProductModalWindow';
 import DiscountIcon from '@mui/icons-material/Discount';
-import { Link } from 'react-router-dom';
+import AddDelProductToCart from '@/components/UI/AddDelProductToCart';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -71,6 +71,10 @@ const ProductPage = () => {
 
   const currencyCode =
     product.masterVariant.prices && product.masterVariant.prices[priceNumber].value.currencyCode;
+
+  const fractionDigits = product.masterVariant.prices
+    ? product.masterVariant.prices[priceNumber].value.fractionDigits
+    : undefined;
 
   return (
     <Container>
@@ -170,7 +174,7 @@ const ProductPage = () => {
                   {new Intl.NumberFormat('en-EN', {
                     style: 'currency',
                     currency: currencyCode,
-                  }).format(discountPrice)}
+                  }).format(discountPrice / 10 ** (fractionDigits || 0))}
                 </Typography>
               </Grid>
             )}
@@ -188,7 +192,7 @@ const ProductPage = () => {
                   new Intl.NumberFormat('en-EN', {
                     style: 'currency',
                     currency: currencyCode,
-                  }).format(price)}
+                  }).format(price / 10 ** (fractionDigits || 0))}
               </Typography>
             </Grid>
           </Grid>
@@ -196,10 +200,16 @@ const ProductPage = () => {
             item
             sx={{ display: 'flex', justifyContent: 'end' }}
           >
-            <Link to={'/catalog'}>
-              <Button variant="contained">Go to Catalog</Button>
-            </Link>
+            <AddDelProductToCart id={product.id} />
           </Grid>
+          <Link to={'/catalog'}>
+            <Button
+              variant="contained"
+              sx={{ marginTop: 1 }}
+            >
+              Go to Catalog
+            </Button>
+          </Link>
         </Grid>
       </Grid>
       <ProductModalWindow

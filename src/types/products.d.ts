@@ -58,4 +58,10 @@ export type InitialState = {
     prop: SortOptions;
   };
   search: string;
+  total: number;
+  limit: number;
+  currentPage: number;
+  count: number;
+  digits: number;
+  productsForSlider: ProductProjection[];
 };
