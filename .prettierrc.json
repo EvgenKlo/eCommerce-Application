@@ -6,5 +6,6 @@
   "trailingComma": "es5",
   "printWidth": 100,
   "arrowParens": "always",
-  "singleAttributePerLine": true
+  "singleAttributePerLine": true,
+  "quoteProps": "preserve"
 }

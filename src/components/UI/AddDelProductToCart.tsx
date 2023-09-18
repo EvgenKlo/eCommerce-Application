@@ -29,6 +29,7 @@ const AddDelProductToCart: React.FC<{ id: string }> = ({ id }) => {
     <>
       {idCartProduct ? (
         <Button
+          data-testid="add/del to cart"
           variant="contained"
           onClick={(e) => {
             e.preventDefault();
@@ -46,6 +47,7 @@ const AddDelProductToCart: React.FC<{ id: string }> = ({ id }) => {
         </Button>
       ) : (
         <Button
+          data-testid="add/del to cart"
           color="info"
           variant="contained"
           onClick={(e) => {
