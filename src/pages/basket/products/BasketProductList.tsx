@@ -38,7 +38,7 @@ const BasketProductList = () => {
           product={product}
         />
       ))}
-      <Stack sx={{ alignItems: 'center', width: 1 }}>
+      <Stack sx={{ alignItems: 'center', width: 1, paddingLeft: 2 }}>
         <Stack
           direction="row"
           spacing={2}
@@ -62,6 +62,7 @@ const BasketProductList = () => {
                 style={{
                   color: '#c3c3c1',
                   textDecoration: 'line-through',
+                  fontSize: '1.5rem',
                 }}
               >
                 {new Intl.NumberFormat('en-EN', {
