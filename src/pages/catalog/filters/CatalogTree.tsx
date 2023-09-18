@@ -13,6 +13,7 @@ const treeSX = {
   maxWidth: 200,
   textAlign: 'start',
   m: 1,
+  color: '#333333',
 };
 
 export const CategoriesTree: React.FC<{
