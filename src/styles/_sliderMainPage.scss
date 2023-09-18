@@ -1,5 +1,5 @@
 .swiper {
-  width: 80%;
+  width: 100%;
   padding-top: 20px;
   padding-bottom: 20px;
   margin-top: 20px;
@@ -10,7 +10,7 @@
   background-position: center;
   background-size: cover;
   width: 200px;
-  height: 350px;
+  height: 360px;
 }
 
 @media (width >= 900px) and (width <= 1200px) {
@@ -29,12 +29,11 @@
   .swiper {
     margin-top: 10px;
     margin-bottom: 30px;
-    width: 100%;
   }
 
   .swiper-slide {
     width: 300px;
-    height: 270px;
+    height: 260px;
   }
 }
 
@@ -53,7 +52,6 @@
   .swiper {
     margin-top: 10px;
     margin-bottom: 20px;
-    width: 100%;
   }
 
   .swiper-slide {
@@ -65,7 +63,6 @@
   .swiper {
     margin-top: 5px;
     margin-bottom: 5px;
-    width: 100%;
   }
 
   .swiper-slide {
