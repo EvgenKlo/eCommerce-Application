@@ -1,65 +1,38 @@
-import { useAppSelector } from '@/hooks/reduxHooks';
-import { Button, Chip, Container, Paper, Stack, Tooltip, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Container } from '@mui/material';
+import { Greeting } from './Greeting';
+import { PagesButtons } from './PagesButtons';
+import { DiscountBannersList } from './DiscountBannersList';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { useEffect } from 'react';
+import { getProductsForSlider } from '@/store/slices/productSlice';
+import { MainSlider } from './MainSlider';
+
+export type objectSliderInfo = {
+  id: string;
+  name: string;
+  url: string;
+};
 
 export const MainPage: React.FC = () => {
-  const customer = useAppSelector((state) => state.customers.customer);
-  const discounts = useAppSelector((state) => state.carts.discounts);
+  const dispatch = useAppDispatch();
+  const products = useAppSelector((state) => state.products.productsForSlider);
 
-  const pages = ['catalog', 'about', 'login', 'registration', 'basket'];
+  useEffect(() => {
+    !products.length && void dispatch(getProductsForSlider());
+  }, []);
+
+  const sliders = products.map((product) => ({
+    id: product.id,
+    name: product.name.en,
+    url: product.masterVariant.images?.[0]?.url || '',
+  }));
 
   return (
     <Container>
-      {customer ? <h3>Hello {customer.firstName} !</h3> : <h3>Hello !</h3>}
-      {pages.map((page) => (
-        <Button
-          key={page}
-          variant="contained"
-          sx={{ margin: '1rem', '&:hover': { color: 'secondary.main' } }}
-          component={Link}
-          to={`/${page}`}
-        >
-          {`Go to ${page} Page`}
-        </Button>
-      ))}
-      <Paper
-        elevation={3}
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-          listStyle: 'none',
-          p: 1,
-          pt: 2,
-          m: 0,
-        }}
-      >
-        <Typography
-          paddingRight={1}
-          variant="h5"
-        >
-          Promocodes:
-        </Typography>
-        <Stack
-          direction="row"
-          spacing={1}
-        >
-          {discounts.map((discount) => {
-            return (
-              <Tooltip
-                title={discount.description!.en}
-                key={discount.id}
-                sx={{ '&:hover': { cursor: 'cursor' } }}
-              >
-                <Chip
-                  label={discount.code}
-                  color="secondary"
-                />
-              </Tooltip>
-            );
-          })}
-        </Stack>
-      </Paper>
+      <Greeting />
+      <PagesButtons />
+      <MainSlider sliders={sliders} />
+      <DiscountBannersList />
     </Container>
   );
 };

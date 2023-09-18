@@ -33,6 +33,7 @@ const initialState: InitialState = {
   currentPage: 1,
   count: 0,
   digits: 0,
+  productsForSlider: [],
 };
 
 export const getCategories = createAsyncThunk('products/getCategories', async (_, thunkAPI) => {
@@ -49,6 +50,17 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
   const response = await passClient.getProducts();
   return response.data;
 });
+
+export const getProductsForSlider = createAsyncThunk(
+  'products/getProductsForSlider',
+  async (_, thunkAPI) => {
+    thunkAPI.dispatch(setLoading(true));
+    const state: RootState = thunkAPI.getState() as RootState;
+    const passClient = state.customers.apiInstance;
+    const response = await passClient.getProductsForSlider();
+    return response.data;
+  }
+);
 
 export const getProductsByCat = createAsyncThunk(
   'products/getProductsByCat',
@@ -232,6 +244,12 @@ const productSlice = createSlice({
     builder.addCase(getProductsbySearch.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
       productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
+    });
+
+    builder.addCase(getProductsForSlider.fulfilled, (state, action) => {
+      state.productsForSlider = action.payload
+        ? action.payload.results
+        : ([] as ProductProjection[]);
     });
   },
 });
