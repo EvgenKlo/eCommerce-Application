@@ -63,4 +63,5 @@ export type InitialState = {
   currentPage: number;
   count: number;
   digits: number;
+  productsForSlider: ProductProjection[];
 };
