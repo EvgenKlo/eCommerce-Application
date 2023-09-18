@@ -95,6 +95,7 @@ export const ManufacturerPicker: React.FC = () => {
                   <ListItemText
                     id={labelId}
                     primary={value}
+                    sx={{ color: '#333333' }}
                   />
                 </ListItemButton>
               </ListItem>

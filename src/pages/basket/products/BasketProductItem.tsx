@@ -3,16 +3,28 @@ import { useAppDispatch } from '@/hooks/reduxHooks';
 import { changeProductQuantityInCart, setLoader } from '@/store/slices/cartSlice';
 import { type LineItem } from '@commercetools/platform-sdk';
 import { Box, Button, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import { handleMouseDown } from '@/helpers/handleMouseDown';
 
 const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
   const productImage = product.variant.images && product.variant.images[0].url;
   const productName = product.name.en;
 
-  const price = product.price.discounted
+  /* const price = product.price.discounted
     ? product.price.discounted.value.centAmount
     : product.variant.prices && product.variant.prices[0].value.centAmount;
 
   const discountPrice = product.discountedPricePerQuantity.length
+    ? product.discountedPricePerQuantity[0].discountedPrice.value.centAmount
+    : undefined; */
+
+  const price = product.price.value.centAmount;
+
+  const discountPrice = product.price.discounted?.value.centAmount
+    ? product.price.discounted?.value.centAmount
+    : undefined;
+
+  const promoPrice = product.discountedPricePerQuantity.length
     ? product.discountedPricePerQuantity[0].discountedPrice.value.centAmount
     : undefined;
 
@@ -31,6 +43,8 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
     <Grid
       item
       width="100%"
+      maxWidth={1024}
+      margin={'auto'}
     >
       <Card
         sx={{
@@ -78,6 +92,20 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
               fractionDigits={fractionDigits}
             />
           </Box>
+          {promoPrice && (
+            <Typography
+              variant="body2"
+              sx={{ color: 'info.main', fontSize: '1.5rem', fontWeight: 700, marginRight: 1 }}
+            >
+              Promo-code price{' '}
+              <span>
+                {new Intl.NumberFormat('en-EN', {
+                  style: 'currency',
+                  currency: currencyCode,
+                }).format(promoPrice / 10 ** (fractionDigits || 0))}
+              </span>
+            </Typography>
+          )}
         </CardContent>
 
         <CardContent>
@@ -92,20 +120,32 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
             <Button
               variant="contained"
               onClick={() => handleAddToCart(product.quantity - 1)}
+              onMouseDown={handleMouseDown}
+              sx={{ padding: 0, minWidth: 50, height: 30 }}
             >
               <Typography fontSize={20}>-</Typography>
             </Button>
             <Typography
               variant="body2"
-              sx={{ padding: '0px 20px', fontSize: '2rem' }}
+              sx={{ padding: '0px 20px', fontSize: '1.3rem' }}
             >
               {product.quantity}
             </Typography>
             <Button
               variant="contained"
               onClick={() => handleAddToCart(product.quantity + 1)}
+              onMouseDown={handleMouseDown}
+              sx={{ padding: 0, minWidth: 50, height: 30 }}
             >
               <Typography fontSize={20}>+</Typography>
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => handleAddToCart(0)}
+              onMouseDown={handleMouseDown}
+              sx={{ padding: 0, minWidth: 50, height: 30, marginLeft: 1 }}
+            >
+              <RemoveShoppingCartIcon />
             </Button>
           </Box>
           <Typography
@@ -117,18 +157,10 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
             <span>
               {new Intl.NumberFormat('en-EN', {
                 style: 'currency',
-                currency: product.totalPrice.currencyCode,
+                currency: currencyCode,
               }).format(product.totalPrice.centAmount / 10 ** (fractionDigits || 0))}
             </span>
           </Typography>
-        </CardContent>
-        <CardContent>
-          <Button
-            variant="contained"
-            onClick={() => handleAddToCart(0)}
-          >
-            Delete product
-          </Button>
         </CardContent>
       </Card>
     </Grid>
