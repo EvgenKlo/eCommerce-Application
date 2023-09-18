@@ -1,0 +1,14 @@
+@use './styles/normalize';
+@use './styles/main';
+@use './styles/_sliderMainPage';
+
+#root {
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.slider-img {
+  cursor: pointer;
+}

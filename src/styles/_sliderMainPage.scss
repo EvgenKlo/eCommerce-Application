@@ -1,0 +1,77 @@
+.swiper {
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 200px;
+  height: 360px;
+}
+
+@media (width >= 900px) and (width <= 1200px) {
+  .swiper {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+
+  .swiper-slide {
+    width: 290px;
+    height: 320px;
+  }
+}
+
+@media (width >= 800px) and (width <= 950px) {
+  .swiper {
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+
+  .swiper-slide {
+    width: 300px;
+    height: 260px;
+  }
+}
+
+@media (width >= 650px) and (width <= 800px) {
+  .swiper {
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .swiper-slide {
+    height: 250px;
+  }
+}
+
+@media (width >= 480px) and (width <= 650px) {
+  .swiper {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .swiper-slide {
+    height: 170px;
+  }
+}
+
+@media (width <= 480px) {
+  .swiper {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .swiper-slide {
+    height: 110px;
+  }
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
