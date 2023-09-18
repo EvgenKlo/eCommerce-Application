@@ -2,37 +2,30 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import type { objectSliderInfo } from './MainPage';
 import { Link as RouterLink } from 'react-router-dom';
 
-import 'swiper/scss';
-import 'swiper/scss/effect-coverflow';
-import 'swiper/scss/navigation';
+import 'swiper/css';
 
-import { EffectCoverflow, Autoplay, Navigation } from 'swiper/modules';
+import './style.css';
+
+import { Autoplay, Navigation } from 'swiper/modules';
+
 export const MainSlider: React.FC<{ sliders: objectSliderInfo[] }> = ({ sliders }) => {
   return (
     <>
       <Swiper
-        spaceBetween={20}
-        navigation={true}
-        centeredSlides={true}
-        effect={'coverflow'}
-        grabCursor={true}
-        slidesPerView={3}
-        coverflowEffect={{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        }}
+        slidesPerView={5}
+        modules={[Autoplay, Navigation]}
         autoplay={{
-          delay: 2200,
-          disableOnInteraction: false,
+          delay: 0,
         }}
-        modules={[EffectCoverflow, Autoplay, Navigation]}
         loop={true}
+        speed={5000}
+        style={{ margin: 0, padding: 0 }}
       >
         {sliders.map((slider) => (
-          <SwiperSlide key={slider.id}>
+          <SwiperSlide
+            key={slider.id}
+            style={{ maxHeight: 300 }}
+          >
             <RouterLink
               to={`catalog/${slider.id}`}
               key={slider.id}

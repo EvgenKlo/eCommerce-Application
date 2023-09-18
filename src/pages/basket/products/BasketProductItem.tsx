@@ -97,7 +97,7 @@ const BasketProductItem: React.FC<{ product: LineItem }> = ({ product }) => {
               variant="body2"
               sx={{ color: 'info.main', fontSize: '1.5rem', fontWeight: 700, marginRight: 1 }}
             >
-              Promo price{' '}
+              Promo-code price{' '}
               <span>
                 {new Intl.NumberFormat('en-EN', {
                   style: 'currency',
